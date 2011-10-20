@@ -1,0 +1,22 @@
+#
+# Description
+# -----------
+# This table stores any successful authentications by a user.
+#
+# Fields
+# ------
+# username:			The username submitted to moss.users.auth
+#
+# api_key:			The api_key argument, if specified, otherwise blank.
+#
+# ip_address:		The ip address the request came from.
+#
+# log_date:			The date and time of the request.
+#
+create table user_auth_log (
+	user_id int not null,
+	api_key varchar(32) not null,
+	ip_address varchar(32) not null,
+	log_date datetime not null,
+	primary key (user_id, api_key, ip_address, log_date)
+) ENGINE='InnoDB', COMMENT='v1.01';

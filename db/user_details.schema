@@ -1,0 +1,26 @@
+#
+# Description
+# -----------
+# The user_details table stores additional information for
+# a users based on the key provided.
+#
+# Examples:
+# _ settings.date_format = 'mysql date_format string'
+#
+# Fields
+# ------
+# user_id:			The id of the user the detail is attached to.
+# detail_key:		The unique index key to the value stored for the user.
+# detail_value:		The value indexed by the key.
+# date_added:		The date and time the record was added.
+# last_updated:		The date and time the record was last updated.
+#
+create table user_details (
+	user_id int not null,
+	detail_key varchar(50) not null,
+	detail_value varchar(255) not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (user_id, detail_key)
+) ENGINE='InnoDB', COMMENT='v1.01';
+

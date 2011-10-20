@@ -1,0 +1,27 @@
+#
+# Description
+# -----------
+# The user_images tables stores the images which are attached
+# to a users account.
+#
+# Fields
+# ------
+# user_id:			The user to attached to image to.
+# image_id:			The image from the images module to attached to the user.
+# flags:			Addition flags for how and why the image is connected to this user.
+#
+#					0x01 - users avatar
+#					0x02 - product shot
+#
+# date_added:		The date and time the record was added.
+# last_updated:		The date and time the record was last updated.
+#
+create table user_images (
+	user_id int not null,
+	image_id int not null,
+	flags tinyint unsigned not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (user_id, image_id)
+);
+

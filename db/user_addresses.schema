@@ -1,0 +1,58 @@
+#
+# Description
+# -----------
+# The customer_addresses table stores addresses for customers
+# for a business.  The customer addresses are stored in two 
+# places, the customers module and the users module.  The reason
+# for the duplication is to allow business owners to  
+# change customer information without affecting other businesses.
+# If a customer changes their information, it will get 
+# propagated through to this table.  
+#
+# Fields
+# ------
+# id:               The id of the address.
+#
+# user_id: 		    The user the address is attached to. 
+#
+# flags:            The flags field is a set of bit flags for 
+#                   determining how the address should be used.  
+#                   One address can be shipping, billing, home and work.
+#
+#                   0x01 - shipping (use this address for shipping)
+#                   0x02 - billing
+#                   0x04 - home
+#                   0x08 - work
+#                   0x10 - unsed
+#                   0x20 - unsed
+#                   0x40 - unsed
+#                   0x80 - unsed
+#
+# address1:         The first line of the address
+# address2:         The second line of the address (suite #, etc)
+# city:				The city of the address.
+# state:			The province, territory or state of the address.
+# postal:			The Postal code or zipcode of the address.
+# country:			The country is based on the 2 digit country code.
+#                       
+# date_added:       The date and time the record was added.
+# last_updated:     The date and time the record was last updated.
+#
+create table user_addresses (
+	id int not null auto_increment,
+	user_id int not null,
+	flags tinyint unsigned not null,
+	address1 varchar(100) not null,
+	address2 varchar(100) not null,
+	city varchar(100) not null,
+	state varchar(100) not null,
+	postal varchar(7) not null,
+	country varchar(2) not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (id),
+	index (user_id),
+	index (city, state, country),
+	index (postal)
+) ENGINE='InnoDB', COMMENT='v1.01';
+
