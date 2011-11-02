@@ -19,7 +19,12 @@ function ciniki_users_logAuthSuccess($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
 
-	$ip_address = $_SERVER['REMOTE_ADDR'];
+	$ip_address = 'unknown';
+	if( isset($_SERVER['REMOTE_ADDR']) ) {
+		$ip_address = $_SERVER['REMOTE_ADDR'];
+	} else {
+		$ip_address = 'localhost';
+	}
 	if( isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '' ) {
 		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
