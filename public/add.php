@@ -88,11 +88,11 @@ function ciniki_users_add($ciniki) {
 	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'332', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'332', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
 	}
 	if( !isset($rc['insert_id']) || $rc['insert_id'] < 1 ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'168', 'msg'=>'Unable to add business'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'168', 'msg'=>'Unable to add business'));
 	}
 	$user_id = $rc['insert_id'];
 	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', "$user_id", 'email', $args['email.address']);
@@ -103,7 +103,7 @@ function ciniki_users_add($ciniki) {
 
 	if( $user_id < 1 ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'170', 'msg'=>'Unable to add user'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'170', 'msg'=>'Unable to add user'));
 	}
 
 	//

@@ -27,7 +27,7 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 		. "";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
 	if( $rc['stat'] != 'ok' || !isset($rc['user']) ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'993', 'msg'=>'Unable to find email information', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'993', 'msg'=>'Unable to find email information', 'err'=>$rc['err']));
 	}
 	$user = $rc['user'];
 

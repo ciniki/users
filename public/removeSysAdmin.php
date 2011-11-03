@@ -32,7 +32,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	// Check if the user_id was specified
 	//
 	if( !isset($ciniki['request']['args']['user_id']) || $ciniki['request']['args']['user_id'] == '' ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'179', 'msg'=>'No user selected.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'179', 'msg'=>'No user selected.'));
 	}
 	$user_id = $ciniki['request']['args']['user_id'];
 
@@ -49,7 +49,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 		return $rc;
 	}
 	if( !isset($rc['count']['admins']) || $rc['count']['admins'] < 1 ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'202', 'msg'=>'Unable to remove last Sys Admin'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'202', 'msg'=>'Unable to remove last Sys Admin'));
 	}
 
 	//

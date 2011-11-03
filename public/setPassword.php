@@ -65,12 +65,12 @@ function ciniki_users_setPassword($ciniki) {
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'432', 'msg'=>'Unable to set password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'432', 'msg'=>'Unable to set password.'));
 	}
 
 	if( $rc['num_affected_rows'] < 1 ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'433', 'msg'=>'Unable to set password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'433', 'msg'=>'Unable to set password.'));
 	}
 
 	//
@@ -82,7 +82,7 @@ function ciniki_users_setPassword($ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'434', 'msg'=>'Unable to set password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'434', 'msg'=>'Unable to set password.'));
 	}
 
 	return array('stat'=>'ok');

@@ -23,7 +23,7 @@
 function ciniki_users_userList($ciniki, $container_name, $ids) {
 
 	if( !is_array($ids) ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'995', 'msg'=>'Invalid list of users'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'995', 'msg'=>'Invalid list of users'));
 	}
 
 	//

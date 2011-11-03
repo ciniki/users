@@ -84,7 +84,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 		if( $rc['stat'] != 'ok' ) {
 			ciniki_core_dbTransactionRollback($ciniki, 'users');
-			return array('stat'=>'fail', 'err'=>array('code'=>'333', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'333', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
 		}
 	}
 
@@ -133,7 +133,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'334', 'msg'=>'Unable to update user detail', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'334', 'msg'=>'Unable to update user detail', 'err'=>$rc['err']));
 	}
 
 	return array('stat'=>'ok');

@@ -4,13 +4,12 @@
 // -----------
 // This function will log any failed attempts to authenticated through the API.
 //
-// Info
-// ----
-// Status: 		beta
-//
 // Arguments
 // ---------
-// 
+// ciniki:			
+// username:			The username to log the failure against.
+// err_code:			The authentication failure error code.
+//
 // Returns
 // -------
 //
@@ -25,7 +24,10 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 	//
 	// Add the login attempt to the log table
 	//
-	$ip_address = $_SERVER['REMOTE_ADDR'];
+	$ip_address = 'unknown';
+	if( isset($_SERVER['REMOTE_ADDR']) ) {
+		$ip_address = $_SERVER['REMOTE_ADDR'];
+	}
 	if( isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '' ) {
 		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
@@ -36,6 +38,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 		. "'" . ciniki_core_dbQuote($ciniki, $ip_address) . "', "
 		. "UTC_TIMESTAMP(), "
 		. "'" . ciniki_core_dbQuote($ciniki, $err_code) . "')";
+	
 	ciniki_core_dbInsert($ciniki, $strsql, 'users');
 
 	//
@@ -76,5 +79,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 			ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 		}
 	}
+
+	return array('stat'=>'ok');
 }
 ?>

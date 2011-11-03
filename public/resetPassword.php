@@ -63,10 +63,10 @@ function ciniki_users_resetPassword($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'240', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'240', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
 	}
 	if( !isset($rc['user']) || !isset($rc['user']['username']) || !isset($rc['user']['email']) ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'241', 'msg'=>'Unable to reset password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'241', 'msg'=>'Unable to reset password.'));
 	}
 	$user = $rc['user'];
 
@@ -90,12 +90,12 @@ function ciniki_users_resetPassword($ciniki) {
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'243', 'msg'=>'Unable to reset password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'243', 'msg'=>'Unable to reset password.'));
 	}
 
 	if( $rc['num_affected_rows'] < 1 ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
-		return array('stat'=>'fail', 'err'=>array('code'=>'245', 'msg'=>'Unable to reset password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'245', 'msg'=>'Unable to reset password.'));
 	}
 
 	//
@@ -129,7 +129,7 @@ function ciniki_users_resetPassword($ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'247', 'msg'=>'Unable to reset password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'247', 'msg'=>'Unable to reset password.'));
 	}
 
 	return array('stat'=>'ok');
