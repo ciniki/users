@@ -23,6 +23,8 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
 	//
 	$noauth_methods = array(
 		'ciniki.users.auth',
+		'ciniki.users.passwordRequestReset',
+		'ciniki.users.changeTempPassword',
 		);
 	if( in_array($method, $noauth_methods) ) {
 		return array('stat'=>'ok');

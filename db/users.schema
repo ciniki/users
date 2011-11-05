@@ -61,13 +61,18 @@
 #
 # secret_answer:	Stored as a SHA1 encrypted string, this is like a second password.
 #
-# date_added:	The date and time the user was added to this table.
+# temp_password:	The temporary password assigned to the user by ciniki.users.passwordRequestReset
 #
-# last_updated:	The date and time the user record was last updated.
+# temp_password_date:	The UTC date and time when the password reset was requested.  This is used when
+#						the user tries to set a new password with old temporary one, and must be done in timeframe.
 #
-# last_login:		The date and time the user last logged in or authenticated.
+# date_added:	The UTC date and time the user was added to this table.
 #
-# last_pwd_change:	The date and time the password was last changed.
+# last_updated:	The UTC date and time the user record was last updated.
+#
+# last_login:		The UTC date and time the user last logged in or authenticated.
+#
+# last_pwd_change:	The UTC date and time the password was last changed.
 #
 create table users (
 	id int not null auto_increment,
@@ -84,6 +89,8 @@ create table users (
 	login_attempts tinyint unsigned not null,
 	secret_question varchar(100) not null,
 	secret_answer varchar(41) not null,
+	temp_password varchar(41) not null,
+	temp_password_date datetime not null,
 	date_added datetime not null,
 	last_updated datetime not null,
 	last_login datetime not null,
@@ -91,5 +98,5 @@ create table users (
 	primary key (id),
 	unique (email),
 	unique (username)
-) ENGINE='InnoDB', COMMENT='v1.03';
+) ENGINE='InnoDB', COMMENT='v1.04';
 
