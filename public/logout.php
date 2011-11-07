@@ -30,7 +30,7 @@ function ciniki_users_logout($ciniki) {
 		return $rc;
 	}
 
-	require_once($ciniki['config']['core']['root_dir'] . '/ciniki-modules/core/private/sessionEnd.php');
+	require_once($ciniki['config']['core']['root_dir'] . '/ciniki-api/core/private/sessionEnd.php');
 
 	return ciniki_core_sessionEnd($ciniki);
 }
