@@ -37,7 +37,7 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 	} elseif( $fields == 'display_name' ) {
 		$strsql = "SELECT id, display_name FROM users ";
 	}
-	$strsql .= "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, $ids) . ") "
+	$strsql .= "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_unique($ids)) . ") "
 		. "ORDER BY id ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
 	return ciniki_core_dbHashIDQuery($ciniki, $strsql, 'users', $container_name, 'id');
