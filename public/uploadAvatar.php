@@ -73,7 +73,7 @@ function ciniki_users_uploadAvatar($ciniki) {
 	//
 	// Remove existing avatar
 	//
-	$strsql = "SELECT avatar_id FROM users WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
+	$strsql = "SELECT avatar_id FROM ciniki_users WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
@@ -112,7 +112,7 @@ function ciniki_users_uploadAvatar($ciniki) {
 	//
 	// Update user with new image id
 	//
-	$strsql = "UPDATE users SET avatar_id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
+	$strsql = "UPDATE ciniki_users SET avatar_id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {

@@ -1,6 +1,6 @@
 #
 # This file will upgrade the database table users to version 1.04.
 #
-ALTER TABLE users ADD COLUMN temp_password varchar(41) not null AFTER secret_answer;
-ALTER TABLE users ADD COLUMN temp_password_date datetime not null AFTER temp_password;
-ALTER TABLE users COMMENT='v1.04';
+ALTER TABLE ciniki_users ADD COLUMN temp_password varchar(41) not null AFTER secret_answer;
+ALTER TABLE ciniki_users ADD COLUMN temp_password_date datetime not null AFTER temp_password;
+ALTER TABLE ciniki_users COMMENT='v1.04';

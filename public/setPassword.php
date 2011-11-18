@@ -59,7 +59,7 @@ function ciniki_users_setPassword($ciniki) {
 	//
 	// Update the password, but only if the old one matches
 	//
-	$strsql = "UPDATE users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['password']) . "') "
+	$strsql = "UPDATE ciniki_users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['password']) . "') "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');

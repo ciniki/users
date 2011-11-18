@@ -40,7 +40,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	// Check and verify there are other sys admins.  Don't want to delete the last
 	// sys admin account, otherwise nobody can login
 	//
-	$strsql = "SELECT 'admins', COUNT(id) FROM users "
+	$strsql = "SELECT 'admins', COUNT(id) FROM ciniki_users "
 		. "WHERE (perms & 0x01) = 0x01 "
 		. "AND id != '" . ciniki_core_dbQuote($ciniki, $user_id) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbCount.php');
@@ -55,7 +55,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	//
 	// Update the user information to remove the sysadmin flag
 	//
-	$strsql = "UPDATE users SET perms = perms ^ 0x01 "
+	$strsql = "UPDATE ciniki_users SET perms = perms ^ 0x01 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');

@@ -46,7 +46,7 @@ function ciniki_users_searchEmail($ciniki) {
 	//
 	// Query for the user by email
 	//
-	$strsql = "SELECT id, firstname, lastname, display_name, email FROM users "
+	$strsql = "SELECT id, firstname, lastname, display_name, email FROM ciniki_users "
 		. "WHERE email LIKE '" . ciniki_core_dbQuote($ciniki, $args['start_needle']) . "%' "
 		. "LIMIT " . ciniki_core_dbQuote($ciniki, $args['search_limit']) . " ";
 

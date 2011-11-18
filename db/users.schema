@@ -74,7 +74,7 @@
 #
 # last_pwd_change:	The UTC date and time the password was last changed.
 #
-create table users (
+create table ciniki_users (
 	id int not null auto_increment,
 	email varchar(255) not null,
 	username varchar(100) not null,

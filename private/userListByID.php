@@ -33,9 +33,9 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteIDs.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
 	if( $fields == 'all' ) {
-		$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM users ";
+		$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users ";
 	} elseif( $fields == 'display_name' ) {
-		$strsql = "SELECT id, display_name FROM users ";
+		$strsql = "SELECT id, display_name FROM ciniki_users ";
 	}
 	$strsql .= "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_unique($ids)) . ") "
 		. "ORDER BY id ";

@@ -65,21 +65,21 @@ function ciniki_users_updateDetails(&$ciniki) {
 	$strsql = "";
 	if( isset($ciniki['request']['args']['user.firstname']) && $ciniki['request']['args']['user.firstname'] != '' ) {
 		$strsql .= ", firstname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.firstname']) . "'";
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', $args['user_id'] . "-user.firstname", 
+		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 
 			'firstname', $args['user.firstname']);
 	}
 	if( isset($ciniki['request']['args']['user.lastname']) && $ciniki['request']['args']['user.lastname'] != '' ) {
 		$strsql .= ", lastname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.lastname']) . "'";
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', $args['user_id'] . "-user.firstname", 
+		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 
 			'lastname', $args['user.lastname']);
 	}
 	if( isset($ciniki['request']['args']['user.display_name']) && $ciniki['request']['args']['user.display_name'] != '' ) {
 		$strsql .= ", display_name = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.display_name']) . "'";
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', $args['user_id'] . "-user.firstname", 
+		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 
 			'display_name', $args['user.display_name']);
 	}
 	if( $strsql != '' ) {
-		$strsql = "UPDATE users SET last_updated = UTC_TIMESTAMP()" . $strsql 
+		$strsql = "UPDATE ciniki_users SET last_updated = UTC_TIMESTAMP()" . $strsql 
 			. " WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 		if( $rc['stat'] != 'ok' ) {
@@ -97,7 +97,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 		);
 	foreach($ciniki['request']['args'] as $arg_name => $arg_value) {
 		if( in_array($arg_name, $allowed_keys) ) {
-			$strsql = "INSERT INTO user_details (user_id, detail_key, detail_value, date_added, last_updated) "
+			$strsql = "INSERT INTO ciniki_user_details (user_id, detail_key, detail_value, date_added, last_updated) "
 				. "VALUES ('" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "', "
 				. "'" . ciniki_core_dbQuote($ciniki, $arg_name) . "', "
 				. "'" . ciniki_core_dbQuote($ciniki, $arg_value) . "', "
@@ -110,7 +110,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 				ciniki_core_dbTransactionRollback($ciniki, 'users');
 				return $rc;
 			}
-			ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'user_details', 
+			ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_user_details', 
 				$args['user_id'] . "-$arg_name", 'detail_value', $arg_value);
 		}
 	}
@@ -119,7 +119,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	// Update session values
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryHash.php');
-	$rc = ciniki_core_dbDetailsQueryHash($ciniki, 'user_details', 'user_id', $ciniki['session']['user']['id'], 'settings', 'users');
+	$rc = ciniki_core_dbDetailsQueryHash($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'settings', 'users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
 		return $rc;

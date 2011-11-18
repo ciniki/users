@@ -76,7 +76,7 @@ function ciniki_users_add($ciniki) {
 		return $rc;
 	}
 
-	$strsql = "INSERT INTO users (date_added, email, username, firstname, lastname, display_name, "
+	$strsql = "INSERT INTO ciniki_users (date_added, email, username, firstname, lastname, display_name, "
 		. "perms, status, timeout, password, last_updated) VALUES ("
 		. "UTC_TIMESTAMP()" 
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['email.address']) . "'"
@@ -95,11 +95,11 @@ function ciniki_users_add($ciniki) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'168', 'msg'=>'Unable to add business'));
 	}
 	$user_id = $rc['insert_id'];
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', "$user_id", 'email', $args['email.address']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', "$user_id", 'username', $args['user.username']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', "$user_id", 'firstname', $args['user.firstname']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', "$user_id", 'lastname', $args['user.lastname']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'users', "$user_id", 'display_name', $args['user.display_name']);
+	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'email', $args['email.address']);
+	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'username', $args['user.username']);
+	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'firstname', $args['user.firstname']);
+	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'lastname', $args['user.lastname']);
+	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'display_name', $args['user.display_name']);
 
 	if( $user_id < 1 ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
@@ -114,7 +114,7 @@ function ciniki_users_add($ciniki) {
 		'settings.datetime_format'=>'%b %e, %Y %l:%i %p',
 		);
 	foreach( $default_details as $detail_key=>$detail_value ) {
-		$strsql = "INSERT INTO user_details (user_id, detail_key, detail_value, date_added, last_updated) "
+		$strsql = "INSERT INTO ciniki_user_details (user_id, detail_key, detail_value, date_added, last_updated) "
 			. "VALUES ('" . ciniki_core_dbQuote($ciniki, $user_id) . "', "
 			. "'" . ciniki_core_dbQuote($ciniki, $detail_key) . "', "
 			. "'" . ciniki_core_dbQuote($ciniki, $detail_value) . "', "
@@ -125,7 +125,7 @@ function ciniki_users_add($ciniki) {
 			ciniki_core_dbTransactionRollback($ciniki, 'users');
 			return $rc;
 		}
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'user_details', 
+		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_user_details', 
 			$args['user_id'] . "-$detail_key", 'detail_value', $detail_value);
 	}
 

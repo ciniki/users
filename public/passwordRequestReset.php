@@ -51,7 +51,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Get the username for the account
 	//
-	$strsql = "SELECT id, username, email, firstname, lastname, display_name FROM users "
+	$strsql = "SELECT id, username, email, firstname, lastname, display_name FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
@@ -77,7 +77,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Set the new temporary password
 	//
-	$strsql = "UPDATE users SET temp_password = SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "'), "
+	$strsql = "UPDATE ciniki_users SET temp_password = SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "'), "
 		. "temp_password_date = UTC_TIMESTAMP(), "
 		. "last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user['id']) . "' ";

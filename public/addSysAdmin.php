@@ -42,7 +42,7 @@ function ciniki_users_addSysAdmin($ciniki) {
 	//
 	// Update the user to set the sysadmin flag
 	//
-	$strsql = "UPDATE users SET perms = perms | 0x01 "
+	$strsql = "UPDATE ciniki_users SET perms = perms | 0x01 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	return ciniki_core_dbUpdate($ciniki, $strsql, 'users');

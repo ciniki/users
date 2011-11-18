@@ -22,7 +22,7 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$strsql = "SELECT id, firstname, lastname, email "
-		. "FROM users "
+		. "FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
 		. "";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');

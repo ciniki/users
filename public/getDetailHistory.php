@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will get the history of a field from the core_change_logs table.
+// This function will get the history of a field from the ciniki_core_change_logs table.
 // This allows the user to view what has happened to a data element, and if they
 // choose, revert to a previous version.
 //
@@ -54,13 +54,13 @@ function ciniki_users_getDetailHistory($ciniki) {
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbGetChangeLog.php');
 	if( $args['field'] == 'user.firstname' ) {
-		return ciniki_core_dbGetChangeLog($ciniki, 0, 'users', $args['user_id'] . "-user.firstname", 'firstname', 'users');
+		return ciniki_core_dbGetChangeLog($ciniki, 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 'firstname', 'users');
 	} elseif( $args['field'] == 'user.lastname' ) {
-		return ciniki_core_dbGetChangeLog($ciniki, 0, 'users', $args['user_id'] . "-user.firstname", 'lastname', 'users');
+		return ciniki_core_dbGetChangeLog($ciniki, 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 'lastname', 'users');
 	} elseif( $args['field'] == 'user.display_name' ) {
-		return ciniki_core_dbGetChangeLog($ciniki, 0, 'users', $args['user_id'] . "-user.firstname", 'display_name', 'users');
+		return ciniki_core_dbGetChangeLog($ciniki, 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 'display_name', 'users');
 	}
 
-	return ciniki_core_dbGetChangeLog($ciniki, 0, 'user_details', $args['user_id'] . "-" . $args['field'], 'detail_value', 'users');
+	return ciniki_core_dbGetChangeLog($ciniki, 0, 'ciniki_user_details', $args['user_id'] . "-" . $args['field'], 'detail_value', 'users');
 }
 ?>

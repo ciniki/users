@@ -53,7 +53,7 @@ function ciniki_users_changePassword($ciniki) {
 	//
 	// Check old password
 	//
-	$strsql = "SELECT id, email FROM users "
+	$strsql = "SELECT id, email FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 		. "AND password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['oldpassword']) . "') ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
@@ -83,7 +83,7 @@ function ciniki_users_changePassword($ciniki) {
 	//
 	// Update the password, but only if the old one matches
 	//
-	$strsql = "UPDATE users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['newpassword']) . "'), "
+	$strsql = "UPDATE ciniki_users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['newpassword']) . "'), "
 		. "last_updated = UTC_TIMESTAMP(), "
 		. "last_pwd_change = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "

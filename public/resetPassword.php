@@ -58,7 +58,7 @@ function ciniki_users_resetPassword($ciniki) {
 	//
 	// Get the username for the account
 	//
-	$strsql = "SELECT username, email FROM users "
+	$strsql = "SELECT username, email FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
@@ -84,7 +84,7 @@ function ciniki_users_resetPassword($ciniki) {
 	//
 	// Update the password, but only if the old one matches
 	//
-	$strsql = "UPDATE users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "') "
+	$strsql = "UPDATE ciniki_users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "') "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');

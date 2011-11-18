@@ -31,7 +31,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 	if( isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '' ) {
 		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
-	$strsql = "INSERT INTO user_auth_failures (username, api_key, ip_address, log_date, code"
+	$strsql = "INSERT INTO ciniki_user_auth_failures (username, api_key, ip_address, log_date, code"
 		. ") VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $username) . "', "
 		. "'" . ciniki_core_dbQuote($ciniki, $ciniki['request']['api_key']) . "', "
@@ -50,11 +50,11 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 		//
 		if( preg_match('/\@/', $username) ) {
 			$strsql = "SELECT id, email, username, firstname, lastname, status, login_attempts, date_added, last_login, last_pwd_change "
-				. "FROM users "
+				. "FROM ciniki_users "
 				. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $username) . "' ";
 		} else {
 			$strsql = "SELECT id, email, username, firstname, lastname, status, login_attempts, date_added, last_login, last_pwd_change "
-				. "FROM users "
+				. "FROM ciniki_users "
 				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $username) . "' ";
 		}
 
@@ -64,7 +64,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 			// Check if account should be locked
 			//
 			if( $rc['user']['status'] < 10 && $rc['user']['login_attempts'] > 6 ) {
-				$strsql = "UPDATE users SET status = 10 "
+				$strsql = "UPDATE ciniki_users SET status = 10 "
 					. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $rc['user']['id']) . "' "
 					. "AND status < 10";
 				ciniki_core_dbUpdate($ciniki, $strsql, 'users');
@@ -73,7 +73,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 					array('alert'=>'2', 'msg'=>"Account '$username' locked"), null);
 			}
 
-			$strsql = "UPDATE users SET login_attempts = login_attempts + 1 "
+			$strsql = "UPDATE ciniki_users SET login_attempts = login_attempts + 1 "
 				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $username) . "' "
 				. "AND login_attempts < 100 ";
 			ciniki_core_dbUpdate($ciniki, $strsql, 'users');

@@ -32,7 +32,7 @@ function ciniki_users_getLockedUsers($ciniki) {
 	//
 	// Query for the business users
 	//
-	$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM users "
+	$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users "
 		. "WHERE (status = 10 OR login_attempts > 7 ) ORDER BY lastname, firstname ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
 	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));

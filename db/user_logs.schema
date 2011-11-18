@@ -6,7 +6,7 @@
 # Fields
 # ------
 #
-create table user_logs (
+create table ciniki_user_logs (
 	user_id int not null,
 	log_date datetime not null,
 	log_entry varchar(255) not null,

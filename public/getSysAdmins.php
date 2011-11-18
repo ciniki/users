@@ -32,7 +32,7 @@ function ciniki_users_getSysAdmins($ciniki) {
 	//
 	// Query for the business users
 	//
-	$strsql = "SELECT id, email, firstname, lastname, display_name FROM users "
+	$strsql = "SELECT id, email, firstname, lastname, display_name FROM ciniki_users "
 		. "WHERE (perms & 0x01) = 0x01 ORDER BY lastname, firstname ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
 	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));

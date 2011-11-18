@@ -69,8 +69,8 @@ function ciniki_users_monitorAuthFailures($ciniki) {
 		. ", CAST(UNIX_TIMESTAMP(UTC_TIMESTAMP())-UNIX_TIMESTAMP(log_date) as DECIMAL(12,0)) as age "
 		. ", UNIX_TIMESTAMP(log_date) as TS"
 		. ", username, api_key, ip_address "
-		. "FROM user_auth_failures "
-		. "WHERE UNIX_TIMESTAMP(user_auth_failures.log_date) > '" . ciniki_core_dbQuote($ciniki, $req_last_timestamp) . "' "
+		. "FROM ciniki_user_auth_failures "
+		. "WHERE UNIX_TIMESTAMP(ciniki_user_auth_failures.log_date) > '" . ciniki_core_dbQuote($ciniki, $req_last_timestamp) . "' "
 		. "ORDER BY TS DESC ";
 	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'logs', 'log', array('stat'=>'ok', 'logs'=>array()));
 	if( $rsp['stat'] == 'ok' ) {

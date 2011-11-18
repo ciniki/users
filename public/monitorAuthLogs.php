@@ -67,10 +67,10 @@ function ciniki_users_monitorAuthLogs($ciniki) {
 	$strsql = "SELECT DATE_FORMAT(log_date, '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as log_date"
 		. ", CAST((UNIX_TIMESTAMP(UTC_TIMESTAMP())-UNIX_TIMESTAMP(log_date)) as DECIMAL(12,0)) as age "
 		. ", UNIX_TIMESTAMP(log_date) as TS"
-		. ", user_auth_log.user_id, users.display_name, api_key, ip_address "
-		. "FROM user_auth_log, users  "
-		. "WHERE UNIX_TIMESTAMP(user_auth_log.log_date) > '" . ciniki_core_dbQuote($ciniki, $req_last_timestamp) . "' "
-		. "AND user_auth_log.user_id = users.id "
+		. ", ciniki_user_auth_log.user_id, ciniki_users.display_name, api_key, ip_address "
+		. "FROM ciniki_user_auth_log, ciniki_users  "
+		. "WHERE UNIX_TIMESTAMP(ciniki_user_auth_log.log_date) > '" . ciniki_core_dbQuote($ciniki, $req_last_timestamp) . "' "
+		. "AND ciniki_user_auth_log.user_id = ciniki_users.id "
 		. "ORDER BY TS DESC ";
 	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'logs', 'log', array('stat'=>'ok', 'logs'=>array()));
 	if( $rsp['stat'] == 'ok' ) {

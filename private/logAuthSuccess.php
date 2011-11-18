@@ -29,7 +29,7 @@ function ciniki_users_logAuthSuccess($ciniki) {
 		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
 
-	$strsql = "INSERT INTO user_auth_log (user_id, api_key, ip_address, log_date "
+	$strsql = "INSERT INTO ciniki_user_auth_log (user_id, api_key, ip_address, log_date "
 		. ") VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "', "
 		. "'" . ciniki_core_dbQuote($ciniki, $ciniki['request']['api_key']) . "', "

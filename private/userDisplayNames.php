@@ -28,7 +28,7 @@ function ciniki_users_userDisplayNames($ciniki, $container_name, $ids) {
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteIDs.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	$strsql = "SELECT id, display_name FROM users "
+	$strsql = "SELECT id, display_name FROM ciniki_users "
 		. "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_unique($ids)) . ") "
 		. "ORDER BY lastname, firstname ";
 	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', $container_name, 'user', array('stat'=>'ok', $container_name=>array()));

@@ -1,5 +1,5 @@
 #
 # This file will upgrade the database table users to version 1.03.
 #
-ALTER TABLE users ADD COLUMN avatar_id int not null AFTER password;
-ALTER TABLE users COMMENT='v1.03';
+ALTER TABLE ciniki_users ADD COLUMN avatar_id int not null AFTER password;
+ALTER TABLE ciniki_users COMMENT='v1.03';

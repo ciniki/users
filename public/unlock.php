@@ -42,7 +42,7 @@ function ciniki_users_unlock($ciniki) {
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteRequestArg.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$strsql = "UPDATE users SET status = 1, login_attempts = 0 "
+	$strsql = "UPDATE ciniki_users SET status = 1, login_attempts = 0 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
 	return ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 }

@@ -46,7 +46,7 @@ function ciniki_users_searchUsername($ciniki) {
 	//
 	// Query for the users with a username that starts with the 'start_needle' passed from through the API
 	//
-	$strsql = "SELECT id, firstname, lastname, display_name, username FROM users "
+	$strsql = "SELECT id, firstname, lastname, display_name, username FROM ciniki_users "
 		. "WHERE username LIKE '" . ciniki_core_dbQuote($ciniki, $args['start_needle']) . "%' "
 		. "LIMIT " . ciniki_core_dbQuote($ciniki, $args['search_limit']) . " ";
 

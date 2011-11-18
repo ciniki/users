@@ -16,7 +16,7 @@
 #
 # log_date:			The date and time of the request.
 #
-create table user_auth_failures (
+create table ciniki_user_auth_failures (
 	username varchar(100) not null,
 	api_key varchar(32) not null,
 	ip_address varchar(32) not null,
