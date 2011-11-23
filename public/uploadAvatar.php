@@ -16,7 +16,7 @@
 // --------------
 // <rsp stat="ok" id="4" />
 //
-function ciniki_users_uploadAvatar($ciniki) {
+function ciniki_users_uploadAvatar(&$ciniki) {
 	//
 	// Check args
 	//
@@ -117,6 +117,13 @@ function ciniki_users_uploadAvatar($ciniki) {
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
+	}
+	
+	//
+	// Update the session variable, if same user who's logged in
+	//
+	if( $ciniki['session']['user']['id'] == $args['user_id'] ) {
+		$ciniki['session']['user']['avatar_id'] = $image_id;
 	}
 
 	//
