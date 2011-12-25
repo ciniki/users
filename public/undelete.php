@@ -2,23 +2,23 @@
 //
 // Description
 // -----------
-// This function will unlock a user account, resetting the login_attempts to 0, and remote the lock flag.
+// This function will mark the user as deleted
 //
 // Info
 // ----
-// status:			beta
-// 
+// Status: beta
+//
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// user_id: 			The ID of the user to unlock the account for.
+// user_id:				The user to remove the sysadmin privledge from.
 //
 // Returns
 // -------
-// <rsp stat="ok" />
+// <rsp stat='ok' />
 //
-function ciniki_users_unlock($ciniki) {
+function ciniki_users_undelete($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
@@ -35,15 +35,22 @@ function ciniki_users_unlock($ciniki) {
 	// Check access 
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.unlock', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.delete', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteRequestArg.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$strsql = "UPDATE ciniki_users SET status = 1, login_attempts = 0 "
+	//
+	// Update the user information to remove the sysadmin flag
+	//
+	$strsql = "UPDATE ciniki_users SET status = 1 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
-	return ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	return $rc;
 }
 ?>
