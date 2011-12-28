@@ -13,6 +13,7 @@
 # Fields
 # ------
 # id:			The id for the user.
+# uuid:			The Universal Unique ID for this user.
 # avatar_id:	The image ID for the users avatar.
 # email:		The email address for the user, can be used to login.
 # username:		The username for the user.
@@ -76,6 +77,7 @@
 #
 create table ciniki_users (
 	id int not null auto_increment,
+	uuid binary(16) not null,
 	email varchar(255) not null,
 	username varchar(100) not null,
 	password varchar(41) not null,
@@ -96,7 +98,8 @@ create table ciniki_users (
 	last_login datetime not null,
 	last_pwd_change datetime not null,
 	primary key (id),
+	unique index (uuid),
 	unique (email),
 	unique (username)
-) ENGINE='InnoDB', COMMENT='v1.04';
+) ENGINE='InnoDB', COMMENT='v1.05';
 
