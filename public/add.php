@@ -76,8 +76,9 @@ function ciniki_users_add($ciniki) {
 		return $rc;
 	}
 
-	$strsql = "INSERT INTO ciniki_users (date_added, email, username, firstname, lastname, display_name, "
+	$strsql = "INSERT INTO ciniki_users (uuid, date_added, email, username, firstname, lastname, display_name, "
 		. "perms, status, timeout, password, last_updated) VALUES ("
+		. "UUID(), "
 		. "UTC_TIMESTAMP()" 
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['email.address']) . "'"
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['user.username']) . "'"
