@@ -65,6 +65,7 @@ function ciniki_users_changePassword($ciniki) {
 	//
 	// Perform an extra check to make sure only 1 row was found, other return error
 	//
+	error_log($strsql);
 	if( $rc['num_rows'] != 1 ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'122', 'msg'=>'Invalid old password'));
 	}
