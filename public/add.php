@@ -141,7 +141,7 @@ function ciniki_users_add($ciniki) {
 		$subject = "Welcome to Ciniki";
 		$msg = "Your account has been created, you can login at the following address:\n"
 			. "\n"
-			. "https://" . $_SERVER['SERVER_NAME'] . "/cinikii/\n"
+			. "https://" . $_SERVER['SERVER_NAME'] . "/\n"
 			. "Username: " . $ciniki['request']['args']['user.username'] . "\n"
 			. "Password: $password   ** Please change this immediately **\n"
 			. "\n"
