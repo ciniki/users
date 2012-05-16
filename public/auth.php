@@ -49,6 +49,35 @@ function ciniki_users_auth($ciniki) {
 	}
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/sessionStart.php');
-	return ciniki_core_sessionStart($ciniki, $ciniki['request']['args']['username'], $ciniki['request']['args']['password']);
+	$rc = ciniki_core_sessionStart($ciniki, $ciniki['request']['args']['username'], $ciniki['request']['args']['password']);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$auth = $rc['auth'];
+
+	//
+	// If the user is not a sysadmin, check if they only have access to one business
+	//
+	if( ($ciniki['session']['user']['perms'] & 0x01) == 0 ) {
+		$strsql = "SELECT DISTINCT id, name "
+			. "FROM ciniki_business_users, ciniki_businesses "
+			. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
+			. "AND ciniki_business_users.status = 1 "
+			. "AND ciniki_business_users.business_id = ciniki_businesses.id "
+			. "AND ciniki_businesses.status < 60 "	// Allow suspended businesses to be listed, so user can login and update billing/unsuspend
+			. "ORDER BY ciniki_businesses.name "
+			. "LIMIT 2"
+			. "";
+		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['business']) ) {
+			return array('stat'=>'ok', 'auth'=>$auth, 'business'=>$rc['business']['id']);
+		}
+	}	
+
+	return array('stat'=>'ok', 'auth'=>$auth);
 }
 ?>
