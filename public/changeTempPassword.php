@@ -54,6 +54,7 @@ function ciniki_users_changeTempPassword($ciniki) {
 		. "AND temp_password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['temppassword']) . "') "
 		. "AND (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - UNIX_TIMESTAMP(temp_password_date)) < 1800 "
 		. "";
+	error_log($strsql);
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
 	if( $rc['stat'] != 'ok' ) {

@@ -60,9 +60,13 @@ function ciniki_users_add($ciniki) {
 	// Create a random password for the user
 	//
 	$password = '';
+	$temp_password = '';
 	$chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
 	for($i=0;$i<8;$i++) {
 		$password .= substr($chars, rand(0, strlen($chars)-1), 1);
+	}
+	for($i=0;$i<16;$i++) {
+		$temp_password .= substr($chars, rand(0, strlen($chars)-1), 1);
 	}
 
 	//
@@ -77,7 +81,7 @@ function ciniki_users_add($ciniki) {
 	}
 
 	$strsql = "INSERT INTO ciniki_users (uuid, date_added, email, username, firstname, lastname, display_name, "
-		. "perms, status, timeout, password, last_updated) VALUES ("
+		. "perms, status, timeout, password, temp_password, temp_password_date, last_updated) VALUES ("
 		. "UUID(), "
 		. "UTC_TIMESTAMP()" 
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['email.address']) . "'"
@@ -85,7 +89,11 @@ function ciniki_users_add($ciniki) {
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['user.firstname']) . "'"
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['user.lastname']) . "'"
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['user.display_name']) . "'"
-		. ", 0, 1, 0, SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "'), UTC_TIMESTAMP())";
+		. ", 0, 1, 0, "
+		. "SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "'), "
+		. "SHA1('" . ciniki_core_dbQuote($ciniki, $temp_password) . "'), "
+		. "UTC_TIMESTAMP(), "
+		. "UTC_TIMESTAMP())";
 	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
@@ -127,7 +135,7 @@ function ciniki_users_add($ciniki) {
 			return $rc;
 		}
 		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_user_details', 
-			$args['user_id'] . "-$detail_key", 'detail_value', $detail_value);
+			$user_id . "-$detail_key", 'detail_value', $detail_value);
 	}
 
 	//
@@ -139,11 +147,15 @@ function ciniki_users_add($ciniki) {
 		//
 
 		$subject = "Welcome to Ciniki";
-		$msg = "Your account has been created, you can login at the following address:\n"
+		// $msg = "Your account has been created, you can login at the following address:\n"
+		$msg = "Your account has been created, but first you must setup your password.  Please click the following "
+			. "link and choose a new password.  For security purposes, this link will only remain active for 30 minutes. "
+			. "If you are unable to connect in that time, please follow the link and click Send New Activation.\n"
 			. "\n"
-			. "https://" . $_SERVER['SERVER_NAME'] . "/\n"
-			. "Username: " . $ciniki['request']['args']['user.username'] . "\n"
-			. "Password: $password   ** Please change this immediately **\n"
+			// . "https://" . $_SERVER['SERVER_NAME'] . "/\n"
+			. $ciniki['config']['users']['password.forgot.url'] . "?email=" . urlencode($args['email.address']) . "&p=$temp_password\n"
+			//. "Username: " . $ciniki['request']['args']['user.username'] . "\n "
+			//. "Temporary Password: $password (This password expires in 30 minutes)\n"
 			. "\n"
 			. "\n";
 		//
