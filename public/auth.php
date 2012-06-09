@@ -28,7 +28,7 @@
 // --------------
 // <auth token="0123456789abcdef0123456789abcdef" />
 //
-function ciniki_users_auth($ciniki) {
+function ciniki_users_auth(&$ciniki) {
 	if( (!isset($ciniki['request']['args']['username'])
 		|| !isset($ciniki['request']['args']['email']))
 		&& !isset($ciniki['request']['args']['password']) ) {
