@@ -29,6 +29,7 @@ function ciniki_users_add($ciniki) {
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'email.address'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No email specified'), 
 		'user.username'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No username specified'), 
 		'user.firstname'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No username specified'), 
@@ -44,7 +45,7 @@ function ciniki_users_add($ciniki) {
 	// Check access, allow only sysadmins
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.add', 0);
+	$rc = ciniki_users_checkAccess($ciniki, $args['business_id'], 'ciniki.users.add', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -67,6 +68,22 @@ function ciniki_users_add($ciniki) {
 	}
 	for($i=0;$i<16;$i++) {
 		$temp_password .= substr($chars, rand(0, strlen($chars)-1), 1);
+	}
+
+	// 
+	// Check if email address already exist, and just add the user
+	//
+	$strsql = "SELECT id, email "
+		. "FROM ciniki_users "
+		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email.address']) . "' "
+		. "";
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	// If a users was found, add to business
+	if( isset($rc['user']) ) {
+		return array('stat'=>'ok', 'id'=>$rc['user']['id']);
 	}
 
 	//

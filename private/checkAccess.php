@@ -61,6 +61,38 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
 	}
 
 	//
+	// Some methods are allowed for business owners to add users to their business
+	//
+	$business_owner_methods = array(
+		'ciniki.users.add',
+		);
+	if( in_array($method, $business_owner_methods) ) {
+		//
+		// Check if the requesting user is the business owner
+		//
+		$strsql = "SELECT business_id, user_id "
+			. "FROM ciniki_business_users "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+			. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
+			. "AND package = 'ciniki' "
+			. "AND (permission_group = 'owners' ) "
+			. "";
+		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'user');
+		if( $rc['stat'] != 'ok' ) {
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'737', 'msg'=>'Access denied', 'err'=>$rc['err']));
+		}
+
+		//
+		// If the user has permission, return ok
+		//
+		if( isset($rc['user']) && $rc['user']['business_id'] == $business_id && $rc['user']['user_id'] == $ciniki['session']['user']['id'] ) {
+			return array('stat'=>'ok');
+		}
+		
+	}
+
+	//
 	// Some methods should be available to both sys admins, and the user.  Verify
 	// the user requesting the change is the same as the user to be changed.
 	//
