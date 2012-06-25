@@ -46,7 +46,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddChangeLog.php');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
 
 	//
 	// Turn off autocommit
@@ -65,18 +65,18 @@ function ciniki_users_updateDetails(&$ciniki) {
 	$strsql = "";
 	if( isset($ciniki['request']['args']['user.firstname']) && $ciniki['request']['args']['user.firstname'] != '' ) {
 		$strsql .= ", firstname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.firstname']) . "'";
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 
-			'firstname', $args['user.firstname']);
+		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+			2, 'ciniki_users', $args['user_id'], 'firstname', $args['user.firstname']);
 	}
 	if( isset($ciniki['request']['args']['user.lastname']) && $ciniki['request']['args']['user.lastname'] != '' ) {
 		$strsql .= ", lastname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.lastname']) . "'";
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 
-			'lastname', $args['user.lastname']);
+		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+			2, 'ciniki_users', $args['user_id'], 'lastname', $args['user.lastname']);
 	}
 	if( isset($ciniki['request']['args']['user.display_name']) && $ciniki['request']['args']['user.display_name'] != '' ) {
 		$strsql .= ", display_name = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.display_name']) . "'";
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', $args['user_id'] . "-user.firstname", 
-			'display_name', $args['user.display_name']);
+		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+			2, 'ciniki_users', $args['user_id'], 'display_name', $args['user.display_name']);
 	}
 	if( $strsql != '' ) {
 		$strsql = "UPDATE ciniki_users SET last_updated = UTC_TIMESTAMP()" . $strsql 
@@ -110,8 +110,8 @@ function ciniki_users_updateDetails(&$ciniki) {
 				ciniki_core_dbTransactionRollback($ciniki, 'users');
 				return $rc;
 			}
-			ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_user_details', 
-				$args['user_id'] . "-$arg_name", 'detail_value', $arg_value);
+			ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+				2, 'ciniki_user_details', $args['user_id'], $arg_name, $arg_value);
 		}
 	}
 

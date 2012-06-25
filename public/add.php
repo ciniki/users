@@ -55,7 +55,7 @@ function ciniki_users_add($ciniki) {
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddChangeLog.php');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
 
 	//
 	// Create a random password for the user
@@ -121,11 +121,16 @@ function ciniki_users_add($ciniki) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'168', 'msg'=>'Unable to add business'));
 	}
 	$user_id = $rc['insert_id'];
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'email', $args['email.address']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'username', $args['user.username']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'firstname', $args['user.firstname']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'lastname', $args['user.lastname']);
-	ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_users', "$user_id", 'display_name', $args['user.display_name']);
+	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+		1, 'ciniki_users', $user_id, 'email', $args['email.address']);
+	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+		1, 'ciniki_users', $user_id, 'username', $args['user.username']);
+	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+		1, 'ciniki_users', $user_id, 'firstname', $args['user.firstname']);
+	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+		1, 'ciniki_users', $user_id, 'lastname', $args['user.lastname']);
+	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+		1, 'ciniki_users', $user_id, 'display_name', $args['user.display_name']);
 
 	if( $user_id < 1 ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'users');
@@ -151,8 +156,8 @@ function ciniki_users_add($ciniki) {
 			ciniki_core_dbTransactionRollback($ciniki, 'users');
 			return $rc;
 		}
-		ciniki_core_dbAddChangeLog($ciniki, 'users', 0, 'ciniki_user_details', 
-			$user_id . "-$detail_key", 'detail_value', $detail_value);
+		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+			1, 'ciniki_user_details', $user_id, $detail_key, $detail_value);
 	}
 
 	//
