@@ -100,6 +100,8 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
 		'ciniki.users.getDetailHistory',
 		'ciniki.users.getDetails',
 		'ciniki.users.getAvatar',
+		'ciniki.users.get',
+		'ciniki.users.saveAvatar',
 		'ciniki.users.uploadAvatar',
 		'ciniki.users.updateDetails',
 		);

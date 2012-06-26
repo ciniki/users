@@ -59,7 +59,7 @@ function ciniki_users_auth(&$ciniki) {
 	// If the user is not a sysadmin, check if they only have access to one business
 	//
 	if( ($ciniki['session']['user']['perms'] & 0x01) == 0 ) {
-		$strsql = "SELECT DISTINCT id, name "
+		$strsql = "SELECT DISTINCT ciniki_businesses.id, name "
 			. "FROM ciniki_business_users, ciniki_businesses "
 			. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 			. "AND ciniki_business_users.status = 1 "
