@@ -16,7 +16,7 @@
 // --------------
 // <rsp stat="ok" id="4" />
 //
-function ciniki_users_saveAvatar(&$ciniki) {
+function ciniki_users_deleteAvatar(&$ciniki) {
 	//
 	// Check args
 	//
@@ -24,7 +24,6 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No image specified'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -50,7 +49,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) { 
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'440', 'msg'=>'Internal Error', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'453', 'msg'=>'Internal Error', 'err'=>$rc['err']));
 	}   
 
 	//
@@ -81,7 +80,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	//
 	// Update user with new image id
 	//
-	$strsql = "UPDATE ciniki_users SET avatar_id = '" . ciniki_core_dbQuote($ciniki, $args['image_id']) . "' "
+	$strsql = "UPDATE ciniki_users SET avatar_id = 0 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
 	if( $rc['stat'] != 'ok' ) {
@@ -92,7 +91,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	// Update the session variable, if same user who's logged in
 	//
 	if( $ciniki['session']['user']['id'] == $args['user_id'] ) {
-		$ciniki['session']['user']['avatar_id'] = $args['image_id'];
+		$ciniki['session']['user']['avatar_id'] = 0;
 	}
 
 	//
@@ -100,9 +99,9 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'441', 'msg'=>'Unable to upload avatar', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'439', 'msg'=>'Unable to upload avatar', 'err'=>$rc['err']));
 	}
 
-	return array('stat'=>'ok', 'avatar_id'=>$args['image_id']);
+	return array('stat'=>'ok');
 }
 ?>
