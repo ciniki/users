@@ -76,8 +76,7 @@ function ciniki_users_get($ciniki) {
 	//
 	// Get all the businesses the user is a part of
 	//
-	$strsql = "SELECT ciniki_businesses.id, ciniki_businesses.name,  "
-		. "ciniki_business_users.groups, ciniki_business_users.type "
+	$strsql = "SELECT ciniki_businesses.id, ciniki_businesses.name "
 		. "FROM ciniki_business_users, ciniki_businesses "
 		. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
 		. "AND ciniki_business_users.business_id = ciniki_businesses.id "
