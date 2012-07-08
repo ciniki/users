@@ -5,7 +5,7 @@
 #
 # Fields
 # ------
-# username:			The username submitted to moss.users.auth
+# user_id:			The user submitted to moss.users.auth
 #
 # api_key:			The api_key argument, if specified, otherwise blank.
 #
