@@ -35,7 +35,7 @@ function ciniki_users_undelete($ciniki) {
 	// Check access 
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.delete', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.undelete', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

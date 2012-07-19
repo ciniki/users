@@ -35,7 +35,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	// Check access 
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.uploadAvatar', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.saveAvatar', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -100,7 +100,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'441', 'msg'=>'Unable to upload avatar', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'441', 'msg'=>'Unable to save avatar', 'err'=>$rc['err']));
 	}
 
 	return array('stat'=>'ok', 'avatar_id'=>$args['image_id']);

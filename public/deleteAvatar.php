@@ -34,7 +34,7 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 	// Check access 
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.uploadAvatar', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.deleteAvatar', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -99,7 +99,7 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'439', 'msg'=>'Unable to upload avatar', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'439', 'msg'=>'Unable to delete avatar', 'err'=>$rc['err']));
 	}
 
 	return array('stat'=>'ok');
