@@ -2,11 +2,11 @@
 //
 // Description
 // -----------
-// This function will mark the user as deleted
+// This method will undelete a user.  Only sysadmins can call this method.
 //
 // Info
 // ----
-// Status: beta
+// publish:			no
 //
 // Arguments
 // ---------
@@ -56,6 +56,6 @@ function ciniki_users_undelete($ciniki) {
 	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
 		2, 'ciniki_users', $args['user_id'], 'status', '1');
 
-	return $rc;
+	return array('stat'=>'ok');
 }
 ?>

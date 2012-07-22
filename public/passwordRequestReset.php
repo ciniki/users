@@ -5,8 +5,14 @@
 // This method will setup a temporary password for a user, and email 
 // the temporary password to them.
 //
+// Info
+// ----
+// publish: 	yes
+//
 // API Arguments
 // ---------
+// api_key:
+//
 // email:			The email address of the user to reset.
 //
 // Returns

@@ -2,26 +2,29 @@
 //
 // Description
 // -----------
-// This function will add a new user.  You must be a sys admin to 
-// be authorized to add a business.
+// This method will add a new user to the system.  Only sysadmins
+// or business owners have access to add a user.
 //
 // Info
 // ----
-// Status: beta
-// Publish: no
+// publish:			no
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
+// business_id:					The ID of the business to add the user to.  If the requesting
+//								user is not a sysadmin but the owner of the business they
+//								are allowed to add a user.
 // email.address:				The email address of user.
+// user.username:				The usernamed for the new user.
 // user.firstname:				The firstname of user.
-// user.lastname:				The lastname of the user.
-// user.display_name:			The display_name for the user.
+// user.lastname:				(optional) The lastname of the user.
+// user.display_name:			(optional) The display_name for the user.
 //
 // Example Returns
 // ---------------
-// <rsp stat='ok' id='9999' />
+// <rsp stat='ok' id='213' />
 //
 function ciniki_users_add($ciniki) {
 	//

@@ -2,19 +2,21 @@
 //
 // Description
 // -----------
-// Upload a new image to be the users avatar
+// This method will remove the users avatar.
 //
 // Info
 // ----
-// Status: defined
+// publish: 		yes
 //
 // Arguments
 // ---------
-// user_id: 		The user making the request
+// api_key:
+// auth_token:
+// user_id: 		The ID of the user to remove the avatar for.
 // 
 // Example Return
 // --------------
-// <rsp stat="ok" id="4" />
+// <rsp stat="ok" />
 //
 function ciniki_users_deleteAvatar(&$ciniki) {
 	//

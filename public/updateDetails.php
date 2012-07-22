@@ -2,18 +2,20 @@
 //
 // Description
 // -----------
-// This function will take a list of details to be updated within the database.
+// This method will update details for a user.
 //
 // Info
 // ----
-// Status: 			beta
+// publish:			yes
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// user_id:			The ID of the user to update the details for.
-// 
+// user_id:					The ID of the user to update the details for.
+// user.firstname:			(optional) The new firstname for the user.
+// user.lastname:			(optional) The new lastname for the user.
+// user.display_name:		(optional) The new display_name for the user.
 //
 // Returns
 // -------

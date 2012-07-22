@@ -2,12 +2,13 @@
 //
 // Description
 // -----------
-// This function will change the users password, providing their own one is correct.
+// This method will change a users password.  The user must provide their old password
+// as verification to change to a new password.
 //
 // Info
 // ----
-// status:			beta
-// 
+// publish:			yes
+//
 // Arguments
 // ---------
 // api_key:

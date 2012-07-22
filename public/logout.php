@@ -2,13 +2,10 @@
 //
 // Description
 // -----------
-// This function will check a email or username and password, 
-// and create auth_token to return.  And email address or
-// username may be sent.  
+// This method will clear all session data for a user, logging them out of the system.
 //
 // Info
 // ----
-// status:			beta
 // publish:			yes
 // 
 // Arguments

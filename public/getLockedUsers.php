@@ -6,7 +6,7 @@
 //
 // Info
 // ----
-// Status: 		beta
+// publish:			no
 //
 // Arguments
 // ---------

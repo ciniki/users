@@ -2,19 +2,23 @@
 //
 // Description
 // -----------
-// Upload a new image to be the users avatar
+// This method will set the avatar image ID for a user.  The image
+// must already exist in the ciniki images module.
 //
 // Info
 // ----
-// Status: defined
+// publish:			yes
 //
 // Arguments
 // ---------
-// user_id: 		The user making the request
+// api_key:
+// auth_token:
+// user_id: 		The ID of the user to update the avatar image ID.
+// image_id:		The ID of the image from the ciniki images module to set as the users avatar.
 // 
 // Example Return
 // --------------
-// <rsp stat="ok" id="4" />
+// <rsp stat="ok" avatar_id="4" />
 //
 function ciniki_users_saveAvatar(&$ciniki) {
 	//

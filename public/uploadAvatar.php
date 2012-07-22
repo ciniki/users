@@ -2,19 +2,21 @@
 //
 // Description
 // -----------
-// Upload a new image to be the users avatar
+// This method will accept an uploaded file and set as the users avatar image.
 //
 // Info
 // ----
-// Status: defined
+// publish:			yes
 //
 // Arguments
 // ---------
-// user_id: 		The user making the request
+// api_key:
+// auth_token:
+// user_id: 		The ID of the user to add the avatar to.
 // 
 // Example Return
 // --------------
-// <rsp stat="ok" id="4" />
+// <rsp stat="ok" avatar_id="4" />
 //
 function ciniki_users_uploadAvatar(&$ciniki) {
 	//

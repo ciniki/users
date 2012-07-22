@@ -2,11 +2,11 @@
 //
 // Description
 // -----------
-// This function will mark the user as deleted
+// This method will mark the user as deleted.
 //
 // Info
 // ----
-// Status: beta
+// publish: 			no
 //
 // Arguments
 // ---------

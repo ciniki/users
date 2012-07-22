@@ -3,11 +3,11 @@
 // Description
 // -----------
 // This function will get all users who have elevated priviledges.  They
-// can be sysadmins, business owners
+// can be sysadmins or business owners.
 //
 // Info
 // ----
-// Status: beta
+// publish:			no
 //
 // Arguments
 // ---------

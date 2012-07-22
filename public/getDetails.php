@@ -2,12 +2,12 @@
 //
 // Description
 // -----------
-// This function will get detail values for a user.  These values
-// are used many places in the API and Manage.
+// This method will get detail values for a user.  These values
+// are used in the UI.
 //
 // Info
 // ----
-// Status: 			beta
+// publish:			yes
 //
 // Arguments
 // ---------

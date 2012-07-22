@@ -2,23 +2,28 @@
 //
 // Description
 // -----------
-// This function will take a list of details to be updated within the database.
+// This method will search the existing users for an email.
 //
 // Info
 // ----
-// Status: beta
+// publish:			no
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// start_needle:				Look for a firstname, lastname or email that starts with start_needle.
-// limit:						The maximum number of entries to return.
-// 
+// start_needle:	The string to search for a matching email.
+// search_limit:	(optional) The maximum number of entries to return. 
+//					If not specified, the default limit is 11.
 //
 // Returns
 // -------
-// <rsp stat='ok' />
+// <rsp stat="ok">
+//		<users>
+//			<user id="3421" firstname="Andrew" lastname="Rivett" display_name="Andrew R" email="andrew@ciniki.ca" />
+//			...
+//		</users>
+// </rsp>
 //
 function ciniki_users_searchEmail($ciniki) {
 	//

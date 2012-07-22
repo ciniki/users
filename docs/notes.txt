@@ -1,0 +1,8 @@
+**Permissions**
+
+The user information can be updated by a business if the user 
+is not connected with any other businesses via the 
+ciniki_business_users table.  
+
+A user can be removed from a business by removing them from the
+ciniki_business_users table for that business.

@@ -2,15 +2,17 @@
 //
 // Description
 // -----------
-// This function will return the image binary data in jpg format.
+// This method will return the binary image data for a users avatar.
 //
 // Info
 // ----
-// Status: defined
+// publish:			yes
 //
 // Arguments
 // ---------
-// image_id:			The ID if the image requested.
+// api_key:
+// auth_token:
+// user_id:				The ID of the user to get the avatar for.
 // version:				The version of the image (regular, thumbnail)
 //
 //						*note* the thumbnail is not referring to the size, but to a 

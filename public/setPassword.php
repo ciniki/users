@@ -2,17 +2,19 @@
 //
 // Description
 // -----------
-// This function is only for sysadmins to be able to set a users password.
+// This method will set a users password.  Currently only accessible 
+// to sysadmins.
 //
 // Info
 // ----
-// status:			beta
-// 
+// publish:			no
+//
 // Arguments
 // ---------
 // api_key:
 // auth_token:
 // user_id:			The user to have the password set.
+// password:		The new password to set for the user.
 //
 // Returns
 // -------

@@ -2,11 +2,11 @@
 //
 // Description
 // -----------
-// This function will lock a user account, resetting the login_attempts to 0, and remote the lock flag.
+// This method will lock a user account, resetting the login_attempts to 0.
 //
 // Info
 // ----
-// status:			beta
+// publish:			no
 // 
 // Arguments
 // ---------

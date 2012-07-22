@@ -2,11 +2,11 @@
 //
 // Description
 // -----------
-// This function get the auth logs.
+// This method will return the logs for successful authentications.
 //
 // Info
 // ----
-// Status: beta
+// publish: 		no
 //
 // Arguments
 // ---------
@@ -16,9 +16,11 @@
 //
 // Returns
 // -------
-//	<logs timestamp=''>
-//		<log id='' date="2011/02/03 00:03:00" value="Value field set to" user_id="1" display_name="" />
-//	</logs>
+// <rsp stat="ok>
+//		<logs timestamp=''>
+//			<log id='' date="2011/02/03 00:03:00" value="Value field set to" user_id="1" display_name="" />
+//		</logs>
+// </rsp>
 //
 function ciniki_users_monitorAuthLogs($ciniki) {
 	//

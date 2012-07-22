@@ -2,11 +2,13 @@
 //
 // Description
 // -----------
+// This method adds the sysadmin priviledge to an existing user.  This 
+// method is only accessible to sysadmins.
 //
 // Info
 // ----
-// Status: beta
-//
+// publish: 		no
+// 
 // Arguments
 // ---------
 // api_key:

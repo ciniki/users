@@ -8,7 +8,7 @@
 //
 // Info
 // ----
-// Status: 		beta
+// publish:			yes
 //
 // Arguments
 // ---------

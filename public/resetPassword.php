@@ -8,7 +8,7 @@
 //
 // Info
 // ----
-// status:			alpha
+// publish:			no
 // 
 // Arguments
 // ---------

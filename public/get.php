@@ -2,19 +2,17 @@
 //
 // Description
 // -----------
-// This function will get detail values for a user.  These values
-// are used many places in the API and Manage.
+// This method will get the details for a user.
 //
 // Info
 // ----
-// Status: 			beta
+// publish:			yes
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
 // user_id:				The ID of the user to get the details for.
-// keys:				The comma delimited list of keys to lookup values for.
 //
 // Returns
 // -------

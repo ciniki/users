@@ -2,19 +2,17 @@
 //
 // Description
 // -----------
-// This function will check a email or username and password, 
-// and create auth_token to return.  And email address or
-// username may be sent.  
+// This method will authenticate a user and return an auth_token
+// to be used for future API calls.  Either a username or 
+// email address can be used to authenticate.
 //
 // Info
 // ----
-// Status:			beta
-// Publish:			yes
-// 
+// publish:			yes
+//
 // Arguments
 // ---------
 // api_key:
-// auth_token:
 // email:			The email address to be authenticated.  The email
 //					address or username must be sent.
 //
@@ -26,7 +24,9 @@
 //
 // Example Return
 // --------------
-// <auth token="0123456789abcdef0123456789abcdef" />
+// <rsp stat="ok" business="3">
+//		<auth token="0123456789abcdef0123456789abcdef" id="42" perms="1" avatar_id="192" />
+// </rsp>
 //
 function ciniki_users_auth(&$ciniki) {
 	if( (!isset($ciniki['request']['args']['username'])

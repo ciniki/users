@@ -2,12 +2,11 @@
 //
 // Description
 // -----------
-// This function get the auth failure logs.
+// This method will get the user authentication failures.
 //
 // Info
 // ----
-// Status: beta
-// Publish: no
+// publish: 		no
 //
 // Arguments
 // ---------
@@ -17,9 +16,11 @@
 //
 // Example Return
 // --------------
-//	<logs timestamp=''>
-//		<log id='4928' date="2011/02/03 00:03:00" value="Value field set to" user_id="1" display_name="" />
-//	</logs>
+// <rsp stat="ok">
+// 		<logs timestamp=''>
+//			<log id='4928' date="2011/02/03 00:03:00" value="Value field set to" user_id="1" display_name="" />
+// 		</logs>
+// </rsp>
 //
 function ciniki_users_monitorAuthFailures($ciniki) {
 	//

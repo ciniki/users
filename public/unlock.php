@@ -2,12 +2,15 @@
 //
 // Description
 // -----------
-// This function will unlock a user account, resetting the login_attempts to 0, and remote the lock flag.
+// This method will unlock a user account, resetting the login_attempts to 0, 
+// and remote the lock flag.
+//
+// Only sysadmins are able to unlock a user.
 //
 // Info
 // ----
-// status:			beta
-// 
+// publish:			no
+//
 // Arguments
 // ---------
 // api_key:

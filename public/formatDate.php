@@ -2,19 +2,21 @@
 //
 // Description
 // -----------
-// This function will return the list of available colours for this business.
+// This method will return a date formatted to the users date preferences.
 //
 // Info
 // ----
-// Status: 			started
+// publish: 		no
 //
 // Arguments
 // ---------
-// user_id: 		The user making the request
-// date:			The date string to format
+// api_key:
+// auth_token:
+// date:			The date string to format.
 // 
 // Returns
 // -------
+// <rsp stat="ok" date="July 21, 2012" />
 //
 function ciniki_users_formatDate($ciniki) {
     //  

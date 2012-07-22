@@ -2,12 +2,18 @@
 //
 // Description
 // -----------
-// This function will change the users password, providing their own one is correct.
+// This method will set a users password.  The temporary password provided by the 
+// ciniki.users.passwordRequestReset must be provided to set a new password.  
+//
+// Info
+// ----
+// publish:			yes
 //
 // Arguments
 // ---------
 // api_key:
-// auth_token:
+//
+// email:			The email address of the user 
 //
 // temppassword: 	The temporary password for the user.  
 //

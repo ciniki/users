@@ -2,11 +2,11 @@
 //
 // Description
 // -----------
-// This function will retrieve only the users who are marked as sys admins.
+// This method will retrieve only the users who are marked as sys admins.
 //
 // Info
 // ----
-// Status: beta
+// publish:			no
 //
 // Arguments
 // ---------

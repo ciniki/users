@@ -2,17 +2,17 @@
 //
 // Description
 // -----------
-// This function will remove the sysadmin flag from a user.
+// This method will set the sysadmin flag for a user.
 //
 // Info
 // ----
-// Status: beta
+// publish:			no
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// user_id:				The user to remove the sysadmin privledge from.
+// user_id:				The ID of the user to remove the sysadmin privledge from.
 //
 // Returns
 // -------
