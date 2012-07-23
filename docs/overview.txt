@@ -1,0 +1,3 @@
+The users module stores the users who have access to the API
+and businesses in the system.
+
