@@ -56,6 +56,6 @@ function ciniki_users_searchUsername($ciniki) {
 		. "LIMIT " . ciniki_core_dbQuote($ciniki, $args['search_limit']) . " ";
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));
+	return ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));
 }
 ?>

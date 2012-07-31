@@ -56,7 +56,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -67,27 +67,25 @@ function ciniki_users_updateDetails(&$ciniki) {
 	$strsql = "";
 	if( isset($ciniki['request']['args']['user.firstname']) && $ciniki['request']['args']['user.firstname'] != '' ) {
 		$strsql .= ", firstname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.firstname']) . "'";
-		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
-			2, 'ciniki_users', $args['user_id'], 'firstname', $args['user.firstname']);
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'firstname', $args['user.firstname']);
 	}
 	if( isset($ciniki['request']['args']['user.lastname']) && $ciniki['request']['args']['user.lastname'] != '' ) {
 		$strsql .= ", lastname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.lastname']) . "'";
-		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
-			2, 'ciniki_users', $args['user_id'], 'lastname', $args['user.lastname']);
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'lastname', $args['user.lastname']);
 	}
 	if( isset($ciniki['request']['args']['user.display_name']) && $ciniki['request']['args']['user.display_name'] != '' ) {
 		$strsql .= ", display_name = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.display_name']) . "'";
-		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
-			2, 'ciniki_users', $args['user_id'], 'display_name', $args['user.display_name']);
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'display_name', $args['user.display_name']);
 	}
-	if( $strsql != '' ) {
-		$strsql = "UPDATE ciniki_users SET last_updated = UTC_TIMESTAMP()" . $strsql 
-			. " WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
-		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
-		if( $rc['stat'] != 'ok' ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'users');
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'333', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
-		}
+	//
+	// Always update at least the last_updated field so it will be transfered with sync
+	//
+	$strsql = "UPDATE ciniki_users SET last_updated = UTC_TIMESTAMP()" . $strsql 
+		. " WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
+	if( $rc['stat'] != 'ok' ) {
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'333', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
 	}
 
 	//
@@ -107,13 +105,12 @@ function ciniki_users_updateDetails(&$ciniki) {
 				. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $arg_value) . "' "
 				. ", last_updated = UTC_TIMESTAMP() "
 				. "";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'users');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
 			if( $rc['stat'] != 'ok' ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'users');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 				return $rc;
 			}
-			ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
-				2, 'ciniki_user_details', $args['user_id'], $arg_name, $arg_value);
+			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_user_details', $args['user_id'], $arg_name, $arg_value);
 		}
 	}
 
@@ -121,9 +118,9 @@ function ciniki_users_updateDetails(&$ciniki) {
 	// Update session values
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryHash.php');
-	$rc = ciniki_core_dbDetailsQueryHash($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'settings', 'users');
+	$rc = ciniki_core_dbDetailsQueryHash($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'settings', 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return $rc;
 	}
 	if( isset($rc['details']['settings']) && $rc['details']['settings'] != null ) {
@@ -133,7 +130,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	//
 	// Commit the database changes
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'334', 'msg'=>'Unable to update user detail', 'err'=>$rc['err']));
 	}

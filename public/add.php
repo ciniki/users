@@ -80,7 +80,7 @@ function ciniki_users_add($ciniki) {
 		. "FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email.address']) . "' "
 		. "";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -95,7 +95,7 @@ function ciniki_users_add($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -114,29 +114,29 @@ function ciniki_users_add($ciniki) {
 		. "SHA1('" . ciniki_core_dbQuote($ciniki, $temp_password) . "'), "
 		. "UTC_TIMESTAMP(), "
 		. "UTC_TIMESTAMP())";
-	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'332', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
 	}
 	if( !isset($rc['insert_id']) || $rc['insert_id'] < 1 ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'168', 'msg'=>'Unable to add business'));
 	}
 	$user_id = $rc['insert_id'];
-	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+	ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
 		1, 'ciniki_users', $user_id, 'email', $args['email.address']);
-	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+	ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
 		1, 'ciniki_users', $user_id, 'username', $args['user.username']);
-	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+	ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
 		1, 'ciniki_users', $user_id, 'firstname', $args['user.firstname']);
-	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+	ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
 		1, 'ciniki_users', $user_id, 'lastname', $args['user.lastname']);
-	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+	ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
 		1, 'ciniki_users', $user_id, 'display_name', $args['user.display_name']);
 
 	if( $user_id < 1 ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'170', 'msg'=>'Unable to add user'));
 	}
 
@@ -154,12 +154,12 @@ function ciniki_users_add($ciniki) {
 			. "'" . ciniki_core_dbQuote($ciniki, $detail_value) . "', "
 			. "UTC_TIMESTAMP(), UTC_TIMESTAMP()); "
 			. "";
-		$rc = ciniki_core_dbInsert($ciniki, $strsql, 'users');
+		$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
 		if( $rc['stat'] != 'ok' ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'users');
+			ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 			return $rc;
 		}
-		ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
 			1, 'ciniki_user_details', $user_id, $detail_key, $detail_value);
 	}
 
@@ -197,7 +197,11 @@ function ciniki_users_add($ciniki) {
 		mail($args['email.address'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
 	}
 
-	ciniki_core_dbTransactionCommit($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
+	if( $rc['stat'] != 'ok' ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'365', 'msg'=>'Unable to update password.'));
+	}
+
 	return array('stat'=>'ok', 'id'=>$user_id);
 }
 ?>

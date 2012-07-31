@@ -51,7 +51,7 @@ function ciniki_users_formatDate($ciniki) {
     require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
     require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$strsql = "SELECT DATE_FORMAT(FROM_UNIXTIME('" . strtotime($args['date']) . "'), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as formatted_date ";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'core', 'date');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.core', 'date');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

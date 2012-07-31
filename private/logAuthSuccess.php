@@ -35,6 +35,6 @@ function ciniki_users_logAuthSuccess($ciniki) {
 		. "'" . ciniki_core_dbQuote($ciniki, $ciniki['request']['api_key']) . "', "
 		. "'" . ciniki_core_dbQuote($ciniki, $ip_address) . "', "
 		. "UTC_TIMESTAMP() )";
-	return ciniki_core_dbInsert($ciniki, $strsql, 'users');	
+	return ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');	
 }
 ?>

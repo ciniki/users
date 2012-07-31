@@ -23,6 +23,6 @@ function ciniki_users_mergeDisplayNames($ciniki, $hash) {
 	$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users "
 		. "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, $ids) . ") "
 		. "ORDER BY lastname, firstname ";
-	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', $container_name, 'user', array('stat'=>'ok', $container_name=>array()));
+	return ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.users', $container_name, 'user', array('stat'=>'ok', $container_name=>array()));
 }
 ?>

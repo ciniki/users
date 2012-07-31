@@ -39,7 +39,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 		. "UTC_TIMESTAMP(), "
 		. "'" . ciniki_core_dbQuote($ciniki, $err_code) . "')";
 	
-	ciniki_core_dbInsert($ciniki, $strsql, 'users');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
 
 	//
 	// Update the login attempts if the username is valid.
@@ -58,7 +58,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $username) . "' ";
 		}
 
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 		if( $rc['stat'] == 'ok' && isset($rc['user'])) {
 			//
 			// Check if account should be locked
@@ -67,7 +67,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 				$strsql = "UPDATE ciniki_users SET status = 10 "
 					. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $rc['user']['id']) . "' "
 					. "AND status < 10";
-				ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+				ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 				print "ciniki_core_alertGenerate\n";
 				ciniki_core_alertGenerate($ciniki, 
 					array('alert'=>'2', 'msg'=>"Account '$username' locked"), null);
@@ -76,7 +76,7 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 			$strsql = "UPDATE ciniki_users SET login_attempts = login_attempts + 1 "
 				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $username) . "' "
 				. "AND login_attempts < 100 ";
-			ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+			ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 		}
 	}
 

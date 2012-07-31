@@ -49,7 +49,7 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) { 
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'453', 'msg'=>'Internal Error', 'err'=>$rc['err']));
 	}   
@@ -63,9 +63,9 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 	// Remove existing avatar
 	//
 	$strsql = "SELECT avatar_id FROM ciniki_users WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return $rc;
 	}
 	$avatar_id = $rc['user']['avatar_id'];
@@ -74,7 +74,7 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/images/private/removeImage.php');
 		$rc = ciniki_images_removeImage($ciniki, 0, $args['user_id'], $avatar_id);
 		if( $rc['stat'] != 'ok' ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'users');
+			ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 			return $rc;
 		}
 	}
@@ -82,9 +82,9 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 	//
 	// Update user with new image id
 	//
-	$strsql = "UPDATE ciniki_users SET avatar_id = 0 "
+	$strsql = "UPDATE ciniki_users SET avatar_id = 0, last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -99,7 +99,7 @@ function ciniki_users_deleteAvatar(&$ciniki) {
 	//
 	// Commit the transaction
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'439', 'msg'=>'Unable to delete avatar', 'err'=>$rc['err']));
 	}

@@ -25,7 +25,7 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 		. "FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
 		. "";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' || !isset($rc['user']) ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'248', 'msg'=>'Unable to find email information', 'err'=>$rc['err']));
 	}

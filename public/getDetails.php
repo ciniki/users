@@ -59,7 +59,7 @@ function ciniki_users_getDetails($ciniki) {
 		if( $detail_key == 'user' ) {
 			$strsql = "SELECT firstname, lastname, display_name FROM ciniki_users "
 				. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'details', 'user');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.details', 'user');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -67,8 +67,7 @@ function ciniki_users_getDetails($ciniki) {
 			$rsp['details']['user.lastname'] = $rc['user']['lastname'];
 			$rsp['details']['user.display_name'] = $rc['user']['display_name'];
 		} elseif( in_array($detail_key, array('settings')) ) {
-			$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 
-				'user_id', $args['user_id'], 'users', 'details', $detail_key);
+			$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 'user_id', $args['user_id'], 'ciniki.users', 'details', $detail_key);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

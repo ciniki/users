@@ -48,7 +48,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 		. "WHERE (perms & 0x01) = 0x01 "
 		. "AND id != '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbCount.php');
-	$rc = ciniki_core_dbCount($ciniki, $strsql, 'users', 'count');
+	$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.users', 'count');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -62,7 +62,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	$strsql = "UPDATE ciniki_users SET perms = perms ^ 0x01 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

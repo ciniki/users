@@ -53,7 +53,7 @@ function ciniki_users_setPassword($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -64,14 +64,14 @@ function ciniki_users_setPassword($ciniki) {
 	$strsql = "UPDATE ciniki_users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['password']) . "') "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'432', 'msg'=>'Unable to set password.'));
 	}
 
 	if( $rc['num_affected_rows'] < 1 ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'433', 'msg'=>'Unable to set password.'));
 	}
 
@@ -82,7 +82,7 @@ function ciniki_users_setPassword($ciniki) {
 	//
 	// Commit the changes and return
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'434', 'msg'=>'Unable to set password.'));
 	}

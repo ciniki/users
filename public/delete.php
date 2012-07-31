@@ -46,15 +46,14 @@ function ciniki_users_delete($ciniki) {
 	$strsql = "UPDATE ciniki_users SET status = 11 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	// Log delete
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
-	ciniki_core_dbAddModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 
-		2, 'ciniki_users', $args['user_id'], 'status', '11');
+	ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'status', '11');
 
 	return $rc;
 }

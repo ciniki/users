@@ -60,7 +60,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	$strsql = "SELECT id, username, email, firstname, lastname, display_name FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'456', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
 	}
@@ -75,7 +75,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -88,14 +88,14 @@ function ciniki_users_passwordRequestReset($ciniki) {
 		. "last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user['id']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'458', 'msg'=>'Unable to reset password.'));
 	}
 
 	if( $rc['num_affected_rows'] < 1 ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'459', 'msg'=>'Unable to reset password.'));
 	}
 
@@ -128,7 +128,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Commit the changes and return
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'460', 'msg'=>'Unable to reset password.'));
 	}

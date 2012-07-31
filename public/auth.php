@@ -69,7 +69,7 @@ function ciniki_users_auth(&$ciniki) {
 			. "LIMIT 2"
 			. "";
 		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

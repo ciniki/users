@@ -54,13 +54,13 @@ function ciniki_users_getDetailHistory($ciniki) {
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbGetModuleHistory.php');
 	if( $args['field'] == 'user.firstname' ) {
-		return ciniki_core_dbGetModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'firstname');
+		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'firstname');
 	} elseif( $args['field'] == 'user.lastname' ) {
-		return ciniki_core_dbGetModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'lastname');
+		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'lastname');
 	} elseif( $args['field'] == 'user.display_name' ) {
-		return ciniki_core_dbGetModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'display_name');
+		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'display_name');
 	}
 
-	return ciniki_core_dbGetModuleHistory($ciniki, 'users', 'ciniki_user_history', 0, 'ciniki_user_details', $args['user_id'], $args['field']);
+	return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_user_details', $args['user_id'], $args['field']);
 }
 ?>

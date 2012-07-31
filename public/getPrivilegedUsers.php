@@ -36,6 +36,6 @@ function ciniki_users_getPrivilegedUsers($ciniki) {
 	$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users "
 		. "WHERE perms <> 0 ORDER BY lastname, firstname ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));
+	return ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));
 }
 ?>

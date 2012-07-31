@@ -36,6 +36,6 @@ function ciniki_users_getUsers($ciniki) {
 	$strsql = "SELECT id, email, firstname, lastname, display_name, status, perms FROM ciniki_users "
 		. "ORDER BY lastname, firstname ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	return ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));
+	return ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.users', 'users', 'user', array('stat'=>'ok', 'users'=>array()));
 }
 ?>

@@ -62,7 +62,7 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) { 
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'414', 'msg'=>'Internal Error', 'err'=>$rc['err']));
 	}   
@@ -76,9 +76,9 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 	// Remove existing avatar
 	//
 	$strsql = "SELECT avatar_id FROM ciniki_users WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'user');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return $rc;
 	}
 	$avatar_id = $rc['user']['avatar_id'];
@@ -87,7 +87,7 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/images/private/removeImage.php');
 		$rc = ciniki_images_removeImage($ciniki, 0, $args['user_id'], $avatar_id);
 		if( $rc['stat'] != 'ok' ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'users');
+			ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 			return $rc;
 		}
 	}
@@ -100,13 +100,13 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 	$rc = ciniki_images_insertFromUpload($ciniki, 0, $ciniki['session']['user']['id'], 
 		$_FILES['uploadfile'], 1, '', '', 'no');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'415', 'msg'=>'Internal Error', 'err'=>$rc['err']));
 	}
 
 	$image_id = 0;
 	if( !isset($rc['id']) ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'users');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'416', 'msg'=>'Invalid file type'));
 	}
 	$image_id = $rc['id'];
@@ -115,8 +115,9 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 	// Update user with new image id
 	//
 	$strsql = "UPDATE ciniki_users SET avatar_id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
+		. ", last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'users');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -131,7 +132,7 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 	//
 	// Commit the transaction
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'users');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'419', 'msg'=>'Unable to upload avatar', 'err'=>$rc['err']));
 	}

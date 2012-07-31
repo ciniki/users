@@ -37,7 +37,7 @@ function ciniki_users_monitorAuthFailures($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 
 	$strsql = "SELECT UNIX_TIMESTAMP(UTC_TIMESTAMP()) as cur";
-	$ts = ciniki_core_dbHashQuery($ciniki, $strsql, 'users', 'timestamp');
+	$ts = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'timestamp');
 	if( $ts['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'244', 'msg'=>'No timestamp available'));
 	}
@@ -73,7 +73,7 @@ function ciniki_users_monitorAuthFailures($ciniki) {
 		. "FROM ciniki_user_auth_failures "
 		. "WHERE UNIX_TIMESTAMP(ciniki_user_auth_failures.log_date) > '" . ciniki_core_dbQuote($ciniki, $req_last_timestamp) . "' "
 		. "ORDER BY TS DESC ";
-	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'users', 'logs', 'log', array('stat'=>'ok', 'logs'=>array()));
+	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.users', 'logs', 'log', array('stat'=>'ok', 'logs'=>array()));
 	if( $rsp['stat'] == 'ok' ) {
 		$rsp['timestamp'] = $ts['timestamp']['cur'];
 	}
