@@ -26,8 +26,8 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbQuote.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/prepareArgs.php');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'email'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
 		));
@@ -39,7 +39,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/users/private/checkAccess.php');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.passwordRequestReset', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -59,7 +59,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	$strsql = "SELECT id, username, email, firstname, lastname, display_name FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' ";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'456', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
@@ -72,9 +72,9 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Turn off autocommit
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionStart.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -87,7 +87,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 		. "temp_password_date = UTC_TIMESTAMP(), "
 		. "last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user['id']) . "' ";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbUpdate.php');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
@@ -107,22 +107,22 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	// Email the user with the new password
 	//
 	if( $user['email'] != '' 
-		&& isset($ciniki['config']['core']['system.email']) && $ciniki['config']['core']['system.email'] != '' ) {
+		&& isset($ciniki['config']['ciniki.core']['system.email']) && $ciniki['config']['ciniki.core']['system.email'] != '' ) {
 		$subject = "Password reset";
 		$msg = "Hi " . $user['firstname'] . ", \n\n"
 			. "You have requested a new password.  "
 			. "Please click the following link to reset your password.  This link will only be valid for 30 minutes.\n"
 			. "\n"
-			. $ciniki['config']['users']['password.forgot.url'] . "?passwordreset=$password\n"
+			. $ciniki['config']['ciniki.users']['password.forgot.url'] . "?passwordreset=$password\n"
 			. "\n"
 			. "\n";
 		//
 		// The from address can be set in the config file.
 		//
-		$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
 				'X-Mailer: PHP/' . phpversion();
-		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 	}
 
 	//
@@ -136,7 +136,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Email sysadmins to let them know of a password reset request
 	//
-	if( isset($ciniki['config']['users']['password.forgot.notify']) && $ciniki['config']['users']['password.forgot.notify'] != '' ) {
+	if( isset($ciniki['config']['ciniki.users']['password.forgot.notify']) && $ciniki['config']['ciniki.users']['password.forgot.notify'] != '' ) {
 		date_default_timezone_set('America/Eastern');
 		$subject = $user['display_name'] . " forgot password";
 		$msg = "Forgot password request: \n\n"
@@ -145,7 +145,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 			. "email: " . $user['email'] . "\n"
 			. "time: " . date("D M j, Y H:i e") . "\n"
 			. "" . "\n";
-		mail($ciniki['config']['users']['password.forgot.notify'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+		mail($ciniki['config']['ciniki.users']['password.forgot.notify'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 	}
 
 	return array('stat'=>'ok');

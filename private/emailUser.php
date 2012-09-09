@@ -19,8 +19,8 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	//
 	// Query for user information
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbQuote.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$strsql = "SELECT id, firstname, lastname, email "
 		. "FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
@@ -34,10 +34,10 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	//  
 	// The from address can be set in the config file.
 	//  
-	$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-		'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+	$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+		'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
 		'X-Mailer: PHP/' . phpversion();
-	mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+	mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 
 	return array('stat'=>'ok');
 }

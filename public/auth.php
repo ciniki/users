@@ -42,13 +42,13 @@ function ciniki_users_auth(&$ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.auth', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/sessionStart.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionStart');
 	$rc = ciniki_core_sessionStart($ciniki, $ciniki['request']['args']['username'], $ciniki['request']['args']['password']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -82,7 +82,7 @@ function ciniki_users_auth(&$ciniki) {
 			. "ORDER BY ciniki_businesses.name "
 			. "LIMIT 2"
 			. "";
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

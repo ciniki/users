@@ -30,7 +30,7 @@ function ciniki_users_add($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'email.address'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No email specified'), 
@@ -47,7 +47,7 @@ function ciniki_users_add($ciniki) {
 	//
 	// Check access, allow only sysadmins
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, $args['business_id'], 'ciniki.users.add', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -56,9 +56,10 @@ function ciniki_users_add($ciniki) {
 	//
 	// Check if name or tagline was specified
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
 
 	//
 	// Create a random password for the user
@@ -92,9 +93,9 @@ function ciniki_users_add($ciniki) {
 	//
 	// Turn off autocommit
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -178,7 +179,7 @@ function ciniki_users_add($ciniki) {
 			. "If you are unable to connect in that time, please follow the link and click Send New Activation.\n"
 			. "\n"
 			// . "https://" . $_SERVER['SERVER_NAME'] . "/\n"
-			. $ciniki['config']['users']['password.forgot.url'] . "?email=" . urlencode($args['email.address']) . "&p=$temp_password\n"
+			. $ciniki['config']['ciniki.users']['password.forgot.url'] . "?email=" . urlencode($args['email.address']) . "&p=$temp_password\n"
 			//. "Username: " . $ciniki['request']['args']['user.username'] . "\n "
 			//. "Temporary Password: $password (This password expires in 30 minutes)\n"
 			. "\n"
@@ -191,10 +192,10 @@ function ciniki_users_add($ciniki) {
 		//
 		// The from address can be set in the config file.
 		//
-		$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
 				'X-Mailer: PHP/' . phpversion();
-		mail($args['email.address'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+		mail($args['email.address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 	}
 
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
