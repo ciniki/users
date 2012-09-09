@@ -92,6 +92,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	// Allowed user detail keys 
 	//
 	$allowed_keys = array(
+		'ui.history.date.display',
 		'settings.date_format',
 		'settings.datetime_format',
 		);

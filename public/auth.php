@@ -56,6 +56,20 @@ function ciniki_users_auth(&$ciniki) {
 	$auth = $rc['auth'];
 
 	//
+	// Get any UI settings for the user
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
+	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'ciniki.users', 'settings', 'ui');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( isset($rc['settings']) ) {
+		$auth['settings'] = $rc['settings'];
+	} else {
+		$auth['settings'] = array();
+	}
+
+	//
 	// If the user is not a sysadmin, check if they only have access to one business
 	//
 	if( ($ciniki['session']['user']['perms'] & 0x01) == 0 ) {
@@ -77,6 +91,8 @@ function ciniki_users_auth(&$ciniki) {
 			return array('stat'=>'ok', 'auth'=>$auth, 'business'=>$rc['business']['id']);
 		}
 	}	
+
+
 
 	return array('stat'=>'ok', 'auth'=>$auth);
 }
