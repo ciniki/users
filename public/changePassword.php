@@ -58,7 +58,7 @@ function ciniki_users_changePassword($ciniki) {
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 		. "AND password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['oldpassword']) . "') ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
-	$rc = ciniki_core_dbHashQuery(&$ciniki, $strsql, 'ciniki.users', 'user');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
