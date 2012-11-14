@@ -70,7 +70,7 @@ function ciniki_users_monitorAuthLogs($ciniki) {
 	$strsql = "SELECT DATE_FORMAT(log_date, '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as log_date"
 		. ", CAST((UNIX_TIMESTAMP(UTC_TIMESTAMP())-UNIX_TIMESTAMP(log_date)) as DECIMAL(12,0)) as age "
 		. ", UNIX_TIMESTAMP(log_date) as TS"
-		. ", ciniki_user_auth_log.user_id, ciniki_users.display_name, api_key, ip_address "
+		. ", ciniki_user_auth_log.user_id, ciniki_users.display_name, api_key, ip_address, session_key "
 		. "FROM ciniki_user_auth_log, ciniki_users  "
 		. "WHERE UNIX_TIMESTAMP(ciniki_user_auth_log.log_date) > '" . ciniki_core_dbQuote($ciniki, $req_last_timestamp) . "' "
 		. "AND ciniki_user_auth_log.user_id = ciniki_users.id "
