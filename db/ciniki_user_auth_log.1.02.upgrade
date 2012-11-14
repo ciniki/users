@@ -1,0 +1,5 @@
+#
+# This file will upgrade the database table ciniki_user_auth_log to version 1.02.
+#
+ALTER TABLE ciniki_user_auth_log ADD COLUMN session_key varchar(50) not null after log_date;
+ALTER TABLE ciniki_user_auth_log COMMENT='v1.02';

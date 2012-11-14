@@ -18,5 +18,6 @@ create table ciniki_user_auth_log (
 	api_key varchar(32) not null,
 	ip_address varchar(32) not null,
 	log_date datetime not null,
+	session_key varchar(50) not null,
 	primary key (user_id, api_key, ip_address, log_date)
-) ENGINE='InnoDB', COMMENT='v1.01';
+) ENGINE='InnoDB', COMMENT='v1.02';

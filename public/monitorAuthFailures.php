@@ -26,15 +26,15 @@ function ciniki_users_monitorAuthFailures($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.monitorAuthFailures', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteRequestArg.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteRequestArg');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 
 	$strsql = "SELECT UNIX_TIMESTAMP(UTC_TIMESTAMP()) as cur";
 	$ts = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'timestamp');
@@ -61,7 +61,7 @@ function ciniki_users_monitorAuthFailures($ciniki) {
 		$session = ciniki_core_dbQuoteRequestArg($ciniki, 'session');
 	}
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/datetimeFormat.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'datetimeFormat');
 	$date_format = ciniki_users_datetimeFormat($ciniki);
 
 	// Sort the list ASC by date, so the oldest is at the bottom, and therefore will get 
