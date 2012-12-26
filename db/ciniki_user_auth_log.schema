@@ -13,6 +13,11 @@
 #
 # log_date:			The date and time of the request.
 #
+# session_key:		The unique key assigned to each session, which can be
+#					used to track all changes made during that session. 
+#					The module history tables store session_key for each
+#					change, to allow session changes to be undone.
+#
 create table ciniki_user_auth_log (
 	user_id int not null,
 	api_key varchar(32) not null,
