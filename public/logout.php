@@ -21,13 +21,13 @@ function ciniki_users_logout($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.logout', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	require_once($ciniki['config']['core']['root_dir'] . '/ciniki-api/core/private/sessionEnd.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'ciniki-api/core', 'private', 'sessionEnd');
 
 	return ciniki_core_sessionEnd($ciniki);
 }

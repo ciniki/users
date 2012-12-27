@@ -22,7 +22,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
 		));
@@ -34,7 +34,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.removeSysAdmin', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -47,7 +47,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	$strsql = "SELECT 'admins', COUNT(id) FROM ciniki_users "
 		. "WHERE (perms & 0x01) = 0x01 "
 		. "AND id != '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbCount.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbCount');
 	$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.users', 'count');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -61,7 +61,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	//
 	$strsql = "UPDATE ciniki_users SET perms = perms ^ 0x01 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "'";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -70,7 +70,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
 	//
 	// Also remove any active sessions for user to ensure no more damage
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/sessionEndUser.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionEndUser');
 	$rc = ciniki_core_sessionEndUser($ciniki, $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

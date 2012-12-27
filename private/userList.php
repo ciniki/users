@@ -18,8 +18,8 @@ function ciniki_users_mergeDisplayNames($ciniki, $hash) {
 	//
 	// Query for the business users
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteIDs.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
 	$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users "
 		. "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, $ids) . ") "
 		. "ORDER BY lastname, firstname ";

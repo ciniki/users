@@ -77,7 +77,7 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
 			. "AND package = 'ciniki' "
 			. "AND (permission_group = 'owners' ) "
 			. "";
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'737', 'msg'=>'Access denied', 'err'=>$rc['err']));

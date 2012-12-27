@@ -30,8 +30,8 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 	//
 	// Query for the business users
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteIDs.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
 	if( $fields == 'all' ) {
 		$strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users ";
 	} elseif( $fields == 'display_name' ) {
@@ -39,7 +39,7 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 	}
 	$strsql .= "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_unique($ids)) . ") "
 		. "ORDER BY id ";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
 	return ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.users', $container_name, 'id');
 }
 ?>

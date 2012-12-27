@@ -16,8 +16,8 @@
 //
 function ciniki_users_logAuthSuccess($ciniki) {
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
 
 	$ip_address = 'unknown';
 	if( isset($_SERVER['REMOTE_ADDR']) ) {

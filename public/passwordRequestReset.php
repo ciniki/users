@@ -26,8 +26,8 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbQuote.php');
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'email'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
 		));
@@ -39,7 +39,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.passwordRequestReset', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -59,7 +59,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	$strsql = "SELECT id, username, email, firstname, lastname, display_name FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' ";
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'456', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
@@ -72,9 +72,9 @@ function ciniki_users_passwordRequestReset($ciniki) {
 	//
 	// Turn off autocommit
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionStart.php');
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -87,7 +87,7 @@ function ciniki_users_passwordRequestReset($ciniki) {
 		. "temp_password_date = UTC_TIMESTAMP(), "
 		. "last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user['id']) . "' ";
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbUpdate.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');

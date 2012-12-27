@@ -31,7 +31,7 @@ function ciniki_users_getAvatar($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		// FIXME: Add ability to get another avatar for sysadmin
 		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 	
@@ -46,7 +46,7 @@ function ciniki_users_getAvatar($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.getAvatar', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -64,7 +64,7 @@ function ciniki_users_getAvatar($ciniki) {
 	// FIXME: If no avatar specified, return the default icon
 	//
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/images/private/getUserImage.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'getUserImage');
 	return ciniki_images_getUserImage($ciniki, $ciniki['session']['user']['id'], $avatar_id, $args['version'], $args['maxlength']);
 }
 ?>

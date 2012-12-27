@@ -22,7 +22,7 @@ function ciniki_users_formatDate($ciniki) {
     //  
     // Find all the required and optional arguments
     //  
-    require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
         'date'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No date specified'), 
         )); 
@@ -35,7 +35,7 @@ function ciniki_users_formatDate($ciniki) {
     // Make sure this module is activated, and
     // check permission to run this function for this business
     //  
-    require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
     $rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.formatDate', 0); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
@@ -44,12 +44,12 @@ function ciniki_users_formatDate($ciniki) {
 	//
 	// Get the current time in the users format
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/dateFormat.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'dateFormat');
 	$date_format = ciniki_users_dateFormat($ciniki);
 
 	// date_default_timezone_set('America/Toronto');
-    require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
-    require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	$strsql = "SELECT DATE_FORMAT(FROM_UNIXTIME('" . strtotime($args['date']) . "'), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as formatted_date ";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.core', 'date');
 	if( $rc['stat'] != 'ok' ) {

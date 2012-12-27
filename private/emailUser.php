@@ -19,8 +19,8 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	//
 	// Query for user information
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbQuote.php');
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	$strsql = "SELECT id, firstname, lastname, email "
 		. "FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "

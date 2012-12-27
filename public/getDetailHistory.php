@@ -32,7 +32,7 @@ function ciniki_users_getDetailHistory($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
 		'field'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No field specified'), 
@@ -45,14 +45,14 @@ function ciniki_users_getDetailHistory($ciniki) {
 	//
 	// Check access 
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
 	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.getDetailHistory', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbGetModuleHistory.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbGetModuleHistory');
 	if( $args['field'] == 'user.firstname' ) {
 		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'firstname');
 	} elseif( $args['field'] == 'user.lastname' ) {
