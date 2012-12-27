@@ -27,7 +27,7 @@ function ciniki_users_logout($ciniki) {
 		return $rc;
 	}
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'ciniki-api/core', 'private', 'sessionEnd');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionEnd');
 
 	return ciniki_core_sessionEnd($ciniki);
 }
