@@ -27,16 +27,16 @@ function ciniki_users_updateDetails(&$ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
-		'user.firstname'=>array('required'=>'no', 'blank'=>'no', 'errmsg'=>'No first name specified'), 
-		'user.lastname'=>array('required'=>'no', 'blank'=>'no', 'errmsg'=>'No last name specified'), 
-		'user.display_name'=>array('required'=>'no', 'blank'=>'no', 'errmsg'=>'No display name specified'), 
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'User'), 
+		'user.firstname'=>array('required'=>'no', 'blank'=>'no', 'name'=>'First Name'), 
+		'user.lastname'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Last Name'), 
+		'user.display_name'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Display Name'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 	$args = $rc['args'];
-	
+
 	//
 	// Check access 
 	//
@@ -65,16 +65,16 @@ function ciniki_users_updateDetails(&$ciniki) {
 	// Check if name or tagline was specified
 	//
 	$strsql = "";
-	if( isset($ciniki['request']['args']['user.firstname']) && $ciniki['request']['args']['user.firstname'] != '' ) {
-		$strsql .= ", firstname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.firstname']) . "'";
+	if( isset($args['user.firstname']) && $args['user.firstname'] != '' ) {
+		$strsql .= ", firstname = '" . ciniki_core_dbQuote($ciniki, $args['user.firstname']) . "'";
 		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'firstname', $args['user.firstname']);
 	}
-	if( isset($ciniki['request']['args']['user.lastname']) && $ciniki['request']['args']['user.lastname'] != '' ) {
-		$strsql .= ", lastname = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.lastname']) . "'";
+	if( isset($args['user.lastname']) && $args['user.lastname'] != '' ) {
+		$strsql .= ", lastname = '" . ciniki_core_dbQuote($ciniki, $args['user.lastname']) . "'";
 		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'lastname', $args['user.lastname']);
 	}
-	if( isset($ciniki['request']['args']['user.display_name']) && $ciniki['request']['args']['user.display_name'] != '' ) {
-		$strsql .= ", display_name = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user.display_name']) . "'";
+	if( isset($args['user.display_name']) && $args['user.display_name'] != '' ) {
+		$strsql .= ", display_name = '" . ciniki_core_dbQuote($ciniki, $args['user.display_name']) . "'";
 		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 2, 'ciniki_users', $args['user_id'], 'display_name', $args['user.display_name']);
 	}
 	//
@@ -134,6 +134,41 @@ function ciniki_users_updateDetails(&$ciniki) {
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'334', 'msg'=>'Unable to update user detail', 'err'=>$rc['err']));
+	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+
+	//
+	// Update the last_updated of the user
+	//
+	$strsql = "UPDATE ciniki_users SET last_updated = UTC_TIMESTAMP() "
+		. "WHERE user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
+		. "";
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	//
+	// Get the list of businesses this user is part of, and replicate that user for that business
+	//
+	$strsql = "SELECT business_id "
+		. "FROM ciniki_business_users "
+		. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
+		. "";
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$businesses = $rc['rows'];
+	foreach($businesses as $rid => $row) {
+		ciniki_businesses_updateModuleChangeDate($ciniki, $row['business_id'], 'ciniki', 'users');
+		$ciniki['syncbusinesses'][] = $row['business_id'];
+		$ciniki['syncqueue'][] = array('method'=>'ciniki.businesses.syncPushUser', 'args'=>array('id'=>$args['user_id']));
 	}
 
 	return array('stat'=>'ok');

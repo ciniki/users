@@ -32,12 +32,12 @@ function ciniki_users_add($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'email.address'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No email specified'), 
-		'user.username'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No username specified'), 
-		'user.firstname'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No username specified'), 
-		'user.lastname'=>array('required'=>'no', 'default'=>'', 'blank'=>'no', 'errmsg'=>'No username specified'), 
-		'user.display_name'=>array('required'=>'no', 'default'=>'', 'blank'=>'no', 'errmsg'=>'No username specified'), 
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'email.address'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Email Address'), 
+		'user.username'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'username'), 
+		'user.firstname'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Firstname'), 
+		'user.lastname'=>array('required'=>'no', 'default'=>'', 'blank'=>'no', 'name'=>'Lastname'), 
+		'user.display_name'=>array('required'=>'no', 'default'=>'', 'blank'=>'no', 'name'=>'Display Name'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
