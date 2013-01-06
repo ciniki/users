@@ -146,7 +146,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	// Update the last_updated of the user
 	//
 	$strsql = "UPDATE ciniki_users SET last_updated = UTC_TIMESTAMP() "
-		. "WHERE user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
+		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
 		. "";
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
