@@ -168,7 +168,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	foreach($businesses as $rid => $row) {
 		ciniki_businesses_updateModuleChangeDate($ciniki, $row['business_id'], 'ciniki', 'users');
 		$ciniki['syncbusinesses'][] = $row['business_id'];
-		$ciniki['syncqueue'][] = array('method'=>'ciniki.businesses.syncPushUser', 'args'=>array('id'=>$args['user_id']));
+		$ciniki['syncqueue'][] = array('method'=>'ciniki.businesses.user.push', 'args'=>array('id'=>$args['user_id']));
 	}
 
 	return array('stat'=>'ok');
