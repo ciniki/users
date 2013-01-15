@@ -78,7 +78,7 @@ function ciniki_users_get($ciniki) {
 		. "FROM ciniki_business_users, ciniki_businesses "
 		. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
 		. "AND ciniki_business_users.business_id = ciniki_businesses.id "
-		. "AND ciniki_business_users.status = 1 "
+		. "AND ciniki_business_users.status = 10 "
 		. "";
 	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.businesses', 'businesses', 'business', array('stat'=>'ok', 'businesses'=>array()));
 	if( $rc['stat'] != 'ok' ) {
