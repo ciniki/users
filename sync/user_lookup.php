@@ -80,10 +80,10 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
 	// ID won't be there.
 	//
 	elseif( isset($args['local_id']) && $args['local_id'] != '' ) {
-		$strsql = "SELECT DISTINCT ciniki_users.uuid FROM ciniki_users, ciniki_business_users "
+		$strsql = "SELECT DISTINCT ciniki_users.uuid FROM ciniki_users " //, ciniki_business_users "
 			. "WHERE ciniki_users.id = '" . ciniki_core_dbQuote($ciniki, $args['local_id']) . "' "
-			. "AND ciniki_users.id = ciniki_business_users.user_id "
-			. "AND ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+//			. "AND ciniki_users.id = ciniki_business_users.user_id "
+//			. "AND ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "";
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 		if( $rc['stat'] != 'ok' ) {
