@@ -24,7 +24,7 @@ function ciniki_users_historyFix($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 
 	//
-	// Check for items that are missing a add value in history
+	// Check for items that are missing and add value in history
 	//
 	$fields = array('uuid', 'username', 'email', 'firstname', 'lastname', 'display_name');
 	foreach($fields as $field) {
