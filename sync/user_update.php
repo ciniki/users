@@ -61,7 +61,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
 			// User does not exist at all
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_add');
-			$rc = ciniki_users_user_add($ciniki, $sync, $business_id, $args);
+			$rc = ciniki_users_user_add($ciniki, $sync, 0, $args);
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1002', 'msg'=>'Unable to add user: ' . $remote_user['uuid'], 'err'=>$rc['err']));
 		} else {
 			//
@@ -114,7 +114,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
 	//
 	// Compare basic elements of user
 	//
-	$rc = ciniki_core_syncUpdateObjectSQL($ciniki, $sync, $business_id, $remote_user, $local_user, array(
+	$rc = ciniki_core_syncUpdateObjectSQL($ciniki, $sync, 0, $remote_user, $local_user, array(
 		'firstname'=>array(),
 		'lastname'=>array(),
 		'display_name'=>array(),
@@ -141,11 +141,13 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
 	//
 	if( isset($remote_user['history']) ) {
 		if( isset($local_user['history']) ) {
-			$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, $business_id, 'ciniki.users',
-				'ciniki_user_history', $local_user['id'], 'ciniki_users', $remote_user['history'], $local_user['history'], array());
+			$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, 0, 'ciniki.users',
+				'ciniki_user_history', $local_user['id'], 'ciniki_users', 
+				$remote_user['history'], $local_user['history'], array());
 		} else {
-			$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, $business_id, 'ciniki.users',
-				'ciniki_user_history', $local_user['id'], 'ciniki_users', $remote_user['history'], array(), array());
+			$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, 0, 'ciniki.users',
+				'ciniki_user_history', $local_user['id'], 'ciniki_users', 
+				$remote_user['history'], array(), array());
 		}
 		if( $rc['stat'] != 'ok' ) {
 			ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');

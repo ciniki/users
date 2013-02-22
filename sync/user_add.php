@@ -74,7 +74,7 @@ function ciniki_users_user_add(&$ciniki, $sync, $business_id, $args) {
 	$user_id = $rc['insert_id'];
 
 	if( isset($user['history']) ) {
-		$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, $business_id, 'ciniki.users',
+		$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, 0, 'ciniki.users',
 			'ciniki_user_history', $user_id, 'ciniki_users', $user['history'], array(), array());
 		if( $rc['stat'] != 'ok' ) {
 			ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
@@ -107,8 +107,9 @@ function ciniki_users_user_add(&$ciniki, $sync, $business_id, $args) {
 			$detail_id = $rc['insert_id'];
 			
 			if( isset($detail['history']) ) {
-				$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, $business_id, 'ciniki.users',
-					'ciniki_user_history', $user_id, 'ciniki_user_details', $detail['history'], array(), array());
+				$rc = ciniki_core_syncUpdateTableElementHistory($ciniki, $sync, 0, 'ciniki.users',
+					'ciniki_user_history', $user_id, 'ciniki_user_details', 
+					$detail['history'], array(), array());
 				if( $rc['stat'] != 'ok' ) {
 					ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
 					return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'894', 'msg'=>'Unable to save history', 'err'=>$rc['err']));
