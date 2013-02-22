@@ -22,6 +22,15 @@ function ciniki_users_historyFix($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDelete');
+
+	$strsql = "DELETE FROM ciniki_user_history "
+		. "WHERE business_id > 0 "
+		. "";
+	$rc = ciniki_core_dbDelete($ciniki, $strsql, 'ciniki.users');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
 
 	//
 	// Check for items that are missing and add value in history
