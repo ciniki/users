@@ -21,6 +21,10 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
 	// add from remote side
 	//
 	if( isset($args['remote_uuid']) && $args['remote_uuid'] != '' ) {
+		// Check if the uuid exists in the uuidmaps
+		if( isset($sync['uuidmaps']['ciniki_users'][$remote_user['uuid']]) ) {
+			return array('stat'=>'ok', 'id'=>$sync['uuidmaps']['ciniki_users'][$remote_user['uuid']]);
+		}
 		$strsql = "SELECT DISTINCT ciniki_users.id FROM ciniki_users " //, ciniki_business_users "
 			. "WHERE ciniki_users.uuid = '" . ciniki_core_dbQuote($ciniki, $args['remote_uuid']) . "' "
 //			. "AND ciniki_users.id = ciniki_business_users.user_id "
