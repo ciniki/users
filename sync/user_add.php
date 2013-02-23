@@ -33,8 +33,6 @@ function ciniki_users_user_add(&$ciniki, $sync, $business_id, $args) {
 		return $rc;
 	}   
 
-	error_log('Adding user ' . $user['email'] . " to $business_id");
-
 	//
 	// Create a random password for the user
 	//
