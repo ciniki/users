@@ -59,17 +59,18 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
 		// Check to see if it exists on the remote side, and add customer if necessary
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'syncRequest');
-		$rc = ciniki_core_syncRequest($ciniki, $sync, $business_id, array('method'=>'ciniki.users.user.get', 'uuid'=>$args['remote_uuid']));
+		$rc = ciniki_core_syncRequest($ciniki, $sync, array('method'=>'ciniki.users.user.get', 'uuid'=>$args['remote_uuid']));
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1023', 'msg'=>'Unable to get user from remote server', 'err'=>$rc['err']));
 		}
 
-		if( isset($rc['user']) ) {
-			$rc = ciniki_users_user_update($ciniki, $sync, $business_id, array('user'=>$rc['user']));
+		if( isset($rc['object']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_update');
+			$rc = ciniki_users_user_update($ciniki, $sync, $business_id, array('object'=>$rc['object']));
 			if( $rc['stat'] != 'ok' ) {
 				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1024', 'msg'=>'Unable to add user to local server', 'err'=>$rc['err']));
 			}
-			return array('stat'=>'ok', 'id'=>$rc['user']['id']);
+			return array('stat'=>'ok', 'id'=>$rc['id']);
 		}
 
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1048', 'msg'=>'Unable to find user'));

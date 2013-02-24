@@ -62,7 +62,10 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_add');
 			$rc = ciniki_users_user_add($ciniki, $sync, 0, $args);
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1002', 'msg'=>'Unable to add user: ' . $remote_user['uuid'], 'err'=>$rc['err']));
+			if( $rc['stat'] != 'ok' ) {
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1002', 'msg'=>'Unable to add user: ' . $remote_user['uuid'], 'err'=>$rc['err']));
+			}
+			$user_id = $rc['id'];
 		} else {
 			//
 			// Make sure the uuid map is in added
@@ -170,7 +173,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
 		//
 		// Get the list of users this user is part of, and replicate that user for that business
 		//
-		$ciniki['syncqueue'][] = array('method'=>'ciniki.users.user.push', 
+		$ciniki['syncqueue'][] = array('push'=>'ciniki.users.user', 
 			'args'=>array('id'=>$user_id, 'ignore_sync_id'=>$sync['id']));
 	}
 

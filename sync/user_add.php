@@ -9,14 +9,14 @@
 // Returns
 // -------
 //
-function ciniki_users_user_add(&$ciniki, $sync, $business_id, $args) {
+function ciniki_users_user_add(&$ciniki, &$sync, $business_id, $args) {
 	//
 	// Check the args
 	//
-	if( !isset($args['user']) || $args['user'] == '' ) {
+	if( !isset($args['object']) || $args['object'] == '' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'94', 'msg'=>'No type specified'));
 	}
-	$user = $args['user'];
+	$user = $args['object'];
 
 	//  
 	// Turn off autocommit
@@ -127,7 +127,8 @@ function ciniki_users_user_add(&$ciniki, $sync, $business_id, $args) {
 	//
 	// Get the list of businesses this user is part of, and replicate that user for that business
 	//
-	$ciniki['syncqueue'][] = array('method'=>'ciniki.users.user.push', 'args'=>array('id'=>$user_id));
+	$ciniki['syncqueue'][] = array('push'=>'ciniki.users.user', 
+		'args'=>array('id'=>$user_id, 'ignore_sync_id'=>$sync['id']));
 
 	return array('stat'=>'ok', 'id'=>$user_id);
 }

@@ -156,7 +156,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 	//
 	// Get the list of businesses this user is part of, and replicate that user for that business
 	//
-	$strsql = "SELECT business_id "
+	$strsql = "SELECT id, business_id "
 		. "FROM ciniki_business_users "
 		. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
 		. "";
@@ -167,8 +167,8 @@ function ciniki_users_updateDetails(&$ciniki) {
 	$businesses = $rc['rows'];
 	foreach($businesses as $rid => $row) {
 		ciniki_businesses_updateModuleChangeDate($ciniki, $row['business_id'], 'ciniki', 'users');
-		$ciniki['syncbusinesses'][] = $row['business_id'];
-		$ciniki['syncqueue'][] = array('method'=>'ciniki.businesses.user.push', 'args'=>array('id'=>$args['user_id']));
+		$ciniki['syncqueue'][] = array('push'=>'ciniki.businesses.user', 
+			'args'=>array('id'=>$row['id']));
 	}
 
 	return array('stat'=>'ok');
