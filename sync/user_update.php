@@ -61,7 +61,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
 			// User does not exist at all
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_add');
-			$rc = ciniki_users_user_add($ciniki, $sync, 0, $args);
+			$rc = ciniki_users_user_add($ciniki, $sync, 0, array('object'=>$remote_user));
 			if( $rc['stat'] != 'ok' ) {
 				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1002', 'msg'=>'Unable to add user: ' . $remote_user['uuid'], 'err'=>$rc['err']));
 			}
