@@ -31,7 +31,9 @@
 function ciniki_users_auth(&$ciniki) {
 	if( (!isset($ciniki['request']['args']['username'])
 		|| !isset($ciniki['request']['args']['email']))
-		&& !isset($ciniki['request']['args']['password']) ) {
+		&& !isset($ciniki['request']['args']['password']) 
+		&& !isset($ciniki['request']['auth_token'])
+		) {
 		//
 		// This return message should be cryptic so people
 		// can't use the error code to determine what went wrong
@@ -48,12 +50,21 @@ function ciniki_users_auth(&$ciniki) {
 		return $rc;
 	}
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionStart');
-	$rc = ciniki_core_sessionStart($ciniki, $ciniki['request']['args']['username'], $ciniki['request']['args']['password']);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
+	if( isset($ciniki['request']['auth_token']) && $ciniki['request']['auth_token'] != '' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionOpen');
+		$rc = ciniki_core_sessionOpen($ciniki);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$auth = $rc['auth'];
+	} else {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionStart');
+		$rc = ciniki_core_sessionStart($ciniki, $ciniki['request']['args']['username'], $ciniki['request']['args']['password']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$auth = $rc['auth'];
 	}
-	$auth = $rc['auth'];
 
 	//
 	// Get any UI settings for the user
@@ -91,8 +102,6 @@ function ciniki_users_auth(&$ciniki) {
 			return array('stat'=>'ok', 'auth'=>$auth, 'business'=>$rc['business']['id']);
 		}
 	}	
-
-
 
 	return array('stat'=>'ok', 'auth'=>$auth);
 }
