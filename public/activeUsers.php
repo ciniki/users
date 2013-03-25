@@ -38,13 +38,16 @@ function ciniki_users_activeUsers($ciniki) {
 	// Sort the list ASC by date, so the oldest is at the bottom, and therefore will get 
 	// insert at the top of the list in ciniki-manage
 	$strsql = "SELECT ciniki_users.id, "
-		. "DATE_FORMAT(MAX(log_date), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') AS log_date"
-		. ", CONCAT_WS(' ', ciniki_users.firstname, ciniki_users.lastname) AS name, "
-		. "ciniki_users.display_name, api_key, ip_address, session_key "
+		. "DATE_FORMAT(MAX(a1.log_date), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') AS ldate "
+		. ", CONCAT_WS(' ', ciniki_users.firstname, ciniki_users.lastname) AS name "
+		. ", ciniki_users.display_name "
+//		. ", api_key, ip_address, session_key "
 		. "FROM ciniki_users "
-		. "LEFT JOIN ciniki_user_auth_log ON (ciniki_users.id = ciniki_user_auth_log.user_id ) "
+		. "LEFT JOIN ciniki_user_auth_log AS a1 ON (ciniki_users.id = a1.user_id ) "
+//		. "LEFT JOIN ciniki_user_auth_log AS a2 ON (ciniki_users.id = a2.user_id "
+//			. "AND a1.log_date = a2.log_date) "
 		. "GROUP BY ciniki_users.id "
-		. "ORDER BY log_date DESC ";
+		. "ORDER BY ldate DESC ";
 	
 	if( isset($args['limit']) && $args['limit'] != '' && is_numeric($args['limit'])) {
 		$strsql .= "LIMIT " . ciniki_core_dbQuote($ciniki, $args['limit']) . " ";
