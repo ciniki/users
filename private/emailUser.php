@@ -21,7 +21,7 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-	$strsql = "SELECT id, firstname, lastname, email "
+	$strsql = "SELECT id, CONCAT_WS(' ', firstname, lastname) AS name, email "
 		. "FROM ciniki_users "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
 		. "";
@@ -34,10 +34,38 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	//  
 	// The from address can be set in the config file.
 	//  
-	$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-		'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-		'X-Mailer: PHP/' . phpversion();
-	mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+//	$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//		'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//		'X-Mailer: PHP/' . phpversion();
+//	mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+
+	error_log("Emailing");
+	require_once($ciniki['config']['ciniki.core']['lib_dir'] . '/PHPMailer/class.phpmailer.php');
+	require_once($ciniki['config']['ciniki.core']['lib_dir'] . '/PHPMailer/class.smtp.php');
+
+	$mail = new PHPMailer;
+
+	$mail->IsSMTP();
+	$mail->Host = $ciniki['config']['ciniki.core']['system.smtp.servers'];
+	$mail->SMTPAuth = true;
+	$mail->Username = $ciniki['config']['ciniki.core']['system.smtp.username'];
+	$mail->Password = $ciniki['config']['ciniki.core']['system.smtp.password'];
+	$mail->SMTPSecure = $ciniki['config']['ciniki.core']['system.smtp.secure'];
+	$mail->Port = $ciniki['config']['ciniki.core']['system.smtp.port'];
+
+	$mail->From = $ciniki['config']['ciniki.core']['system.email'];
+	$mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
+	$mail->AddAddress($user['email'], $user['name']);
+
+	$mail->IsHTML(false);
+	$mail->Subject = $subject;
+	$mail->Body = $msg;
+
+	error_log("Sending email to: " . $user['email'] . " from: " . $mail->From);
+	if( !$mail->Send() ) {
+		error_log("MAIL-ERR: " . $mail->ErrorInfo);
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'56', 'msg'=>'Unable to send email'));
+	}
 
 	return array('stat'=>'ok');
 }

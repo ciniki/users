@@ -26,7 +26,7 @@
 // ---------------
 // <rsp stat='ok' id='213' />
 //
-function ciniki_users_add($ciniki) {
+function ciniki_users_add(&$ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
@@ -192,10 +192,14 @@ function ciniki_users_add($ciniki) {
 		//
 		// The from address can be set in the config file.
 		//
-		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'X-Mailer: PHP/' . phpversion();
-		mail($args['email.address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+//		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'X-Mailer: PHP/' . phpversion();
+//		mail($args['email.address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+		$ciniki['emailqueue'][] = array('to'=>$args['email.address'],
+			'subject'=>$subject,
+			'textmsg'=>$msg,
+			);
 	}
 
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');

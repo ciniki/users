@@ -20,7 +20,7 @@
 // -------
 // <stat='ok' />
 //
-function ciniki_users_resetPassword($ciniki) {
+function ciniki_users_resetPassword(&$ciniki) {
 	
 	// FIXME: Require sysadmin password to verify user before allowing a reset.
 
@@ -118,10 +118,14 @@ function ciniki_users_resetPassword($ciniki) {
 		//
 		// The from address can be set in the config file.
 		//
-		$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-				'X-Mailer: PHP/' . phpversion();
-		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+		$ciniki['emailqueue'][] = array('user_id'=>$args['user_id'],
+			'subject'=>$subject,
+			'textmsg'=>$msg,
+			);
+//		$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+//				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+//				'X-Mailer: PHP/' . phpversion();
+//		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
 	}
 
 	//

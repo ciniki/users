@@ -19,7 +19,7 @@
 // -------
 // <stat='ok' />
 //
-function ciniki_users_passwordRequestReset($ciniki) {
+function ciniki_users_passwordRequestReset(&$ciniki) {
 	
 	// FIXME: Require sysadmin password to verify user before allowing a reset.
 
@@ -119,10 +119,14 @@ function ciniki_users_passwordRequestReset($ciniki) {
 		//
 		// The from address can be set in the config file.
 		//
-		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'X-Mailer: PHP/' . phpversion();
-		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+//		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'X-Mailer: PHP/' . phpversion();
+//		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+		$ciniki['emailqueue'][] = array('user_id'=>$user['id'],
+			'subject'=>$subject,
+			'textmsg'=>$msg,
+			);
 	}
 
 	//
@@ -145,7 +149,11 @@ function ciniki_users_passwordRequestReset($ciniki) {
 			. "email: " . $user['email'] . "\n"
 			. "time: " . date("D M j, Y H:i e") . "\n"
 			. "" . "\n";
-		mail($ciniki['config']['ciniki.users']['password.forgot.notify'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+//		mail($ciniki['config']['ciniki.users']['password.forgot.notify'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+		$ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.users']['password.forgot.notify'],
+			'subject'=>$subject,
+			'textmsg'=>$msg,
+			);
 	}
 
 	return array('stat'=>'ok');
