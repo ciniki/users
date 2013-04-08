@@ -39,7 +39,6 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 //		'X-Mailer: PHP/' . phpversion();
 //	mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 
-	error_log("Emailing");
 	require_once($ciniki['config']['ciniki.core']['lib_dir'] . '/PHPMailer/class.phpmailer.php');
 	require_once($ciniki['config']['ciniki.core']['lib_dir'] . '/PHPMailer/class.smtp.php');
 
@@ -61,9 +60,8 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	$mail->Subject = $subject;
 	$mail->Body = $msg;
 
-	error_log("Sending email to: " . $user['email'] . " from: " . $mail->From);
 	if( !$mail->Send() ) {
-		error_log("MAIL-ERR: " . $mail->ErrorInfo);
+		error_log("MAIL-ERR: [" . $user['email'] . "] " . $mail->ErrorInfo);
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'56', 'msg'=>'Unable to send email'));
 	}
 
