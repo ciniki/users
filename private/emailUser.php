@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
+function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg, $html_msg) {
 
 	//
 	// Query for user information
@@ -56,9 +56,16 @@ function ciniki_users_emailUser($ciniki, $user_id, $subject, $msg) {
 	$mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
 	$mail->AddAddress($user['email'], $user['name']);
 
-	$mail->IsHTML(false);
-	$mail->Subject = $subject;
-	$mail->Body = $msg;
+	if( isset($html_msg) && $html_msg != '' ) {
+		$mail->IsHTML(true);
+		$mail->Subject = $subject;
+		$mail->Body = $html_msg;
+		$mail->AltBody = $msg;
+	} else {
+		$mail->IsHTML(false);
+		$mail->Subject = $subject;
+		$mail->Body = $msg;
+	}
 
 	if( !$mail->Send() ) {
 		error_log("MAIL-ERR: [" . $user['email'] . "] " . $mail->ErrorInfo);
