@@ -119,10 +119,6 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
 		//
 		// The from address can be set in the config file.
 		//
-//		$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-//				'X-Mailer: PHP/' . phpversion();
-//		mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 		$ciniki['emailqueue'][] = array('user_id'=>$user['id'],
 			'subject'=>$subject,
 			'textmsg'=>$msg,
