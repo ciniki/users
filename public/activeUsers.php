@@ -25,7 +25,7 @@ function ciniki_users_activeUsers($ciniki) {
 	// Check access 
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.activeLogs', 0);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.activeUsers', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
