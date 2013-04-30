@@ -27,6 +27,6 @@ function ciniki_users_timeFormat($ciniki) {
 	// This function does not return the standard response, because it will NEVER return an error.  
 	// If a problem is encountered, the it will return the default date format.
 	//
-	return "%H:%i %p";
+	return "%l:%i %p";
 }
 ?>
