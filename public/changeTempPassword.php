@@ -66,7 +66,7 @@ function ciniki_users_changeTempPassword($ciniki) {
 		return $rc;
 	}
 	if( !isset($rc['user']) || !is_array($rc['user']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'466', 'msg'=>'Unable to update password.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'466', 'msg'=>'Time has expired, you must reset your password within 30 minutes of getting the email.'));
 	}
 	$user = $rc['user'];
 
