@@ -33,12 +33,14 @@ function ciniki_users_activeUsers($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'datetimeFormat');
-	$date_format = ciniki_users_datetimeFormat($ciniki);
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'timezoneOffset');
+	$datetime_format = ciniki_users_datetimeFormat($ciniki);
+	$utc_offset = ciniki_users_timezoneOffset($ciniki);
 
 	// Sort the list ASC by date, so the oldest is at the bottom, and therefore will get 
 	// insert at the top of the list in ciniki-manage
 	$strsql = "SELECT ciniki_users.id, "
-		. "DATE_FORMAT(MAX(a1.log_date), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') AS log_date "
+		. "DATE_FORMAT(CONVERT_TZ(MAX(a1.log_date), '+00:00', '" . ciniki_core_dbQuote($ciniki, $utc_offset) . "'), '" . ciniki_core_dbQuote($ciniki, $datetime_format) . "') AS log_date "
 		. ", CONCAT_WS(' ', ciniki_users.firstname, ciniki_users.lastname) AS name "
 		. ", ciniki_users.display_name "
 //		. ", api_key, ip_address, session_key "
