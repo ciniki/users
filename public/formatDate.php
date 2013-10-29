@@ -24,7 +24,7 @@ function ciniki_users_formatDate($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'date'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No date specified'), 
+        'date'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Date'), 
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;

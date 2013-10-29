@@ -29,8 +29,8 @@ function ciniki_users_getDetails($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'keys'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'User'), 
+		'keys'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Keys'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

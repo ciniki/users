@@ -34,9 +34,9 @@ function ciniki_users_getAvatar($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		// FIXME: Add ability to get another avatar for sysadmin
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 	
-		'version'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No version specified'),
-		'maxlength'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No size specified'),
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'User'), 	
+		'version'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Version'),
+		'maxlength'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Maximum Length'),
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

@@ -30,9 +30,9 @@ function ciniki_users_changeTempPassword($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'email'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No email specified'), 
-		'temppassword'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No temporary password specified'), 
-		'newpassword'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No new password specified'), 
+		'email'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Email'), 
+		'temppassword'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Temporary Password'), 
+		'newpassword'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'New Password'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

@@ -30,8 +30,8 @@ function ciniki_users_changePassword($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'oldpassword'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No old password specified'), 
-		'newpassword'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No new password specified'), 
+		'oldpassword'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Old Password'), 
+		'newpassword'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'New Password'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

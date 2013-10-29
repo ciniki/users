@@ -27,8 +27,8 @@ function ciniki_users_authLogs($ciniki) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'),
-		'limit'=>array('required'=>'no', 'blank'=>'no', 'errmsg'=>'No limit specified'),
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'User'),
+		'limit'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Limit'),
 		));
 	$args = $rc['args'];
 

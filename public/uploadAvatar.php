@@ -25,7 +25,7 @@ function ciniki_users_uploadAvatar(&$ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

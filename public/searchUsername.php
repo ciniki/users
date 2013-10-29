@@ -40,8 +40,8 @@ function ciniki_users_searchUsername($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'start_needle'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No start_needle specified'), 
-		'search_limit'=>array('required'=>'no', 'default'=>'11', 'blank'=>'yes', 'errmsg'=>'No search limit specified'), 
+		'start_needle'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Search String'), 
+		'search_limit'=>array('required'=>'no', 'default'=>'11', 'blank'=>'yes', 'name'=>'Limit'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

@@ -27,8 +27,8 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No image specified'), 
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Image'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

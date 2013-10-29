@@ -30,8 +30,8 @@ function ciniki_users_setPassword($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
-		'password'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No password specified'), 
+		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'User'), 
+		'password'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Password'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

@@ -29,7 +29,7 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'email'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No user specified'), 
+		'email'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'User'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
