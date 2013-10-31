@@ -56,6 +56,7 @@ function ciniki_users_auth(&$ciniki) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		$version = $rc['version'];
 		$auth = $rc['auth'];
 	} else {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionStart');
@@ -63,6 +64,7 @@ function ciniki_users_auth(&$ciniki) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		$version = $rc['version'];
 		$auth = $rc['auth'];
 	}
 
@@ -103,6 +105,6 @@ function ciniki_users_auth(&$ciniki) {
 		}
 	}	
 
-	return array('stat'=>'ok', 'auth'=>$auth);
+	return array('stat'=>'ok', 'version'=>$version, 'auth'=>$auth);
 }
 ?>
