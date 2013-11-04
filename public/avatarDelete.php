@@ -2,25 +2,23 @@
 //
 // Description
 // -----------
-// This method will set the avatar image ID for a user.  The image
-// must already exist in the ciniki images module.
+// This method will remove the users avatar.
 //
 // Info
 // ----
-// publish:			yes
+// publish: 		yes
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// user_id: 		The ID of the user to update the avatar image ID.
-// image_id:		The ID of the image from the ciniki images module to set as the users avatar.
+// user_id: 		The ID of the user to remove the avatar for.
 // 
 // Example Return
 // --------------
-// <rsp stat="ok" avatar_id="4" />
+// <rsp stat="ok" />
 //
-function ciniki_users_saveAvatar(&$ciniki) {
+function ciniki_users_avatarDelete(&$ciniki) {
 	//
 	// Check args
 	//
@@ -28,7 +26,6 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
-		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Image'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -39,7 +36,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	// Check access 
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.saveAvatar', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.avatarDelete', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -54,7 +51,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) { 
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'440', 'msg'=>'Internal Error', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'453', 'msg'=>'Internal Error', 'err'=>$rc['err']));
 	}   
 
 	//
@@ -85,8 +82,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	//
 	// Update user with new image id
 	//
-	$strsql = "UPDATE ciniki_users SET avatar_id = '" . ciniki_core_dbQuote($ciniki, $args['image_id']) . "' "
-		. ", last_updated = UTC_TIMESTAMP() "
+	$strsql = "UPDATE ciniki_users SET avatar_id = 0, last_updated = UTC_TIMESTAMP() "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
@@ -97,7 +93,7 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	// Update the session variable, if same user who's logged in
 	//
 	if( $ciniki['session']['user']['id'] == $args['user_id'] ) {
-		$ciniki['session']['user']['avatar_id'] = $args['image_id'];
+		$ciniki['session']['user']['avatar_id'] = 0;
 	}
 
 	//
@@ -105,9 +101,9 @@ function ciniki_users_saveAvatar(&$ciniki) {
 	//
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'441', 'msg'=>'Unable to save avatar', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'439', 'msg'=>'Unable to delete avatar', 'err'=>$rc['err']));
 	}
 
-	return array('stat'=>'ok', 'avatar_id'=>$args['image_id']);
+	return array('stat'=>'ok');
 }
 ?>

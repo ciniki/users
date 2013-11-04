@@ -27,7 +27,7 @@
 // -------
 // Binary image data
 //
-function ciniki_users_getAvatar($ciniki) {
+function ciniki_users_avatarGet($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
@@ -47,7 +47,7 @@ function ciniki_users_getAvatar($ciniki) {
 	// Check access 
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.getAvatar', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.avatarGet', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
