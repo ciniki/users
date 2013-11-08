@@ -98,13 +98,12 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
 	// the user requesting the change is the same as the user to be changed.
 	//
 	$user_methods = array(
-		'ciniki.users.deleteAvatar',
+		'ciniki.users.avatarDelete',
 		'ciniki.users.getDetailHistory',
 		'ciniki.users.getDetails',
-		'ciniki.users.getAvatar',
+		'ciniki.users.avatarGet',
 		'ciniki.users.get',
-		'ciniki.users.saveAvatar',
-		'ciniki.users.uploadAvatar',
+		'ciniki.users.avatarSave',
 		'ciniki.users.updateDetails',
 		);
 	if( in_array($method, $user_methods) && $user_id > 0 && $ciniki['session']['user']['id'] == $user_id ) {
