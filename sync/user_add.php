@@ -100,7 +100,7 @@ function ciniki_users_user_add(&$ciniki, &$sync, $business_id, $args) {
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
 			if( $rc['stat'] != 'ok' ) { 
 				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'999', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1377', 'msg'=>'Unable to add user', 'err'=>$rc['err']));
 			}
 			$detail_id = $rc['insert_id'];
 			
