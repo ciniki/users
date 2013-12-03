@@ -16,7 +16,11 @@
 // Returns
 // -------
 //
-function ciniki_users_datetimeFormat($ciniki) {
+function ciniki_users_datetimeFormat($ciniki, $format='mysql') {
+
+	if( $format == 'php' ) {
+		return "M j, Y g:i A";
+	}
 
 	//
 	// Check if the user is logged in, otherwise return 
