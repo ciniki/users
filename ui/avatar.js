@@ -20,6 +20,7 @@ function ciniki_users_avatar() {
 				}},
 		};
 		this.edit.fieldValue = function(s, i, d) { return this.data[i]; }
+		this.edit.addDropImageAPI = 'ciniki.images.addUserImage';
 		this.edit.addDropImage = function(iid) {
 			this.setFieldValue('image_id', iid);
 			return true;
