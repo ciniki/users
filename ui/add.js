@@ -4,7 +4,7 @@
 //
 function ciniki_users_add() {
 	this.init = function() {
-		this.add = new M.panel('Add Owner',
+		this.add = new M.panel('Add',
 			'ciniki_users_add', 'add', 
 			'mc', 'medium', 'sectioned', 'ciniki.users.add');
 		this.add.default_data = {};
