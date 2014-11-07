@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_users_emailUser($ciniki, $business_id, $user_id, $subject, $msg, $html_msg) {
+function ciniki_users_emailUser($ciniki, $business_id, $user_id, $email) {
 
 	//
 	// Query for user information
@@ -93,15 +93,24 @@ function ciniki_users_emailUser($ciniki, $business_id, $user_id, $subject, $msg,
 
 	$mail->AddAddress($user['email'], $user['name']);
 
-	if( isset($html_msg) && $html_msg != '' ) {
+	// Add reply to if specified
+	if( isset($email['replyto_email']) && $email['replyto_email'] != '' ) {
+		if( isset($email['replyto_name']) && $email['replyto_name'] != '' ) {
+			$mail->addReplyTo($email['replyto_email'], $email['replyto_name']);
+		} else {
+			$mail->addReplyTo($email['replyto_email']);
+		}
+	}
+
+	if( isset($email['htmlmsg']) && $email['htmlmsg'] != '' ) {
 		$mail->IsHTML(true);
-		$mail->Subject = $subject;
-		$mail->Body = $html_msg;
-		$mail->AltBody = $msg;
+		$mail->Subject = $email['subject'];
+		$mail->Body = $email['htmlmsg'];
+		$mail->AltBody = $email['textmsg'];
 	} else {
 		$mail->IsHTML(false);
-		$mail->Subject = $subject;
-		$mail->Body = $msg;
+		$mail->Subject = $email['subject'];
+		$mail->Body = $email['textmsg'];
 	}
 
 	if( !$mail->Send() ) {
