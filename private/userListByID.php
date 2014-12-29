@@ -40,6 +40,16 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 	$strsql .= "WHERE id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_unique($ids)) . ") "
 		. "ORDER BY id ";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
-	return ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.users', $container_name, 'id');
+	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.users', $container_name, 'id');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( in_array('-2', $ids) ) {
+		$rc[$container_name]['-2'] = array('display_name'=>'Website');
+	}
+	if( in_array('-3', $ids) ) {
+		$rc[$container_name]['-3'] = array('display_name'=>'Ciniki Robot');
+	}
+	return $rc;
 }
 ?>
