@@ -92,10 +92,11 @@ function ciniki_users_updateDetails(&$ciniki) {
 	// Allowed user detail keys 
 	//
 	$allowed_keys = array(
-		'ui.history.date.display',
 		'settings.time_format',
 		'settings.date_format',
 		'settings.datetime_format',
+		'ui-history-date-display',
+		'ui-mode-guided',
 		);
 	foreach($ciniki['request']['args'] as $arg_name => $arg_value) {
 		if( in_array($arg_name, $allowed_keys) ) {

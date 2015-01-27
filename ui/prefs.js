@@ -36,6 +36,10 @@ function ciniki_users_prefs() {
 		'datetime':'Sep 9, 2012 8:40am',
 		'datetimeage':'Sep 9, 2012 8:40am (10 days ago)',
 	};
+	this.toggleOptions = {
+		'no':'No',
+		'yes':'Yes',
+	};
 
 	this.init = function() {
 		this.prefs = new M.panel('My Preferences',
@@ -43,7 +47,8 @@ function ciniki_users_prefs() {
 			'mc', 'narrow', 'sectioned', 'ciniki.users.prefs');
 		this.prefs.sections = {
 			'_ui':{'label':'Interface Preferences', 'fields':{
-				'ui.history.date.display':{'label':'History Date', 'type':'select', 'options':this.history_date_options},
+				'ui-history-date-display':{'label':'History Date', 'type':'select', 'options':this.history_date_options},
+				'ui-mode-guided':{'label':'Guided Mode', 'type':'toggle', 'default':'no', 'toggles':this.toggleOptions},
 				}},
 			'':{'label':'Preferences', 'fields':{
 				'settings.time_format':{'label':'Time', 'type':'select', 'options':this.time_format_options},

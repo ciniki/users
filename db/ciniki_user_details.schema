@@ -7,6 +7,9 @@
 # Examples:
 # _ settings.date_format = 'mysql date_format string'
 #
+# ui-mode-guided = (yes|no) Stores the setting from the UI for the mode the user
+#						wants to see the UI in
+#
 # Fields
 # ------
 # user_id:			The id of the user the detail is attached to.

@@ -49,6 +49,7 @@ function ciniki_users_getDetails($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 
 	// Split the keys, if specified
 	$detail_keys = preg_split('/,/', $args['keys']);
@@ -67,7 +68,7 @@ function ciniki_users_getDetails($ciniki) {
 			$rsp['details']['user.lastname'] = $rc['user']['lastname'];
 			$rsp['details']['user.display_name'] = $rc['user']['display_name'];
 		} elseif( in_array($detail_key, array('ui','settings')) ) {
-			$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 'user_id', $args['user_id'], 'ciniki.users', 'details', $detail_key);
+			$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_user_details', 'user_id', $args['user_id'], 'ciniki.users', 'details', $detail_key);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

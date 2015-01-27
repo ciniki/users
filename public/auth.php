@@ -71,8 +71,8 @@ function ciniki_users_auth(&$ciniki) {
 	//
 	// Get any UI settings for the user
 	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'ciniki.users', 'settings', 'ui');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'ciniki.users', 'settings', 'ui');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
