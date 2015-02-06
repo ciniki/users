@@ -16,10 +16,6 @@
 //
 // Returns
 // -------
-// <details>
-//		<user firstname='' lastname='' display_name=''/>
-//  	<settings date_format='' />
-// </details>
 //
 function ciniki_users_get($ciniki) {
 	//
@@ -85,6 +81,19 @@ function ciniki_users_get($ciniki) {
 		return $rc;
 	}
 	$user['businesses'] = $rc['businesses'];
+
+	//
+	// Get all the settings for the user
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_user_details', 'user_id', $args['user_id'], 'ciniki.users', 'details', '');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	if( isset($rc['details']) ) {
+		$user['details'] = $rc['details'];
+	}
 
 	return array('stat'=>'ok', 'user'=>$user);
 }

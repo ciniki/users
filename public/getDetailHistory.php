@@ -59,6 +59,14 @@ function ciniki_users_getDetailHistory($ciniki) {
 		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'lastname');
 	} elseif( $args['field'] == 'user.display_name' ) {
 		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], 'display_name');
+	} elseif( $args['field'] == 'firstname'
+		|| $args['field'] == 'lastname'
+		|| $args['field'] == 'display_name'
+		|| $args['field'] == 'username'
+		|| $args['field'] == 'email'
+		|| $args['field'] == 'timeout' 
+		) {
+		return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_users', $args['user_id'], $args['field']);
 	}
 
 	return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 'ciniki_user_details', $args['user_id'], $args['field']);
