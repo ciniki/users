@@ -79,6 +79,29 @@ function ciniki_users_getDetails($ciniki) {
 		}
 	}
 
+	//
+	// Check if the user has access to calendars in any busines
+	//
+	$strsql = "SELECT 'num_businesses', COUNT(ciniki_business_modules.business_id) AS num_businesses "
+		. "FROM ciniki_business_users, ciniki_business_modules "
+		. "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
+		. "AND ciniki_business_users.business_id = ciniki_business_modules.business_id "
+		. "AND ciniki_business_users.status = 10 "				// Active user
+		. "AND ciniki_business_modules.package = 'ciniki' "		// Package ciniki
+		. "AND ciniki_business_modules.module = 'calendars' "	// calendars module
+		. "AND ciniki_business_modules.status = 1 "				// active module
+		. "";
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbCount');
+	$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.businesses', 'count');
+	if( $rc['stat'] == 'ok' && $rc['count']['num_businesses'] > 0 ) {
+		if( !isset($rsp['details']['ui-calendar-view']) ) {
+			$rsp['details']['ui-calendar-view'] = 'mw';
+		}
+	} else {
+		if( isset($rsp['details']['ui-calendar-view']) ) {
+			unset($rsp['details']['ui-calendar-view']);
+		}
+	}
 	return $rsp;
 }
 ?>

@@ -49,8 +49,9 @@ function ciniki_users_prefs() {
 			'_ui':{'label':'Interface Preferences', 'fields':{
 				'ui-history-date-display':{'label':'History Date', 'type':'select', 'options':this.history_date_options},
 				'ui-mode-guided':{'label':'Guided Mode', 'type':'toggle', 'default':'no', 'toggles':this.toggleOptions},
+				'ui-calendar-view':{'label':'Calendar View', 'type':'toggle', 'default':'mw', 'toggles':{'day':'Day', 'mw':'Month'}},
 				}},
-			'':{'label':'Preferences', 'fields':{
+			'_prefs':{'label':'Preferences', 'fields':{
 				'settings.time_format':{'label':'Time', 'type':'select', 'options':this.time_format_options},
 				'settings.date_format':{'label':'Date', 'type':'select', 'options':this.date_format_options},
 				'settings.datetime_format':{'label':'Date and Time', 'type':'select', 'options':this.datetime_format_options},
@@ -82,8 +83,15 @@ function ciniki_users_prefs() {
 					M.api.err(rsp);
 					return false;
 				}
-				M.ciniki_users_prefs.prefs.data = rsp.details;
-				M.ciniki_users_prefs.prefs.show(cb);
+				var p = M.ciniki_users_prefs.prefs;
+				p.data = rsp.details;
+				if( rsp.details['ui-calendar-view'] != null ) {
+					p.sections._ui.fields['ui-calendar-view'].active = 'yes';
+				} else {
+					p.sections._ui.fields['ui-calendar-view'].active = 'no';
+				}
+				p.refresh();
+				p.show(cb);
 			});
 	}
 
