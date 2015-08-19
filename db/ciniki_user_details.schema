@@ -6,6 +6,8 @@
 #
 # Examples:
 # _ settings.date_format = 'mysql date_format string'
+# ui-calendar-view 				- Set the option to decide the default calendar view for the user
+# ui-calendar-remember-day		- Always remember the day the calendar was last at
 #
 # ui-mode-guided = (yes|no) Stores the setting from the UI for the mode the user
 #						wants to see the UI in

@@ -97,9 +97,15 @@ function ciniki_users_getDetails($ciniki) {
 		if( !isset($rsp['details']['ui-calendar-view']) ) {
 			$rsp['details']['ui-calendar-view'] = 'mw';
 		}
+		if( !isset($rsp['details']['ui-calendar-remember-date']) ) {
+			$rsp['details']['ui-calendar-remember-date'] = 'yes';
+		}
 	} else {
 		if( isset($rsp['details']['ui-calendar-view']) ) {
 			unset($rsp['details']['ui-calendar-view']);
+		}
+		if( isset($rsp['details']['ui-calendar-remember-date']) ) {
+			unset($rsp['details']['ui-calendar-remember-date']);
 		}
 	}
 	return $rsp;

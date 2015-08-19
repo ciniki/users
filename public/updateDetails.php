@@ -99,6 +99,7 @@ function ciniki_users_updateDetails(&$ciniki) {
 		'ui-mode-guided',
 		'ui-mode-xhelp',
 		'ui-calendar-view',
+		'ui-calendar-remember-date',
 		);
 	foreach($ciniki['request']['args'] as $arg_name => $arg_value) {
 		if( in_array($arg_name, $allowed_keys) ) {

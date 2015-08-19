@@ -49,7 +49,10 @@ function ciniki_users_prefs() {
 			'_ui':{'label':'Interface Preferences', 'fields':{
 				'ui-history-date-display':{'label':'History Date', 'type':'select', 'options':this.history_date_options},
 				'ui-mode-guided':{'label':'Guided Mode', 'type':'toggle', 'default':'no', 'toggles':this.toggleOptions},
-				'ui-calendar-view':{'label':'Calendar View', 'type':'toggle', 'default':'mw', 'toggles':{'day':'Day', 'mw':'Month'}},
+				}},
+			'_calendar':{'label':'Calendar Options', 'fields':{
+				'ui-calendar-view':{'label':'Default View', 'type':'toggle', 'default':'mw', 'toggles':{'day':'Day', 'mw':'Month'}},
+				'ui-calendar-remember-date':{'label':'Remember Date', 'type':'toggle', 'default':'yes', 'toggles':{'no':'No', 'yes':'Yes'}},
 				}},
 			'_prefs':{'label':'Preferences', 'fields':{
 				'settings.time_format':{'label':'Time', 'type':'select', 'options':this.time_format_options},
@@ -85,11 +88,8 @@ function ciniki_users_prefs() {
 				}
 				var p = M.ciniki_users_prefs.prefs;
 				p.data = rsp.details;
-				if( rsp.details['ui-calendar-view'] != null ) {
-					p.sections._ui.fields['ui-calendar-view'].active = 'yes';
-				} else {
-					p.sections._ui.fields['ui-calendar-view'].active = 'no';
-				}
+				p.sections._calendar.fields['ui-calendar-view'].active = (rsp.details['ui-calendar-view'] != null?'yes':'no');
+				p.sections._calendar.fields['ui-calendar-remember-date'].active = (rsp.details['ui-calendar-remember-date'] != null?'yes':'no');
 				p.refresh();
 				p.show(cb);
 			});
