@@ -104,13 +104,13 @@ function ciniki_users_emailUser($ciniki, $business_id, $user_id, $email) {
 
 	if( isset($email['htmlmsg']) && $email['htmlmsg'] != '' ) {
 		$mail->IsHTML(true);
-		$mail->Subject = $email['subject'];
-		$mail->Body = $email['htmlmsg'];
-		$mail->AltBody = $email['textmsg'];
+		$mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['subject']);
+		$mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['htmlmsg']);
+		$mail->AltBody = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['textmsg']);
 	} else {
 		$mail->IsHTML(false);
-		$mail->Subject = $email['subject'];
-		$mail->Body = $email['textmsg'];
+		$mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['subject']);
+		$mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['textmsg']);
 	}
 
 	if( !$mail->Send() ) {
