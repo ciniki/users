@@ -14,7 +14,14 @@
 // Returns
 // -------
 //
-function ciniki_users_emailUser($ciniki, $business_id, $user_id, $email) {
+function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
+
+	//
+	// Check for user_id
+	//
+	if( !isset($args['user_id']) || $args['user_id'] == '' ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2616', 'msg'=>'No user specified'));
+	}
 
 	//
 	// Query for user information
@@ -23,7 +30,7 @@ function ciniki_users_emailUser($ciniki, $business_id, $user_id, $email) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	$strsql = "SELECT id, CONCAT_WS(' ', firstname, lastname) AS name, email "
 		. "FROM ciniki_users "
-		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
+		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
 		. "";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
 	if( $rc['stat'] != 'ok' || !isset($rc['user']) ) {
@@ -94,28 +101,28 @@ function ciniki_users_emailUser($ciniki, $business_id, $user_id, $email) {
 	$mail->AddAddress($user['email'], $user['name']);
 
 	// Add reply to if specified
-	if( isset($email['replyto_email']) && $email['replyto_email'] != '' ) {
-		if( isset($email['replyto_name']) && $email['replyto_name'] != '' ) {
-			$mail->addReplyTo($email['replyto_email'], $email['replyto_name']);
+	if( isset($args['replyto_email']) && $args['replyto_email'] != '' ) {
+		if( isset($args['replyto_name']) && $args['replyto_name'] != '' ) {
+			$mail->addReplyTo($args['replyto_email'], $args['replyto_name']);
 		} else {
-			$mail->addReplyTo($email['replyto_email']);
+			$mail->addReplyTo($args['replyto_email']);
 		}
 	}
 
-	if( isset($email['htmlmsg']) && $email['htmlmsg'] != '' ) {
+	if( isset($args['htmlmsg']) && $args['htmlmsg'] != '' ) {
 		$mail->IsHTML(true);
-		$mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['subject']);
-		$mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['htmlmsg']);
-		$mail->AltBody = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['textmsg']);
+		$mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['subject']);
+		$mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['htmlmsg']);
+		$mail->AltBody = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
 	} else {
 		$mail->IsHTML(false);
-		$mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['subject']);
-		$mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $email['textmsg']);
+		$mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['subject']);
+		$mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
 	}
 
 	if( !$mail->Send() ) {
 		error_log("MAIL-ERR: [" . $user['email'] . "] " . $mail->ErrorInfo);
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'56', 'msg'=>'Unable to send email'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'56', 'msg'=>'Unable to send email: ' . $mail->ErrorInfo));
 	}
 
 	return array('stat'=>'ok');
