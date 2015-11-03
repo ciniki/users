@@ -12,7 +12,7 @@ function ciniki_users_avatar() {
 			'mc', 'narrow', 'sectioned', 'ciniki.users.avatar.edit');
 		this.edit.data = {'image_id':0};
 		this.edit.sections = {
-			'_image':{'label':'Upload Photo', 'type':'simpleform', 'fields':{
+			'_image':{'label':'Upload Photo', 'type':'imageform', 'fields':{
 				'image_id':{'label':'', 'hidelabel':'yes', 'controls':'all', 'type':'image_id'},
 				}},
 			'_save':{'label':'', 'buttons':{
