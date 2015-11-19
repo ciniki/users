@@ -39,7 +39,7 @@ function ciniki_users_userUpdate(&$ciniki) {
 	// Check access 
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.updateDetails', $args['user_id']);
+	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.userUpdate', $args['user_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
