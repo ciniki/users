@@ -44,6 +44,9 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
+	if( in_array('-1', $ids) ) {
+		$rc[$container_name]['-1'] = array('display_name'=>'Paypal IPN');
+	}
 	if( in_array('-2', $ids) ) {
 		$rc[$container_name]['-2'] = array('display_name'=>'Website');
 	}
