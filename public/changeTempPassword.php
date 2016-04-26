@@ -55,11 +55,12 @@ function ciniki_users_changeTempPassword($ciniki) {
 	//
 	// Check temp password
 	// Must change password within 30 minutes (1800 seconds)
-	$strsql = "SELECT id, email "
+    //
+	$strsql = "SELECT id, email, temp_password, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - UNIX_TIMESTAMP(temp_password_date)) AS temp_password_age "
         . "FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' "
-		. "AND temp_password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['temppassword']) . "') "
-		. "AND (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - UNIX_TIMESTAMP(temp_password_date)) < 1800 "
+//		. "AND temp_password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['temppassword']) . "') "
+//		. "AND (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - UNIX_TIMESTAMP(temp_password_date)) < 1800 "
 		. "";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
@@ -67,9 +68,18 @@ function ciniki_users_changeTempPassword($ciniki) {
 		return $rc;
 	}
 	if( !isset($rc['user']) || !is_array($rc['user']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'466', 'msg'=>'Time has expired, you must reset your password within 30 minutes of getting the email.'));
+//		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'466', 'msg'=>'Time has expired, you must reset your password within 30 minutes of getting the email.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'466', 'msg'=>'Could not find the email address.'));
 	}
 	$user = $rc['user'];
+    
+    if( $user['temp_password'] == '' ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3334', 'msg'=>'Your password has already been reset. You can request a new activation code below.'));
+    }
+
+    if( $user['temp_password_age'] > 1800 ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3335', 'msg'=>"It has been more than 30 minutes, you'll need to request a new activation code."));
+    }
 
 	//
 	// Perform an extra check to make sure only 1 row was found, other return error
@@ -105,10 +115,11 @@ function ciniki_users_changeTempPassword($ciniki) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'463', 'msg'=>'Unable to update password.'));
 	}
 
-	if( $rc['num_affected_rows'] < 1 ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'464', 'msg'=>'Unable to change password.'));
-	}
+//  Don't worry if password was reset to same password, more errors confuse users
+//	if( $rc['num_affected_rows'] < 1 ) {
+//		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
+//		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'464', 'msg'=>'Unable to change password.'));
+//	}
 
 	//
 	// Commit all the changes to the database
