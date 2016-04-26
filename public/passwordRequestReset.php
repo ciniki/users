@@ -57,7 +57,8 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
 	//
 	// Get the username for the account
 	//
-	$strsql = "SELECT id, username, email, firstname, lastname, display_name FROM ciniki_users "
+	$strsql = "SELECT id, username, email, firstname, lastname, display_name "
+        . "FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' ";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
@@ -137,7 +138,7 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
 	// Email sysadmins to let them know of a password reset request
 	//
 	if( isset($ciniki['config']['ciniki.users']['password.forgot.notify']) && $ciniki['config']['ciniki.users']['password.forgot.notify'] != '' ) {
-		date_default_timezone_set('America/Eastern');
+		date_default_timezone_set('UTC');
 		$subject = $user['display_name'] . " forgot password";
 		$msg = "Forgot password request: \n\n"
 			. "user: " . $user['display_name'] . "\n"
@@ -145,7 +146,6 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
 			. "email: " . $user['email'] . "\n"
 			. "time: " . date("D M j, Y H:i e") . "\n"
 			. "" . "\n";
-//		mail($ciniki['config']['ciniki.users']['password.forgot.notify'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 		$ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.users']['password.forgot.notify'],
 			'subject'=>$subject,
 			'textmsg'=>$msg,

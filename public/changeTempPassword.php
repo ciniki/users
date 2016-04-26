@@ -55,7 +55,8 @@ function ciniki_users_changeTempPassword($ciniki) {
 	//
 	// Check temp password
 	// Must change password within 30 minutes (1800 seconds)
-	$strsql = "SELECT id, email FROM ciniki_users "
+	$strsql = "SELECT id, email "
+        . "FROM ciniki_users "
 		. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $args['email']) . "' "
 		. "AND temp_password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['temppassword']) . "') "
 		. "AND (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - UNIX_TIMESTAMP(temp_password_date)) < 1800 "
