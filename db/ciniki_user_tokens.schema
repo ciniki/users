@@ -1,0 +1,25 @@
+#
+# Description
+# -----------
+# This table stores user tokens for long term persistent logins.
+# changed by anybody other than moss root, or themselves.
+#
+# Fields
+# ------
+# user_id:		The ID for the user.
+#
+# selector:     A UUID for the token.
+#
+# token_hash:   The SHA1 of the token generated for the user.
+# 
+# date_added:	    The UTC date and time the token was added.
+# last_accessed:	The UTC date and time the token was last accessed.
+#
+create table ciniki_user_tokens (
+    user_id int not null,
+	selector char(36) not null,
+    token varchar(100) not null,
+    date_added datetime not null,
+    unique index (selector, token)
+) ENGINE='InnoDB', COMMENT='v1.01';
+

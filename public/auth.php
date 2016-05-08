@@ -33,6 +33,8 @@ function ciniki_users_auth(&$ciniki) {
 		|| !isset($ciniki['request']['args']['email']))
 		&& !isset($ciniki['request']['args']['password']) 
 		&& !isset($ciniki['request']['auth_token'])
+		&& !isset($ciniki['request']['args']['user_selector'])
+		&& !isset($ciniki['request']['args']['user_token'])
 		) {
 		//
 		// This return message should be cryptic so people
@@ -50,7 +52,17 @@ function ciniki_users_auth(&$ciniki) {
 		return $rc;
 	}
 
-	if( isset($ciniki['request']['auth_token']) && $ciniki['request']['auth_token'] != '' ) {
+	if( isset($ciniki['request']['args']['user_selector']) && $ciniki['request']['args']['user_selector'] != '' 
+        && isset($ciniki['request']['args']['user_token']) && $ciniki['request']['args']['user_token'] != '' 
+        ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionTokenStart');
+		$rc = ciniki_core_sessionTokenStart($ciniki, $ciniki['request']['args']['user_selector'], $ciniki['request']['args']['user_token']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$version = $rc['version'];
+		$auth = $rc['auth'];
+    } else if( isset($ciniki['request']['auth_token']) && $ciniki['request']['auth_token'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionOpen');
 		$rc = ciniki_core_sessionOpen($ciniki);
 		if( $rc['stat'] != 'ok' ) {
@@ -81,6 +93,53 @@ function ciniki_users_auth(&$ciniki) {
 	} else {
 		$auth['settings'] = array();
 	}
+
+    //
+    // Check if a user token should be setup
+    //
+    if( isset($ciniki['request']['args']['rm']) && $ciniki['request']['args']['rm'] == 'yes' ) {
+        $user_token = '';
+        $chars = 'abcefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        for($i=0;$i<20;$i++) {
+            $user_token .= substr($chars, rand(0, strlen($chars)-1), 1);
+        }
+        $user_token = sha1($user_token);
+
+        //
+        // Check for cookie user_selector
+        //
+        if( isset($_COOKIE['_UTS']) && $_COOKIE['_UTS'] != '' ) {
+            $user_selector = $_COOKIE['_UTS'];
+        } else {
+            //
+            // Create a new user token
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUUID');
+            $rc = ciniki_core_dbUUID($ciniki, 'ciniki.users');
+            if( $rc['stat'] == 'ok' ) { 
+                $user_selector = $rc['uuid'];
+            }
+        }
+
+        if( isset($user_selector) ) {
+            $dt = new DateTime('now', new DateTimezone('UTC'));
+            $dt->add(new DateInterval('P1M'));
+            $strsql = "INSERT INTO ciniki_user_tokens (user_id, selector, token, date_added) VALUES ("
+                . "'" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "', "
+                . "'" . ciniki_core_dbQuote($ciniki, $user_selector) . "', "
+                . "'" . ciniki_core_dbQuote($ciniki, $user_token) . "', "
+                . "UTC_TIMESTAMP())";
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
+            if( $rc['stat'] != 'ok' ) {
+                error_log('AUTH-ERR: ' . print_r($rc, true));
+            } else {
+                $auth['user_selector'] = $user_selector;
+                $auth['user_token'] = $user_token;
+//                setcookie('_UTS', $user_selector, time()+(10*60*60*24*30), '/manager');
+ //               setcookie('_UTK', $user_selector, time()+(10*60*60*24*30), '/manager');
+            }
+        }
+    }
 
 	//
 	// If the user is not a sysadmin, check if they only have access to one business
