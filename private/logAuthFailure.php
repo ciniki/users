@@ -68,7 +68,6 @@ function ciniki_users_logAuthFailure($ciniki, $username, $err_code) {
 					. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $rc['user']['id']) . "' "
 					. "AND status < 10";
 				ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
-				print "ciniki_core_alertGenerate\n";
 				ciniki_core_alertGenerate($ciniki, 
 					array('alert'=>'2', 'msg'=>"Account '$username' locked"), null);
 			}
