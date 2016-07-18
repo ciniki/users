@@ -12,18 +12,18 @@
 #
 # Fields
 # ------
-# id:			The id for the user.
-# uuid:			The Universal Unique ID for this user.
-# avatar_id:	The image ID for the users avatar.
-# email:		The email address for the user, can be used to login.
-# username:		The username for the user.
-# password: 	The password for users are stored as a SHA1
-#           	encrypted password.
+# id:           The id for the user.
+# uuid:         The Universal Unique ID for this user.
+# avatar_id:    The image ID for the users avatar.
+# email:        The email address for the user, can be used to login.
+# username:     The username for the user.
+# password:     The password for users are stored as a SHA1
+#               encrypted password.
 #
-# perms:		The permissions this user has.
+# perms:        The permissions this user has.
 #
-#				0x01 - moss root (can add/delete businesses, mod config)
-#				0x02 - moss admin (reduced privileges from moss root)
+#               0x01 - moss root (can add/delete businesses, mod config)
+#               0x02 - moss admin (reduced privileges from moss root)
 #               0x04 - moss web (read only privileges for what is available to website)
 #               0x08 - moss unused
 #               0x10 - unused
@@ -31,75 +31,75 @@
 #               0x40 - unused
 #               0x80 - unused
 #           
-# status: 		 0 - unknown
-#				 1 - active	(login allowed)
-#				 2 - unverified (no login allowed)
-#				 10 - locked
-#				 11 - deleted
+# status:        0 - unknown
+#                1 - active (login allowed)
+#                2 - unverified (no login allowed)
+#                10 - locked
+#                11 - deleted
 #
-# timeout:		The number of seconds the users session can stay active. 
-# 				If set to 0, the system defaults are used.  If set to something 
-#				above 0 then the users session is to logout automatically
-#				after 'timeout' seconds.  
-#	
-#				*note* this field allows individual users to have longer timeouts
-#				if necessary, but should be careful.  The longer the timeout, the 
-# 				more chance of security problems.
+# timeout:      The number of seconds the users session can stay active. 
+#               If set to 0, the system defaults are used.  If set to something 
+#               above 0 then the users session is to logout automatically
+#               after 'timeout' seconds.  
+#   
+#               *note* this field allows individual users to have longer timeouts
+#               if necessary, but should be careful.  The longer the timeout, the 
+#               more chance of security problems.
 #
-# firstname:	The users first name.
+# firstname:    The users first name.
 #
-# lastname:		The users last name.
+# lastname:     The users last name.
 #
-# display_name:	The text string to return as the customers name to be displayed on 
-#				websites and admin areas.  If this has not been specified, the
-#				username should be used.  Email should never be displayed to
-#				the general public.
+# display_name: The text string to return as the customers name to be displayed on 
+#               websites and admin areas.  If this has not been specified, the
+#               username should be used.  Email should never be displayed to
+#               the general public.
 #
-# login_attempts:	The number of times in a row a user has attempted to login and failed.
-#					After 5 attempts the account will be locked, they will have to recover password.
+# login_attempts:   The number of times in a row a user has attempted to login and failed.
+#                   After 5 attempts the account will be locked, they will have to recover password.
 #
-# secret_question:	The question to ask the user when they have forgotten their password.
+# secret_question:  The question to ask the user when they have forgotten their password.
 #
-# secret_answer:	Stored as a SHA1 encrypted string, this is like a second password.
+# secret_answer:    Stored as a SHA1 encrypted string, this is like a second password.
 #
-# temp_password:	The temporary password assigned to the user by ciniki.users.passwordRequestReset
+# temp_password:    The temporary password assigned to the user by ciniki.users.passwordRequestReset
 #
-# temp_password_date:	The UTC date and time when the password reset was requested.  This is used when
-#						the user tries to set a new password with old temporary one, and must be done in timeframe.
+# temp_password_date:   The UTC date and time when the password reset was requested.  This is used when
+#                       the user tries to set a new password with old temporary one, and must be done in timeframe.
 #
-# date_added:	The UTC date and time the user was added to this table.
+# date_added:   The UTC date and time the user was added to this table.
 #
-# last_updated:	The UTC date and time the user record was last updated.
+# last_updated: The UTC date and time the user record was last updated.
 #
-# last_login:		The UTC date and time the user last logged in or authenticated.
+# last_login:       The UTC date and time the user last logged in or authenticated.
 #
-# last_pwd_change:	The UTC date and time the password was last changed.
+# last_pwd_change:  The UTC date and time the password was last changed.
 #
 create table ciniki_users (
-	id int not null auto_increment,
-	uuid char(36) not null,
-	email varchar(255) not null,
-	username varchar(100) not null,
-	password varchar(41) not null,
-	avatar_id int not null,
-	perms tinyint unsigned not null,
-	status tinyint unsigned not null,
-	timeout int not null,
-	firstname varchar(100) not null,
-	lastname varchar(100) not null,
-	display_name varchar(100) not null,
-	login_attempts tinyint unsigned not null,
-	secret_question varchar(100) not null,
-	secret_answer varchar(41) not null,
-	temp_password varchar(41) not null,
-	temp_password_date datetime not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	last_login datetime not null,
-	last_pwd_change datetime not null,
-	primary key (id),
-	unique index (uuid),
-	unique (email),
-	unique (username)
+    id int not null auto_increment,
+    uuid char(36) not null,
+    email varchar(255) not null,
+    username varchar(100) not null,
+    password varchar(41) not null,
+    avatar_id int not null,
+    perms tinyint unsigned not null,
+    status tinyint unsigned not null,
+    timeout int not null,
+    firstname varchar(100) not null,
+    lastname varchar(100) not null,
+    display_name varchar(100) not null,
+    login_attempts tinyint unsigned not null,
+    secret_question varchar(100) not null,
+    secret_answer varchar(41) not null,
+    temp_password varchar(41) not null,
+    temp_password_date datetime not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    last_login datetime not null,
+    last_pwd_change datetime not null,
+    primary key (id),
+    unique index (uuid),
+    unique (email),
+    unique (username)
 ) ENGINE='InnoDB', COMMENT='v1.05';
 

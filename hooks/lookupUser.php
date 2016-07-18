@@ -8,19 +8,19 @@
 // Arguments
 // ---------
 // ciniki:
-// container_name:		The name for the array container for the users.
-// ids:					The array of user IDs to lookup in the database.
+// container_name:      The name for the array container for the users.
+// ids:                 The array of user IDs to lookup in the database.
 //
 // Returns
 // -------
 // <users>
-//		<user id='1' display_name='' />
+//      <user id='1' display_name='' />
 // </users>
 //
 function ciniki_users_hooks_lookupUser(&$ciniki, $business_id, $args) {
 
     if( !isset($args['id']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2761', 'msg'=>'No user specified.'));
+        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2761', 'msg'=>'No user specified.'));
     }
 
     //
@@ -30,19 +30,19 @@ function ciniki_users_hooks_lookupUser(&$ciniki, $business_id, $args) {
         return array('stat'=>'ok', 'user'=>$ciniki['users'][$args['id']]);
     }
 
-	//
-	// Query for the users
-	//
-	$strsql = "SELECT id, display_name "
+    //
+    // Query for the users
+    //
+    $strsql = "SELECT id, display_name "
         . "FROM ciniki_users "
-		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['id']) . "' "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
     if( !isset($rc['user']) ) {
-		return array('stat'=>'noexist', 'user'=>array('id'=>0, 'display_name'=>''));
+        return array('stat'=>'noexist', 'user'=>array('id'=>0, 'display_name'=>''));
     }
 
     if( !isset($ciniki['users']) ) {

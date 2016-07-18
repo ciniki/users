@@ -6,26 +6,26 @@
 #
 # Examples:
 # _ settings.date_format = 'mysql date_format string'
-# ui-calendar-view 				- Set the option to decide the default calendar view for the user
-# ui-calendar-remember-day		- Always remember the day the calendar was last at
+# ui-calendar-view              - Set the option to decide the default calendar view for the user
+# ui-calendar-remember-day      - Always remember the day the calendar was last at
 #
 # ui-mode-guided = (yes|no) Stores the setting from the UI for the mode the user
-#						wants to see the UI in
+#                       wants to see the UI in
 #
 # Fields
 # ------
-# user_id:			The id of the user the detail is attached to.
-# detail_key:		The unique index key to the value stored for the user.
-# detail_value:		The value indexed by the key.
-# date_added:		The date and time the record was added.
-# last_updated:		The date and time the record was last updated.
+# user_id:          The id of the user the detail is attached to.
+# detail_key:       The unique index key to the value stored for the user.
+# detail_value:     The value indexed by the key.
+# date_added:       The date and time the record was added.
+# last_updated:     The date and time the record was last updated.
 #
 create table ciniki_user_details (
-	user_id int not null,
-	detail_key varchar(50) not null,
-	detail_value varchar(255) not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (user_id, detail_key)
+    user_id int not null,
+    detail_key varchar(50) not null,
+    detail_value varchar(255) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (user_id, detail_key)
 ) ENGINE='InnoDB', COMMENT='v1.01';
 

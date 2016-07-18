@@ -6,21 +6,21 @@
 #
 # Fields
 # ------
-# username:			The username submitted to moss.users.auth
+# username:         The username submitted to moss.users.auth
 #
-# api_key:			The api_key argument, if specified, otherwise blank.
+# api_key:          The api_key argument, if specified, otherwise blank.
 #
-# ip_address:		The ip address the request came from.
+# ip_address:       The ip address the request came from.
 #
-# code:				The error code the failure occured on.  This is the same code that will be reported back to the user.
+# code:             The error code the failure occured on.  This is the same code that will be reported back to the user.
 #
-# log_date:			The date and time of the request.
+# log_date:         The date and time of the request.
 #
 create table ciniki_user_auth_failures (
-	username varchar(100) not null,
-	api_key varchar(32) not null,
-	ip_address varchar(32) not null,
-	code int not null,
-	log_date datetime not null,
-	primary key (username, api_key, ip_address, log_date)
+    username varchar(100) not null,
+    api_key varchar(32) not null,
+    ip_address varchar(32) not null,
+    code int not null,
+    log_date datetime not null,
+    primary key (username, api_key, ip_address, log_date)
 ) ENGINE='InnoDB', COMMENT='v1.01';

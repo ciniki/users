@@ -6,7 +6,7 @@
 //
 // Info
 // ----
-// publish:			yes
+// publish:         yes
 // 
 // Arguments
 // ---------
@@ -18,18 +18,18 @@
 // <rsp stat="ok" />
 //
 function ciniki_users_logout($ciniki) {
-	//
-	// Check access 
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
-	$rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.logout', 0);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
+    //
+    // Check access 
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
+    $rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.logout', 0);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionEnd');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionEnd');
 
-	$rc = ciniki_core_sessionEnd($ciniki);
+    $rc = ciniki_core_sessionEnd($ciniki);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -40,10 +40,10 @@ function ciniki_users_logout($ciniki) {
         $strsql = "DELETE FROM ciniki_user_tokens "
             . "WHERE selector = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['user_selector']) . "' "
             . "";
-		$rc = ciniki_core_dbDelete($ciniki, $strsql, 'ciniki.core');
-		if( $rc['stat'] == 'ok' && $rc['num_affected_rows'] == 1 ) {
-			// FIXME: Add code to track number of active sessions in users table, limit to X sessions.
-		}
+        $rc = ciniki_core_dbDelete($ciniki, $strsql, 'ciniki.core');
+        if( $rc['stat'] == 'ok' && $rc['num_affected_rows'] == 1 ) {
+            // FIXME: Add code to track number of active sessions in users table, limit to X sessions.
+        }
     }
 
     return array('stat'=>'ok');

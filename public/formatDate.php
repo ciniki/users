@@ -6,13 +6,13 @@
 //
 // Info
 // ----
-// publish: 		no
+// publish:         no
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// date:			The date string to format.
+// date:            The date string to format.
 // 
 // Returns
 // -------
@@ -40,30 +40,30 @@ function ciniki_users_formatDate($ciniki) {
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
-	
-	//
-	// Get the current time in the users format
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'dateFormat');
-	$date_format = ciniki_users_dateFormat($ciniki);
+    
+    //
+    // Get the current time in the users format
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'dateFormat');
+    $date_format = ciniki_users_dateFormat($ciniki);
 
-	// date_default_timezone_set('America/Toronto');
+    // date_default_timezone_set('America/Toronto');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-	$strsql = "SELECT DATE_FORMAT(FROM_UNIXTIME('" . strtotime($args['date']) . "'), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as formatted_date ";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.core', 'date');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$formatted_date = '';
-	if( isset($rc['date']['formatted_date']) ) {
-		$formatted_date = $rc['date']['formatted_date'];
-	}
+    $strsql = "SELECT DATE_FORMAT(FROM_UNIXTIME('" . strtotime($args['date']) . "'), '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as formatted_date ";
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.core', 'date');
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $formatted_date = '';
+    if( isset($rc['date']['formatted_date']) ) {
+        $formatted_date = $rc['date']['formatted_date'];
+    }
 
-	//
-	// Currently the same list as private/getSettings, but may be alter in the future
-	// to only contain settings available
-	//
-	return array('stat'=>'ok', 'date'=>$formatted_date);
+    //
+    // Currently the same list as private/getSettings, but may be alter in the future
+    // to only contain settings available
+    //
+    return array('stat'=>'ok', 'date'=>$formatted_date);
 }
 ?>

@@ -6,13 +6,13 @@
 #
 # Fields
 # ------
-# user_id:		The ID for the user.
+# user_id:      The ID for the user.
 #
 # selector:     A UUID for the token.
 #
 # token_hash:   The SHA1 of the token generated for the user.
 # 
-# date_added:	    The UTC date and time the token was added.
+# date_added:       The UTC date and time the token was added.
 #
 # last_auth:        The UTC date and time the token was last used to authenticate.
 #
