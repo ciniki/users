@@ -2,7 +2,6 @@
 # Description
 # -----------
 # This table stores user tokens for long term persistent logins.
-# changed by anybody other than moss root, or themselves.
 #
 # Fields
 # ------

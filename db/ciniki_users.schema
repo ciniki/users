@@ -6,9 +6,9 @@
 # as owners, managers, customers, and to images and suppliers.
 #
 # Users who have perms 0x01, 0x02 or 0x04 cannot have their information
-# changed by anybody other than moss root, or themselves.
+# changed by anybody other than ciniki root, or themselves.
 #
-# Only a 'moss root' user can set the moss flags on an account.
+# Only a 'ciniki root' user can set the ciniki flags on an account.
 #
 # Fields
 # ------
@@ -22,14 +22,14 @@
 #
 # perms:        The permissions this user has.
 #
-#               0x01 - moss root (can add/delete businesses, mod config)
-#               0x02 - moss admin (reduced privileges from moss root)
-#               0x04 - moss web (read only privileges for what is available to website)
-#               0x08 - moss unused
-#               0x10 - unused
-#               0x20 - unused
-#               0x40 - unused
-#               0x80 - unused
+#               0x01 - ciniki root (can add/delete businesses, mod config)
+#               0x02 - 
+#               0x04 - 
+#               0x08 -
+#               0x10 -
+#               0x20 -
+#               0x40 -
+#               0x80 -
 #           
 # status:        0 - unknown
 #                1 - active (login allowed)
