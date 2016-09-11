@@ -131,6 +131,7 @@ function ciniki_users_auth(&$ciniki) {
                 . "'" . ciniki_core_dbQuote($ciniki, $user_selector) . "', "
                 . "'" . ciniki_core_dbQuote($ciniki, $user_token) . "', "
                 . "UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
             $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
             if( $rc['stat'] != 'ok' ) {
                 error_log('AUTH-ERR: ' . print_r($rc, true));
