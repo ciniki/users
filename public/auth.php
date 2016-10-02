@@ -108,8 +108,6 @@ function ciniki_users_auth(&$ciniki) {
         //
         // Check for cookie user_selector
         //
-//        if( isset($_COOKIE['_UTS']) && $_COOKIE['_UTS'] != '' ) {
-//            $user_selector = $_COOKIE['_UTS'];
         if( isset($ciniki['request']['user_selector']) && $ciniki['request']['user_selector'] != '' ) {
             $user_selector = $ciniki['request']['user_selector'];
         } else {
@@ -129,7 +127,7 @@ function ciniki_users_auth(&$ciniki) {
             $strsql = "INSERT INTO ciniki_user_tokens (user_id, selector, token, date_added, last_auth) VALUES ("
                 . "'" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "', "
                 . "'" . ciniki_core_dbQuote($ciniki, $user_selector) . "', "
-                . "'" . ciniki_core_dbQuote($ciniki, $user_token) . "', "
+                . "'" . ciniki_core_dbQuote($ciniki, hash('sha256', $user_token)) . "', "
                 . "UTC_TIMESTAMP(), UTC_TIMESTAMP())";
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
             $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
@@ -138,8 +136,6 @@ function ciniki_users_auth(&$ciniki) {
             } else {
                 $auth['user_selector'] = $user_selector;
                 $auth['user_token'] = $user_token;
-//                setcookie('_UTS', $user_selector, time()+(10*60*60*24*30), '/manager');
- //               setcookie('_UTK', $user_selector, time()+(10*60*60*24*30), '/manager');
             }
         }
     }
