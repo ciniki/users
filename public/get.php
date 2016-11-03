@@ -63,7 +63,7 @@ function ciniki_users_get($ciniki) {
         return $rc;
     }
     if( !isset($rc['user']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'511', 'msg'=>'Unable to find user'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.33', 'msg'=>'Unable to find user'));
     }
     $user = $rc['user'];
 

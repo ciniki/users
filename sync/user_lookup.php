@@ -32,7 +32,7 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1021', 'msg'=>"Unable to get the user id", 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.70', 'msg'=>"Unable to get the user id", 'err'=>$rc['err']));
         }
         if( isset($rc['user']) ) {
             return array('stat'=>'ok', 'id'=>$rc['user']['id']);
@@ -49,7 +49,7 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1022', 'msg'=>'Unable to get user id from history', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.71', 'msg'=>'Unable to get user id from history', 'err'=>$rc['err']));
         }
         if( isset($rc['user']) ) {
             return array('stat'=>'ok', 'id'=>$rc['user']['table_key']);
@@ -61,19 +61,19 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'syncRequest');
         $rc = ciniki_core_syncRequest($ciniki, $sync, array('method'=>'ciniki.users.user.get', 'uuid'=>$args['remote_uuid']));
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1023', 'msg'=>'Unable to get user from remote server', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.72', 'msg'=>'Unable to get user from remote server', 'err'=>$rc['err']));
         }
 
         if( isset($rc['object']) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_update');
             $rc = ciniki_users_user_update($ciniki, $sync, $business_id, array('object'=>$rc['object']));
             if( $rc['stat'] != 'ok' ) {
-                return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1024', 'msg'=>'Unable to add user to local server', 'err'=>$rc['err']));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.73', 'msg'=>'Unable to add user to local server', 'err'=>$rc['err']));
             }
             return array('stat'=>'ok', 'id'=>$rc['id']);
         }
 
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1048', 'msg'=>'Unable to find user'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.74', 'msg'=>'Unable to find user'));
     }
 
     //
@@ -88,7 +88,7 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1046', 'msg'=>"Unable to get the user uuid", 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.75', 'msg'=>"Unable to get the user uuid", 'err'=>$rc['err']));
         }
         if( isset($rc['user']) ) {
             return array('stat'=>'ok', 'uuid'=>$rc['user']['uuid']);
@@ -105,15 +105,15 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1047', 'msg'=>'Unable to get user id from history', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.76', 'msg'=>'Unable to get user id from history', 'err'=>$rc['err']));
         }
         if( isset($rc['user']) ) {
             return array('stat'=>'ok', 'uuid'=>$rc['user']['new_value']);
         }
         
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1049', 'msg'=>'Unable to find user'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.77', 'msg'=>'Unable to find user'));
     }
 
-    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1020', 'msg'=>'No user specified'));
+    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.78', 'msg'=>'No user specified'));
 }
 ?>

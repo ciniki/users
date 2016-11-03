@@ -51,7 +51,7 @@ function ciniki_users_avatarDelete(&$ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) { 
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'453', 'msg'=>'Internal Error', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.16', 'msg'=>'Internal Error', 'err'=>$rc['err']));
     }   
 
     //
@@ -101,7 +101,7 @@ function ciniki_users_avatarDelete(&$ciniki) {
     //
     $rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'439', 'msg'=>'Unable to delete avatar', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.17', 'msg'=>'Unable to delete avatar', 'err'=>$rc['err']));
     }
 
     return array('stat'=>'ok');

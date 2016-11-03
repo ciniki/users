@@ -40,7 +40,7 @@ function ciniki_users_monitorAuthLogs($ciniki) {
     $strsql = "SELECT UNIX_TIMESTAMP(UTC_TIMESTAMP()) as cur";
     $ts = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'timestamp');
     if( $ts['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'246', 'msg'=>'No timestamp available'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.35', 'msg'=>'No timestamp available'));
     }
 
     //

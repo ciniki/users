@@ -12,7 +12,7 @@
 function ciniki_users_mergeDisplayNames($ciniki, $hash) {
 
     if( !is_array($ids) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'249', 'msg'=>'Invalid list of users'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.9', 'msg'=>'Invalid list of users'));
     }
 
     //

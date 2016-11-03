@@ -53,7 +53,7 @@ function ciniki_users_removeSysAdmin($ciniki) {
         return $rc;
     }
     if( !isset($rc['count']['admins']) || $rc['count']['admins'] < 1 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'202', 'msg'=>'Unable to remove last Sys Admin'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.41', 'msg'=>'Unable to remove last Sys Admin'));
     }
 
     //

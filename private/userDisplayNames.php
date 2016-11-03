@@ -20,7 +20,7 @@
 function ciniki_users_userDisplayNames($ciniki, $container_name, $ids) {
 
     if( !is_array($ids) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'62', 'msg'=>'Invalid list of users'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.8', 'msg'=>'Invalid list of users'));
     }
 
     //

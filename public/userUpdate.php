@@ -73,7 +73,7 @@ function ciniki_users_userUpdate(&$ciniki) {
             return $rc;
         }
         if( isset($rc['num_rows']) && $rc['num_rows'] > 0 ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1029', 'msg'=>'Username already taken'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.52', 'msg'=>'Username already taken'));
         }
     }
 
@@ -91,7 +91,7 @@ function ciniki_users_userUpdate(&$ciniki) {
             return $rc;
         }
         if( isset($rc['num_rows']) && $rc['num_rows'] > 0 ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1055', 'msg'=>'Email already taken'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.53', 'msg'=>'Email already taken'));
         }
     }
 
@@ -116,7 +116,7 @@ function ciniki_users_userUpdate(&$ciniki) {
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2197', 'msg'=>'Unable to update user', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.54', 'msg'=>'Unable to update user', 'err'=>$rc['err']));
     }
     
     //
@@ -154,7 +154,7 @@ function ciniki_users_userUpdate(&$ciniki) {
     //
     $rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2198', 'msg'=>'Unable to update user detail', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.55', 'msg'=>'Unable to update user detail', 'err'=>$rc['err']));
     }
 
     //

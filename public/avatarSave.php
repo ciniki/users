@@ -54,7 +54,7 @@ function ciniki_users_avatarSave(&$ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) { 
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'440', 'msg'=>'Internal Error', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.18', 'msg'=>'Internal Error', 'err'=>$rc['err']));
     }   
 
     //
@@ -108,7 +108,7 @@ function ciniki_users_avatarSave(&$ciniki) {
     //
     $rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'441', 'msg'=>'Unable to save avatar', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.19', 'msg'=>'Unable to save avatar', 'err'=>$rc['err']));
     }
 
     return array('stat'=>'ok', 'avatar_id'=>$args['image_id']);

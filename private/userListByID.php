@@ -20,7 +20,7 @@
 function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
 
     if( !is_array($ids) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'250', 'msg'=>'Invalid list of users'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.10', 'msg'=>'Invalid list of users'));
     }
 
     if( count($ids) < 1 ) {

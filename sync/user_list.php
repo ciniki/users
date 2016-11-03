@@ -16,11 +16,11 @@ function ciniki_users_user_list($ciniki, $sync, $business_id, $args) {
     //
     if( !isset($args['type']) ||
         ($args['type'] != 'partial' && $args['type'] != 'full' && $args['type'] != 'incremental') ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'99', 'msg'=>'No type specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.67', 'msg'=>'No type specified'));
     }
     if( $args['type'] == 'incremental' 
         && (!isset($args['since_uts']) || $args['since_uts'] == '') ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'97', 'msg'=>'No timestamp specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.68', 'msg'=>'No timestamp specified'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
@@ -48,7 +48,7 @@ function ciniki_users_user_list($ciniki, $sync, $business_id, $args) {
         . "";
     $rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.users', 'users', 'uuid');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'95', 'msg'=>'Unable to get list', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.69', 'msg'=>'Unable to get list', 'err'=>$rc['err']));
     }
 
     if( !isset($rc['users']) ) {

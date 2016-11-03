@@ -20,7 +20,7 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
     // Check for user_id
     //
     if( !isset($args['user_id']) || $args['user_id'] == '' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2616', 'msg'=>'No user specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.1', 'msg'=>'No user specified'));
     }
 
     //
@@ -34,7 +34,7 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
     if( $rc['stat'] != 'ok' || !isset($rc['user']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'248', 'msg'=>'Unable to find email information', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.2', 'msg'=>'Unable to find email information', 'err'=>$rc['err']));
     }
     $user = $rc['user'];
 
@@ -122,7 +122,7 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
 
     if( !$mail->Send() ) {
         error_log("MAIL-ERR: [" . $user['email'] . "] " . $mail->ErrorInfo);
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'56', 'msg'=>'Unable to send email: ' . $mail->ErrorInfo));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.3', 'msg'=>'Unable to send email: ' . $mail->ErrorInfo));
     }
 
     return array('stat'=>'ok');

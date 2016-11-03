@@ -39,7 +39,7 @@ function ciniki_users_changePassword($ciniki) {
     $args = $rc['args'];
     
     if( strlen($args['newpassword']) < 8 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'121', 'msg'=>'New password must be longer than 8 characters.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.20', 'msg'=>'New password must be longer than 8 characters.'));
     }
 
     //
@@ -67,7 +67,7 @@ function ciniki_users_changePassword($ciniki) {
     // Perform an extra check to make sure only 1 row was found, other return error
     //
     if( $rc['num_rows'] != 1 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'122', 'msg'=>'Invalid old password'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.21', 'msg'=>'Invalid old password'));
     }
 
     //
@@ -93,17 +93,17 @@ function ciniki_users_changePassword($ciniki) {
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'335', 'msg'=>'Unable to update password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.22', 'msg'=>'Unable to update password.'));
     }
 
     if( $rc['num_affected_rows'] < 1 ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'123', 'msg'=>'Unable to change password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.23', 'msg'=>'Unable to change password.'));
     }
 
     $rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'336', 'msg'=>'Unable to update password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.24', 'msg'=>'Unable to update password.'));
     }
 
     return array('stat'=>'ok');

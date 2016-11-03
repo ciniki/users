@@ -48,7 +48,7 @@ function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
     //
     if( (!isset($args['uuid']) || $args['uuid'] == '') 
         && (!isset($args['id']) || $args['id'] == '') ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'92', 'msg'=>'No user specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.62', 'msg'=>'No user specified'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
@@ -84,7 +84,7 @@ function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
     } elseif( isset($args['id']) && $args['id'] != '' ) {
         $strsql .= "WHERE u1.id = '" . ciniki_core_dbQuote($ciniki, $args['id']) . "' ";
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'91', 'msg'=>'No user specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.63', 'msg'=>'No user specified'));
     }
     $strsql .= "ORDER BY u1.uuid ";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
@@ -96,14 +96,14 @@ function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
                 'action', 'table_field', 'new_value', 'log_date')),
         ));
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'85', 'msg'=>'Error retrieving the user information', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.64', 'msg'=>'Error retrieving the user information', 'err'=>$rc['err']));
     }
 
     //
     // Check that one and only one row was returned
     //
     if( !isset($rc['users']) || count($rc['users']) != 1 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'82', 'msg'=>'User does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.65', 'msg'=>'User does not exist'));
     }
     $user = array_pop($rc['users']);
 
@@ -138,7 +138,7 @@ function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
                 'action', 'table_field', 'new_value', 'log_date')),
         ));
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'81', 'msg'=>'Error retrieving the user information', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.66', 'msg'=>'Error retrieving the user information', 'err'=>$rc['err']));
     }
     if( !isset($rc['details']) ) {
         $user['user_details'] = array();

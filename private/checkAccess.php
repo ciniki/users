@@ -38,7 +38,7 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
         || !isset($ciniki['session']['user'])
         || !isset($ciniki['session']['user']['id'])
         || $ciniki['session']['user']['id'] < 1 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'103', 'msg'=>'User not authenticated'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.5', 'msg'=>'User not authenticated'));
     }
 
     //
@@ -81,7 +81,7 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'737', 'msg'=>'Access denied', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.6', 'msg'=>'Access denied', 'err'=>$rc['err']));
         }
 
         //
@@ -113,6 +113,6 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
     //
     // By default fail
     //
-    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'69', 'msg'=>'Access denied'));
+    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.7', 'msg'=>'Access denied'));
 }
 ?>

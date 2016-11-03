@@ -20,7 +20,7 @@
 function ciniki_users_hooks_lookupUser(&$ciniki, $business_id, $args) {
 
     if( !isset($args['id']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2761', 'msg'=>'No user specified.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.4', 'msg'=>'No user specified.'));
     }
 
     //

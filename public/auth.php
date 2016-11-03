@@ -40,7 +40,7 @@ function ciniki_users_auth(&$ciniki) {
         // This return message should be cryptic so people
         // can't use the error code to determine what went wrong
         //
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'8', 'msg'=>'Invalid password'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.15', 'msg'=>'Invalid password'));
     }
 
     //

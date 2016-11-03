@@ -63,10 +63,10 @@ function ciniki_users_resetPassword(&$ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'240', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.42', 'msg'=>'Unable to reset password.', 'err'=>$rc['err']));
     }
     if( !isset($rc['user']) || !isset($rc['user']['username']) || !isset($rc['user']['email']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'241', 'msg'=>'Unable to reset password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.43', 'msg'=>'Unable to reset password.'));
     }
     $user = $rc['user'];
 
@@ -90,12 +90,12 @@ function ciniki_users_resetPassword(&$ciniki) {
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'243', 'msg'=>'Unable to reset password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.44', 'msg'=>'Unable to reset password.'));
     }
 
     if( $rc['num_affected_rows'] < 1 ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'245', 'msg'=>'Unable to reset password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.45', 'msg'=>'Unable to reset password.'));
     }
 
     //
@@ -133,7 +133,7 @@ function ciniki_users_resetPassword(&$ciniki) {
     //
     $rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'247', 'msg'=>'Unable to reset password.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.46', 'msg'=>'Unable to reset password.'));
     }
 
     return array('stat'=>'ok');
