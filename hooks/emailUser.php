@@ -51,6 +51,19 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
 
     $mail = new PHPMailer;
 
+    $mail->SMTPOptions = array(
+        'tls'=>array(
+            'verify_peer'=> false,
+            'verify_peer_name'=> false,
+            'allow_self_signed'=> true,
+        ),
+        'ssl'=>array(
+            'verify_peer'=> false,
+            'verify_peer_name'=> false,
+            'allow_self_signed'=> true,
+        ),
+    );
+
     $mail->IsSMTP();
 
     $use_config = 'yes';
@@ -61,19 +74,22 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
             && isset($rc['settings']['smtp-servers']) && $rc['settings']['smtp-servers'] != ''
             && isset($rc['settings']['smtp-username']) && $rc['settings']['smtp-username'] != ''
             && isset($rc['settings']['smtp-password']) && $rc['settings']['smtp-password'] != ''
-            && isset($rc['settings']['smtp-secure']) && $rc['settings']['smtp-secure'] != ''
+//            && isset($rc['settings']['smtp-secure']) && $rc['settings']['smtp-secure'] != ''
             && isset($rc['settings']['smtp-port']) && $rc['settings']['smtp-port'] != ''
             ) {
             $mail->Host = $rc['settings']['smtp-servers'];
             $mail->SMTPAuth = true;
             $mail->Username = $rc['settings']['smtp-username'];
             $mail->Password = $rc['settings']['smtp-password'];
-            $mail->SMTPSecure = $rc['settings']['smtp-secure'];
+            //$mail->SMTPSecure = $rc['settings']['smtp-secure'];
+            if( isset($rc['settings']['smtp-secure']) && $rc['settings']['smtp-secure'] != '' ) {
+                $mail->SMTPSecure = $rc['settings']['smtp-secure'];
+            }
             $mail->Port = $rc['settings']['smtp-port'];
             $use_config = 'no';
 
-            if( isset($rc['settings']['smtp-secure']) && $rc['settings']['smtp-secure'] != ''
-                && isset($rc['settings']['smtp-port']) && $rc['settings']['smtp-port'] != '' ) {
+            if( isset($rc['settings']['smtp-from-address']) && $rc['settings']['smtp-from-address'] != ''
+                && isset($rc['settings']['smtp-from-name']) && $rc['settings']['smtp-from-name'] != '' ) {
                 $mail->From = $rc['settings']['smtp-from-address'];
                 $mail->FromName = $rc['settings']['smtp-from-name'];
             } else {
