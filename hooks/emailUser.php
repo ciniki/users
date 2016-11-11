@@ -69,7 +69,8 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
         //
         $msg = array(
             'from' => $settings['smtp-from-name'] . ' <' . $settings['smtp-from-address'] . '>',
-            'subject' => iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['subject']),
+            'subject' => $args['subject'],
+//            'subject' => iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['subject']),
             );
         if( isset($ciniki['config']['ciniki.mail']['force.mailto']) ) {
             $msg['to'] = $user['name'] . ' <' . $ciniki['config']['ciniki.mail']['force.mailto'] . '>';
@@ -86,9 +87,11 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
             }
         }
         // Add the message
-        $msg['text'] = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
+//        $msg['text'] = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
+        $msg['text'] = $args['textmsg'];
         if( isset($args['htmlmsg']) && $args['htmlmsg'] != '' ) {
-            $msg['html'] = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['htmlmsg']);
+            $msg['html'] = $args['htmlmsg'];
+            //$msg['html'] = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['htmlmsg']);
         }
 
         //
@@ -102,7 +105,9 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
         curl_setopt($ch, CURLOPT_URL, 'https://api.mailgun.net/v3/' . $settings['mailgun-domain'] . '/messages');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $msg);
 
+        error_log('send');
         $rsp = json_decode(curl_exec($ch));
+        error_log(print_r($rsp, true));
 
         $info = curl_getinfo($ch);
         if( $info['http_code'] != 200 ) {
