@@ -61,7 +61,8 @@ function ciniki_users_setPassword($ciniki) {
     //
     // Update the password, but only if the old one matches
     //
-    $strsql = "UPDATE ciniki_users SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['password']) . "') "
+    $strsql = "UPDATE ciniki_users "
+        . "SET password = SHA1('" . ciniki_core_dbQuote($ciniki, $args['password']) . "') "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' ";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.users');
@@ -69,7 +70,8 @@ function ciniki_users_setPassword($ciniki) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.47', 'msg'=>'Unable to set password.'));
     }
-
+    
+    error_log(print_r($rc, true));
     if( $rc['num_affected_rows'] < 1 ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.48', 'msg'=>'Unable to set password.'));

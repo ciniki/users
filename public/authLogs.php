@@ -4,10 +4,6 @@
 // -----------
 // This method will return the logs for user.
 //
-// Info
-// ----
-// publish:         no
-//
 // Arguments
 // ---------
 // api_key:
@@ -17,11 +13,6 @@
 //
 // Returns
 // -------
-// <rsp stat="ok>
-//      <logs timestamp=''>
-//          <log id='' date="2011/02/03 00:03:00" value="Value field set to" user_id="1" display_name="" />
-//      </logs>
-// </rsp>
 //
 function ciniki_users_authLogs($ciniki) {
 
@@ -48,10 +39,14 @@ function ciniki_users_authLogs($ciniki) {
 
     // Sort the list ASC by date, so the oldest is at the bottom, and therefore will get 
     // insert at the top of the list in ciniki-manage
-    $strsql = "SELECT DATE_FORMAT(log_date, '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as log_date"
-        . ", CAST((UNIX_TIMESTAMP(UTC_TIMESTAMP())-UNIX_TIMESTAMP(log_date)) as DECIMAL(12,0)) as age "
-        . ", UNIX_TIMESTAMP(log_date) as TS"
-        . ", ciniki_user_auth_log.user_id, ciniki_users.display_name, api_key, ip_address, session_key "
+    $strsql = "SELECT DATE_FORMAT(log_date, '" . ciniki_core_dbQuote($ciniki, $date_format) . "') as log_date, "
+        . "CAST((UNIX_TIMESTAMP(UTC_TIMESTAMP())-UNIX_TIMESTAMP(log_date)) as DECIMAL(12,0)) as age, "
+        . "UNIX_TIMESTAMP(log_date) as TS, "
+        . "ciniki_user_auth_log.user_id, "
+        . "ciniki_users.display_name, "
+        . "ciniki_user_auth_log.api_key, "
+        . "ciniki_user_auth_log.ip_address, "
+        . "ciniki_user_auth_log.session_key "
         . "FROM ciniki_user_auth_log, ciniki_users  "
         . "WHERE ciniki_user_auth_log.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
         . "AND ciniki_user_auth_log.user_id = ciniki_users.id "
@@ -62,8 +57,13 @@ function ciniki_users_authLogs($ciniki) {
     } else {
         $strsql .= "LIMIT 25 ";
     }
+    
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');
+    $rc = ciniki_core_dbHashQueryArrayTree($ciniki, $strsql, 'ciniki.core', array(
+        array('container'=>'logs', 'fname'=>'TS', 'fields'=>array('log_date', 'age', 'TS', 'user_id', 'display_name', 'api_key', 'ip_address', 'session_key')),
+        ));
+    $rsp = $rc;
 
-    $rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.users', 'logs', 'log', array('stat'=>'ok', 'logs'=>array()));
     return $rsp;
 }
 ?>
