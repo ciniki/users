@@ -105,9 +105,7 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
         curl_setopt($ch, CURLOPT_URL, 'https://api.mailgun.net/v3/' . $settings['mailgun-domain'] . '/messages');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $msg);
 
-        error_log('send');
         $rsp = json_decode(curl_exec($ch));
-        error_log(print_r($rsp, true));
 
         $info = curl_getinfo($ch);
         if( $info['http_code'] != 200 ) {
