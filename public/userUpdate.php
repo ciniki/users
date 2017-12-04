@@ -158,10 +158,10 @@ function ciniki_users_userUpdate(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
 
     //
     // Update the last_updated of the user
@@ -175,20 +175,20 @@ function ciniki_users_userUpdate(&$ciniki) {
     }
 
     //
-    // Get the list of businesses this user is part of, and replicate that user for that business
+    // Get the list of tenants this user is part of, and replicate that user for that tenant
     //
-    $strsql = "SELECT id, business_id "
-        . "FROM ciniki_business_users "
-        . "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
+    $strsql = "SELECT id, tnid "
+        . "FROM ciniki_tenant_users "
+        . "WHERE ciniki_tenant_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
         . "";
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $businesses = $rc['rows'];
-    foreach($businesses as $rid => $row) {
-        ciniki_businesses_updateModuleChangeDate($ciniki, $row['business_id'], 'ciniki', 'users');
-        $ciniki['syncqueue'][] = array('push'=>'ciniki.businesses.user', 
+    $tenants = $rc['rows'];
+    foreach($tenants as $rid => $row) {
+        ciniki_tenants_updateModuleChangeDate($ciniki, $row['tnid'], 'ciniki', 'users');
+        $ciniki['syncqueue'][] = array('push'=>'ciniki.tenants.user', 
             'args'=>array('id'=>$row['id']));
     }
 

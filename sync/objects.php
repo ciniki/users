@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_users_sync_objects($ciniki, &$sync, $business_id, $args) {
+function ciniki_users_sync_objects($ciniki, &$sync, $tnid, $args) {
     //
     // Note: Pass the standard set of arguments in, they may be required in the future
     //

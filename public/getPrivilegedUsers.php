@@ -3,7 +3,7 @@
 // Description
 // -----------
 // This function will get all users who have elevated priviledges.  They
-// can be sysadmins or business owners.
+// can be sysadmins or tenant owners.
 //
 // Info
 // ----
@@ -31,7 +31,7 @@ function ciniki_users_getPrivilegedUsers($ciniki) {
     }
 
     //
-    // Query for the business users
+    // Query for the tenant users
     //
     $strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users "
         . "WHERE perms <> 0 ORDER BY lastname, firstname ";

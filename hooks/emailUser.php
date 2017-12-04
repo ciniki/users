@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
+function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
 
     //
     // Check for user_id
@@ -46,9 +46,9 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
 //      'X-Mailer: PHP/' . phpversion();
 //  mail($user['email'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 
-    if( $business_id > 0 ) { 
+    if( $tnid > 0 ) { 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'getSettings');
-        $rc = ciniki_mail_getSettings($ciniki, $business_id);
+        $rc = ciniki_mail_getSettings($ciniki, $tnid);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.66', 'msg'=>'Unable to find email information', 'err'=>$rc['err']));
         }
@@ -140,9 +140,9 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
         $mail->IsSMTP();
 
         $use_config = 'yes';
-        if( $business_id > 0 ) { 
+        if( $tnid > 0 ) { 
             ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'getSettings');
-            $rc = ciniki_mail_getSettings($ciniki, $business_id);
+            $rc = ciniki_mail_getSettings($ciniki, $tnid);
             if( $rc['stat'] == 'ok' && isset($rc['settings'])
                 && isset($rc['settings']['smtp-servers']) && $rc['settings']['smtp-servers'] != ''
                 && isset($rc['settings']['smtp-username']) && $rc['settings']['smtp-username'] != ''

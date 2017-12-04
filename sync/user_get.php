@@ -42,7 +42,7 @@
 //      )
 // )
 //
-function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
+function ciniki_users_user_get($ciniki, $sync, $tnid, $args) {
     //
     // Check the args
     //
@@ -71,10 +71,10 @@ function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
         . "ciniki_user_history.new_value, "
         . "UNIX_TIMESTAMP(ciniki_user_history.log_date) AS log_date "
         . "FROM ciniki_users AS u1 "
-        . "LEFT JOIN ciniki_business_users ON (u1.id = ciniki_business_users.user_id "
-            . "AND ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "') "
+        . "LEFT JOIN ciniki_tenant_users ON (u1.id = ciniki_tenant_users.user_id "
+            . "AND ciniki_tenant_users.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "') "
         . "LEFT JOIN ciniki_user_history ON (u1.id = ciniki_user_history.table_key "
-            . "AND ciniki_user_history.business_id = '0' "
+            . "AND ciniki_user_history.tnid = '0' "
             . "AND ciniki_user_history.table_name = 'ciniki_users' "
             . ") "
         . "LEFT JOIN ciniki_users AS u2 ON (ciniki_user_history.user_id = u2.id) "
@@ -124,7 +124,7 @@ function ciniki_users_user_get($ciniki, $sync, $business_id, $args) {
         . "UNIX_TIMESTAMP(ciniki_user_history.log_date) AS log_date "
         . "FROM ciniki_user_details "
         . "LEFT JOIN ciniki_user_history ON (ciniki_user_details.detail_key = ciniki_user_history.table_key "
-            . "AND ciniki_user_history.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_user_history.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_user_history.table_name = 'ciniki_user_details' "
             . ") "
         . "LEFT JOIN ciniki_users ON (ciniki_user_history.user_id = ciniki_users.id) "

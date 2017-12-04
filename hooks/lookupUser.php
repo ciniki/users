@@ -17,7 +17,7 @@
 //      <user id='1' display_name='' />
 // </users>
 //
-function ciniki_users_hooks_lookupUser(&$ciniki, $business_id, $args) {
+function ciniki_users_hooks_lookupUser(&$ciniki, $tnid, $args) {
 
     if( !isset($args['id']) ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.4', 'msg'=>'No user specified.'));

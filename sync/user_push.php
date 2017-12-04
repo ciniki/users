@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_users_user_push(&$ciniki, &$sync, $business_id, $args) {
+function ciniki_users_user_push(&$ciniki, &$sync, $tnid, $args) {
     if( !isset($args['id']) ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.79', 'msg'=>'Missing ID argument'));
     }
@@ -18,7 +18,7 @@ function ciniki_users_user_push(&$ciniki, &$sync, $business_id, $args) {
     // Get the local user
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_get');
-    $rc = ciniki_users_user_get($ciniki, $sync, $business_id, array('id'=>$args['id']));
+    $rc = ciniki_users_user_get($ciniki, $sync, $tnid, array('id'=>$args['id']));
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.80', 'msg'=>'Unable to get user'));
     }

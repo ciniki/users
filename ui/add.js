@@ -1,6 +1,6 @@
 //
 // This function allows users to be added to the database.  This will be called
-// for adding sys admins and business owners.
+// for adding sys admins and tenant owners.
 //
 function ciniki_users_add() {
     this.init = function() {
@@ -27,13 +27,13 @@ function ciniki_users_add() {
             };
         this.add.liveSearchCb = function(s, i, value) {
             if( i == 'user.username' ) {
-                M.api.getJSONBgCb('ciniki.users.searchUsername', {'business_id':M.curBusinessID, 'start_needle':value, 'limit':'10'}, 
+                M.api.getJSONBgCb('ciniki.users.searchUsername', {'tnid':M.curTenantID, 'start_needle':value, 'limit':'10'}, 
                     function(rsp) { 
                         M.ciniki_users_add.add.liveSearchShow(s, i, M.gE(M.ciniki_users_add.add.panelUID + '_' + i), rsp.users); 
                     });
                 return true;
             } else if( i == 'email.address' ) {
-                M.api.getJSONBgCb('ciniki.users.searchEmail', {'business_id':M.curBusinessID, 'start_needle':value, 'limit':'10'}, 
+                M.api.getJSONBgCb('ciniki.users.searchEmail', {'tnid':M.curTenantID, 'start_needle':value, 'limit':'10'}, 
                     function(rsp) { 
                         M.ciniki_users_add.add.liveSearchShow(s, i, M.gE(M.ciniki_users_add.add.panelUID + '_' + i), rsp.users); 
                     });
@@ -90,7 +90,7 @@ function ciniki_users_add() {
         // Serialize the form data into a string for posting
         var c = this.add.serializeForm('yes');
         var rsp = M.api.postJSONCb('ciniki.users.add', 
-            {'business_id':M.curBusinessID, 'welcome_email':'yes'}, c, function(rsp) {
+            {'tnid':M.curTenantID, 'welcome_email':'yes'}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;

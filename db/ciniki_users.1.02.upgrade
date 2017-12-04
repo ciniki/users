@@ -1,5 +1,5 @@
 #
-# This file will upgrade the database table businesses to version 1.02.
+# This file will upgrade the database table tenants to version 1.02.
 #
 ALTER TABLE ciniki_users ADD COLUMN login_attempts tinyint unsigned not null after display_name;
 ALTER TABLE ciniki_users ADD COLUMN secret_question varchar(100) not null after login_attempts;

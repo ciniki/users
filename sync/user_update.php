@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
+function ciniki_users_user_update(&$ciniki, &$sync, $tnid, $args) {
     //
     // Check the args
     //
@@ -74,7 +74,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
             $user_uuid = $rc['user']['uuid'];
             if( !isset($sync['uuidmaps']['ciniki_users'][$remote_user['uuid']]) ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'syncUpdateUUIDMap');
-                $rc = ciniki_core_syncUpdateUUIDMap($ciniki, $sync, $business_id, 'ciniki_users', $remote_user['uuid'], $user_id);
+                $rc = ciniki_core_syncUpdateUUIDMap($ciniki, $sync, $tnid, 'ciniki_users', $remote_user['uuid'], $user_id);
                 if( $rc['stat'] != 'ok' ) {
                     return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.89', 'msg'=>'Unable to update user uuidmaps: ' . $remote_user['uuid'], 'err'=>$rc['err']));
                 }
@@ -89,7 +89,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
     // Get the local user
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_get');
-    $rc = ciniki_users_user_get($ciniki, $sync, $business_id, array('id'=>$user_id));
+    $rc = ciniki_users_user_get($ciniki, $sync, $tnid, array('id'=>$user_id));
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.90', 'msg'=>'Unable to get local user: ' . $remote_user['uuid'], 'err'=>$rc['err']));
     }
@@ -171,7 +171,7 @@ function ciniki_users_user_update(&$ciniki, &$sync, $business_id, $args) {
     //
     if( $db_updated > 0 ) {
         //
-        // Get the list of users this user is part of, and replicate that user for that business
+        // Get the list of users this user is part of, and replicate that user for that tenant
         //
         $ciniki['syncqueue'][] = array('push'=>'ciniki.users.user', 
             'args'=>array('id'=>$user_id, 'ignore_sync_id'=>$sync['id']));

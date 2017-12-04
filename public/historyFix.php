@@ -11,7 +11,7 @@
 //
 function ciniki_users_historyFix($ciniki) {
     //
-    // Check access to business_id as owner, or sys admin
+    // Check access to tnid as owner, or sys admin
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
     $rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.historyFix', 0);
@@ -25,7 +25,7 @@ function ciniki_users_historyFix($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDelete');
 
     $strsql = "DELETE FROM ciniki_user_history "
-        . "WHERE business_id > 0 "
+        . "WHERE tnid > 0 "
         . "";
     $rc = ciniki_core_dbDelete($ciniki, $strsql, 'ciniki.users');
     if( $rc['stat'] != 'ok' ) {
@@ -45,7 +45,7 @@ function ciniki_users_historyFix($ciniki) {
             . "UNIX_TIMESTAMP(ciniki_users.last_updated) AS last_updated "
             . "FROM ciniki_users "
             . "LEFT JOIN ciniki_user_history ON (ciniki_users.id = ciniki_user_history.table_key "
-                . "AND ciniki_user_history.business_id = 0 "
+                . "AND ciniki_user_history.tnid = 0 "
                 . "AND ciniki_user_history.table_name = 'ciniki_users' "
                 . "AND (ciniki_user_history.action = 1 OR ciniki_user_history.action = 2) "
                 . "AND ciniki_user_history.table_field = '" . ciniki_core_dbQuote($ciniki, $field) . "' "
@@ -62,7 +62,7 @@ function ciniki_users_historyFix($ciniki) {
     
         $elements = $rc['rows'];
         foreach($elements AS $rid => $row) {
-            $strsql = "INSERT INTO ciniki_user_history (uuid, business_id, user_id, session, action, "
+            $strsql = "INSERT INTO ciniki_user_history (uuid, tnid, user_id, session, action, "
                 . "table_name, table_key, table_field, new_value, log_date) VALUES ("
                 . "UUID(), 0, "
                 . "'" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "', "

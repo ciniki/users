@@ -2,7 +2,7 @@
 # Description
 # -----------
 # This table stores the users information for any users contained
-# within this database install.  Users can be linked to businesses
+# within this database install.  Users can be linked to tenants
 # as owners, managers, customers, and to images and suppliers.
 #
 # Users who have perms 0x01, 0x02 or 0x04 cannot have their information
@@ -22,7 +22,7 @@
 #
 # perms:        The permissions this user has.
 #
-#               0x01 - ciniki root (can add/delete businesses, mod config)
+#               0x01 - ciniki root (can add/delete tenants, mod config)
 #               0x02 - 
 #               0x04 - 
 #               0x08 -

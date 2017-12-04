@@ -1,5 +1,5 @@
 #
-# This file will upgrade the database table businesses to version 1.02.
+# This file will upgrade the database table tenants to version 1.02.
 #
 ALTER TABLE ciniki_user_tokens ADD COLUMN last_auth datetime not null after date_added;
 ALTER TABLE ciniki_user_tokens COMMENT='v1.02';

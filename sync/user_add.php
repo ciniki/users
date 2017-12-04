@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_users_user_add(&$ciniki, &$sync, $business_id, $args) {
+function ciniki_users_user_add(&$ciniki, &$sync, $tnid, $args) {
     //
     // Check the args
     //
@@ -125,7 +125,7 @@ function ciniki_users_user_add(&$ciniki, &$sync, $business_id, $args) {
     }
 
     //
-    // Get the list of businesses this user is part of, and replicate that user for that business
+    // Get the list of tenants this user is part of, and replicate that user for that tenant
     //
     $ciniki['syncqueue'][] = array('push'=>'ciniki.users.user', 
         'args'=>array('id'=>$user_id, 'ignore_sync_id'=>$sync['id']));

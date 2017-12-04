@@ -23,7 +23,7 @@ function ciniki_users_get($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'user_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -68,19 +68,19 @@ function ciniki_users_get($ciniki) {
     $user = $rc['user'];
 
     //
-    // Get all the businesses the user is a part of
+    // Get all the tenants the user is a part of
     //
-    $strsql = "SELECT ciniki_businesses.id, ciniki_businesses.name "
-        . "FROM ciniki_business_users, ciniki_businesses "
-        . "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
-        . "AND ciniki_business_users.business_id = ciniki_businesses.id "
-        . "AND ciniki_business_users.status = 10 "
+    $strsql = "SELECT ciniki_tenants.id, ciniki_tenants.name "
+        . "FROM ciniki_tenant_users, ciniki_tenants "
+        . "WHERE ciniki_tenant_users.user_id = '" . ciniki_core_dbQuote($ciniki, $args['user_id']) . "' "
+        . "AND ciniki_tenant_users.tnid = ciniki_tenants.id "
+        . "AND ciniki_tenant_users.status = 10 "
         . "";
-    $rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.businesses', 'businesses', 'business', array('stat'=>'ok', 'businesses'=>array()));
+    $rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.tenants', 'tenants', 'tenant', array('stat'=>'ok', 'tenants'=>array()));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $user['businesses'] = $rc['businesses'];
+    $user['tenants'] = $rc['tenants'];
 
     //
     // Get all the settings for the user

@@ -33,7 +33,7 @@ function ciniki_users_formatDate($ciniki) {
     
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
     $rc = ciniki_users_checkAccess($ciniki, 0, 'ciniki.users.formatDate', 0); 

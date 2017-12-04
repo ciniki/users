@@ -3,7 +3,7 @@
 // Description
 // -----------
 // This method will add a new user to the system.  Only sysadmins
-// or business owners have access to add a user.
+// or tenant owners have access to add a user.
 //
 // Info
 // ----
@@ -13,8 +13,8 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:                 The ID of the business to add the user to.  If the requesting
-//                              user is not a sysadmin but the owner of the business they
+// tnid:                 The ID of the tenant to add the user to.  If the requesting
+//                              user is not a sysadmin but the owner of the tenant they
 //                              are allowed to add a user.
 // email.address:               The email address of user.
 // user.username:               The usernamed for the new user.
@@ -32,7 +32,7 @@ function ciniki_users_add(&$ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'email.address'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Email Address'), 
         'user.username'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'username'), 
         'user.firstname'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Firstname'), 
@@ -48,7 +48,7 @@ function ciniki_users_add(&$ciniki) {
     // Check access, allow only sysadmins
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'checkAccess');
-    $rc = ciniki_users_checkAccess($ciniki, $args['business_id'], 'ciniki.users.add', 0);
+    $rc = ciniki_users_checkAccess($ciniki, $args['tnid'], 'ciniki.users.add', 0);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -85,7 +85,7 @@ function ciniki_users_add(&$ciniki) {
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    // If a users was found, add to business
+    // If a users was found, add to tenant
     if( isset($rc['user']) ) {
         return array('stat'=>'ok', 'id'=>$rc['user']['id']);
     }
@@ -122,7 +122,7 @@ function ciniki_users_add(&$ciniki) {
     }
     if( !isset($rc['insert_id']) || $rc['insert_id'] < 1 ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.users');
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.12', 'msg'=>'Unable to add business'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.12', 'msg'=>'Unable to add tenant'));
     }
     $user_id = $rc['insert_id'];
     ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.users', 'ciniki_user_history', 0, 
@@ -169,7 +169,7 @@ function ciniki_users_add(&$ciniki) {
     //
     if( isset($ciniki['request']['args']['welcome_email']) && $ciniki['request']['args']['welcome_email'] == 'yes' ) {
         //
-        // FIXME: Get master business information
+        // FIXME: Get master tenant information
         //
 
         $subject = "Welcome to Ciniki";

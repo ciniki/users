@@ -30,7 +30,7 @@ function ciniki_users_getLockedUsers($ciniki) {
     }
 
     //
-    // Query for the business users
+    // Query for the tenant users
     //
     $strsql = "SELECT id, email, firstname, lastname, display_name, perms FROM ciniki_users "
         . "WHERE (status = 10 OR login_attempts > 7 ) ORDER BY lastname, firstname ";

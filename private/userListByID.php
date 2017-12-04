@@ -28,7 +28,7 @@ function ciniki_users_userListByID($ciniki, $container_name, $ids, $fields) {
     }
 
     //
-    // Query for the business users
+    // Query for the tenant users
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');

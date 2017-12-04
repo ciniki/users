@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
+function ciniki_users_user_lookup(&$ciniki, &$sync, $tnid, $args) {
     //
     // Check the args
     //
@@ -25,10 +25,10 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
         if( isset($sync['uuidmaps']['ciniki_users'][$args['remote_uuid']]) ) {
             return array('stat'=>'ok', 'id'=>$sync['uuidmaps']['ciniki_users'][$args['remote_uuid']]);
         }
-        $strsql = "SELECT DISTINCT ciniki_users.id FROM ciniki_users " //, ciniki_business_users "
+        $strsql = "SELECT DISTINCT ciniki_users.id FROM ciniki_users " //, ciniki_tenant_users "
             . "WHERE ciniki_users.uuid = '" . ciniki_core_dbQuote($ciniki, $args['remote_uuid']) . "' "
-//          . "AND ciniki_users.id = ciniki_business_users.user_id "
-//          . "AND ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+//          . "AND ciniki_users.id = ciniki_tenant_users.user_id "
+//          . "AND ciniki_tenant_users.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
         if( $rc['stat'] != 'ok' ) {
@@ -66,7 +66,7 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
 
         if( isset($rc['object']) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'sync', 'user_update');
-            $rc = ciniki_users_user_update($ciniki, $sync, $business_id, array('object'=>$rc['object']));
+            $rc = ciniki_users_user_update($ciniki, $sync, $tnid, array('object'=>$rc['object']));
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.73', 'msg'=>'Unable to add user to local server', 'err'=>$rc['err']));
             }
@@ -81,10 +81,10 @@ function ciniki_users_user_lookup(&$ciniki, &$sync, $business_id, $args) {
     // ID won't be there.
     //
     elseif( isset($args['local_id']) && $args['local_id'] != '' ) {
-        $strsql = "SELECT DISTINCT ciniki_users.uuid FROM ciniki_users " //, ciniki_business_users "
+        $strsql = "SELECT DISTINCT ciniki_users.uuid FROM ciniki_users " //, ciniki_tenant_users "
             . "WHERE ciniki_users.id = '" . ciniki_core_dbQuote($ciniki, $args['local_id']) . "' "
-//          . "AND ciniki_users.id = ciniki_business_users.user_id "
-//          . "AND ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+//          . "AND ciniki_users.id = ciniki_tenant_users.user_id "
+//          . "AND ciniki_tenant_users.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.users', 'user');
         if( $rc['stat'] != 'ok' ) {

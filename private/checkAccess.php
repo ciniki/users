@@ -11,13 +11,13 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:         The business ID to check the session user against.
+// tnid:         The tenant ID to check the session user against.
 //
 // Returns
 // -------
 // <rsp stat='ok' />
 //
-function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
+function ciniki_users_checkAccess($ciniki, $tnid, $method, $user_id) {
     //
     // Methods which don't require authentication
     //
@@ -61,25 +61,25 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
     }
 
     //
-    // Some methods are allowed for business owners to add users to their business
+    // Some methods are allowed for tenant owners to add users to their tenant
     //
-    $business_owner_methods = array(
+    $tenant_owner_methods = array(
         'ciniki.users.add',
         );
-    if( in_array($method, $business_owner_methods) ) {
+    if( in_array($method, $tenant_owner_methods) ) {
         //
-        // Check if the requesting user is the business owner
+        // Check if the requesting user is the tenant owner
         //
-        $strsql = "SELECT business_id, user_id "
-            . "FROM ciniki_business_users "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        $strsql = "SELECT tnid, user_id "
+            . "FROM ciniki_tenant_users "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
             . "AND package = 'ciniki' "
             . "AND status = 10 "
             . "AND (permission_group = 'owners' ) "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
-        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.users.6', 'msg'=>'Access denied', 'err'=>$rc['err']));
         }
@@ -87,7 +87,7 @@ function ciniki_users_checkAccess($ciniki, $business_id, $method, $user_id) {
         //
         // If the user has permission, return ok
         //
-        if( isset($rc['user']) && $rc['user']['business_id'] == $business_id && $rc['user']['user_id'] == $ciniki['session']['user']['id'] ) {
+        if( isset($rc['user']) && $rc['user']['tnid'] == $tnid && $rc['user']['user_id'] == $ciniki['session']['user']['id'] ) {
             return array('stat'=>'ok');
         }
         

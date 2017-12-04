@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This method will return the list of users attached to the business and their last_updated date.
+// This method will return the list of users attached to the tenant and their last_updated date.
 //
 // Arguments
 // ---------
@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_users_user_list($ciniki, $sync, $business_id, $args) {
+function ciniki_users_user_list($ciniki, $sync, $tnid, $args) {
     //
     // Check the args
     //
@@ -27,18 +27,18 @@ function ciniki_users_user_list($ciniki, $sync, $business_id, $args) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
 
     //
-    // Select the users who are attached to this business, and get the latest last_updated
-    // field from ciniki_business_users, or ciniki_users.
+    // Select the users who are attached to this tenant, and get the latest last_updated
+    // field from ciniki_tenant_users, or ciniki_users.
     //
     $strsql = "SELECT ciniki_users.uuid, UNIX_TIMESTAMP(ciniki_users.last_updated) "
 //      . "MAX(UNIX_TIMESTAMP("
-//          . "IF(ciniki_business_users.last_updated>ciniki_users.last_updated, "
-//              . "ciniki_business_users.last_updated, "
+//          . "IF(ciniki_tenant_users.last_updated>ciniki_users.last_updated, "
+//              . "ciniki_tenant_users.last_updated, "
 //              . "ciniki_users.last_updated)"
 //          . ")) AS last_updated " 
-        . "FROM ciniki_business_users, ciniki_users "
-        . "WHERE ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-        . "AND ciniki_business_users.user_id = ciniki_users.id "
+        . "FROM ciniki_tenant_users, ciniki_users "
+        . "WHERE ciniki_tenant_users.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
+        . "AND ciniki_tenant_users.user_id = ciniki_users.id "
         . "GROUP BY ciniki_users.uuid "
         . "";
     if( $args['type'] == 'incremental' ) {

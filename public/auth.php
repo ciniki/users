@@ -24,7 +24,7 @@
 //
 // Example Return
 // --------------
-// <rsp stat="ok" business="3">
+// <rsp stat="ok" tenant="3">
 //      <auth token="0123456789abcdef0123456789abcdef" id="42" perms="1" avatar_id="192" />
 // </rsp>
 //
@@ -141,25 +141,25 @@ function ciniki_users_auth(&$ciniki) {
     }
 
     //
-    // If the user is not a sysadmin, check if they only have access to one business
+    // If the user is not a sysadmin, check if they only have access to one tenant
     //
     if( ($ciniki['session']['user']['perms'] & 0x01) == 0 ) {
-        $strsql = "SELECT DISTINCT ciniki_businesses.id, name "
-            . "FROM ciniki_business_users, ciniki_businesses "
-            . "WHERE ciniki_business_users.user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
-            . "AND ciniki_business_users.status = 1 "
-            . "AND ciniki_business_users.business_id = ciniki_businesses.id "
-            . "AND ciniki_businesses.status < 60 "  // Allow suspended businesses to be listed, so user can login and update billing/unsuspend
-            . "ORDER BY ciniki_businesses.name "
+        $strsql = "SELECT DISTINCT ciniki_tenants.id, name "
+            . "FROM ciniki_tenant_users, ciniki_tenants "
+            . "WHERE ciniki_tenant_users.user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
+            . "AND ciniki_tenant_users.status = 1 "
+            . "AND ciniki_tenant_users.tnid = ciniki_tenants.id "
+            . "AND ciniki_tenants.status < 60 "  // Allow suspended tenants to be listed, so user can login and update billing/unsuspend
+            . "ORDER BY ciniki_tenants.name "
             . "LIMIT 2"
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        if( isset($rc['business']) ) {
-            return array('stat'=>'ok', 'auth'=>$auth, 'business'=>$rc['business']['id']);
+        if( isset($rc['tenant']) ) {
+            return array('stat'=>'ok', 'auth'=>$auth, 'tenant'=>$rc['tenant']['id']);
         }
     }   
 

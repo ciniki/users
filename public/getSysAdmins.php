@@ -30,7 +30,7 @@ function ciniki_users_getSysAdmins($ciniki) {
     }
 
     //
-    // Query for the business users
+    // Query for the tenant users
     //
     $strsql = "SELECT id, email, firstname, lastname, display_name FROM ciniki_users "
         . "WHERE (perms & 0x01) = 0x01 ORDER BY lastname, firstname ";

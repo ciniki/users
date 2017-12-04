@@ -1,6 +1,6 @@
 //
-// This class will display the form to allow admins and business owners to 
-// change the details of their business
+// This class will display the form to allow admins and tenant owners to 
+// change the details of their tenant
 //
 function ciniki_users_main() {
     //
@@ -158,7 +158,7 @@ function ciniki_users_main() {
         return true;
     };
     this.avatar.open = function(cb) {
-        M.curBusinessID = 0;
+        M.curTenantID = 0;
         M.api.getJSONCb('ciniki.users.get', {'user_id':M.userID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
