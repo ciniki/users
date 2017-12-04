@@ -187,7 +187,12 @@ function ciniki_users_hooks_emailUser($ciniki, $business_id, $args) {
             $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
         }
 
-        $mail->AddAddress($user['email'], $user['name']);
+        if( isset($ciniki['config']['ciniki.mail']['force.mailto']) ) {
+            $mail->AddAddress($ciniki['config']['ciniki.mail']['force.mailto'], $user['name']);
+            $args['subject'] .= ' [' . $user['email'] . ']';
+        } else {
+            $mail->AddAddress($user['email'], $user['name']);
+        }
 
         // Add reply to if specified
         if( isset($args['replyto_email']) && $args['replyto_email'] != '' ) {
