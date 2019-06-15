@@ -145,20 +145,24 @@ function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
             $rc = ciniki_mail_getSettings($ciniki, $tnid);
             if( $rc['stat'] == 'ok' && isset($rc['settings'])
                 && isset($rc['settings']['smtp-servers']) && $rc['settings']['smtp-servers'] != ''
-                && isset($rc['settings']['smtp-username']) && $rc['settings']['smtp-username'] != ''
-                && isset($rc['settings']['smtp-password']) && $rc['settings']['smtp-password'] != ''
+//                && isset($rc['settings']['smtp-username']) && $rc['settings']['smtp-username'] != ''
+//                && isset($rc['settings']['smtp-password']) && $rc['settings']['smtp-password'] != ''
     //            && isset($rc['settings']['smtp-secure']) && $rc['settings']['smtp-secure'] != ''
-                && isset($rc['settings']['smtp-port']) && $rc['settings']['smtp-port'] != ''
+//                && isset($rc['settings']['smtp-port']) && $rc['settings']['smtp-port'] != ''
                 ) {
                 $mail->Host = $rc['settings']['smtp-servers'];
-                $mail->SMTPAuth = true;
-                $mail->Username = $rc['settings']['smtp-username'];
-                $mail->Password = $rc['settings']['smtp-password'];
+                if( isset($rc['settings']['smtp-username']) && $rc['settings']['smtp-username'] != '' ) {
+                    $mail->SMTPAuth = true;
+                    $mail->Username = $rc['settings']['smtp-username'];
+                    $mail->Password = $rc['settings']['smtp-password'];
+                }
                 //$mail->SMTPSecure = $rc['settings']['smtp-secure'];
                 if( isset($rc['settings']['smtp-secure']) && $rc['settings']['smtp-secure'] != '' ) {
                     $mail->SMTPSecure = $rc['settings']['smtp-secure'];
                 }
-                $mail->Port = $rc['settings']['smtp-port'];
+                if( isset($rc['settings']['smtp-port']) && $rc['settings']['smtp-port'] != '' ) {
+                    $mail->Port = $rc['settings']['smtp-port'];
+                }
                 $use_config = 'no';
 
                 if( isset($rc['settings']['smtp-from-address']) && $rc['settings']['smtp-from-address'] != ''
@@ -177,11 +181,23 @@ function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
         //
         if( $use_config == 'yes' ) {
             $mail->Host = $ciniki['config']['ciniki.core']['system.smtp.servers'];
-            $mail->SMTPAuth = true;
-            $mail->Username = $ciniki['config']['ciniki.core']['system.smtp.username'];
-            $mail->Password = $ciniki['config']['ciniki.core']['system.smtp.password'];
-            $mail->SMTPSecure = $ciniki['config']['ciniki.core']['system.smtp.secure'];
-            $mail->Port = $ciniki['config']['ciniki.core']['system.smtp.port'];
+            if( isset($ciniki['config']['ciniki.core']['system.smtp.username']) 
+                && $ciniki['config']['ciniki.core']['system.smtp.username'] != ''
+                ) {
+                $mail->SMTPAuth = true;
+                $mail->Username = $ciniki['config']['ciniki.core']['system.smtp.username'];
+                $mail->Password = $ciniki['config']['ciniki.core']['system.smtp.password'];
+            }
+            if( isset($ciniki['config']['ciniki.core']['system.smtp.secure']) 
+                && $ciniki['config']['ciniki.core']['system.smtp.secure'] != ''
+                ) {
+                $mail->SMTPSecure = $ciniki['config']['ciniki.core']['system.smtp.secure'];
+            }
+            if( isset($ciniki['config']['ciniki.core']['system.smtp.port']) 
+                && $ciniki['config']['ciniki.core']['system.smtp.port'] != ''
+                ) {
+                $mail->Port = $ciniki['config']['ciniki.core']['system.smtp.port'];
+            }
 
             $mail->From = $ciniki['config']['ciniki.core']['system.email'];
             $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
