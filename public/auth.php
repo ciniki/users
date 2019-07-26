@@ -147,7 +147,7 @@ function ciniki_users_auth(&$ciniki) {
         $strsql = "SELECT DISTINCT ciniki_tenants.id, name "
             . "FROM ciniki_tenant_users, ciniki_tenants "
             . "WHERE ciniki_tenant_users.user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
-            . "AND ciniki_tenant_users.status = 1 "
+            . "AND ciniki_tenant_users.status = 10 "
             . "AND ciniki_tenant_users.tnid = ciniki_tenants.id "
             . "AND ciniki_tenants.status < 60 "  // Allow suspended tenants to be listed, so user can login and update billing/unsuspend
             . "ORDER BY ciniki_tenants.name "
