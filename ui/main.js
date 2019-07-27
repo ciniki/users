@@ -96,11 +96,11 @@ function ciniki_users_main() {
                 '%a %b %e, %Y %l:%i %p':'Mon Jan 1, 2011 1:00 pm',
                 '%Y-%m-%d %H:%i':'2010-12-31 00:01',
                 }},
-            'settings.temperature':{'label':'Temperature', 'type':'select', 'options':{
+            'settings.temperature_units':{'label':'Temperature', 'type':'select', 'options':{
                 'celsius':'Celsius',
                 'fahrenheit':'Fahrenheit',
                 }},
-            'settings.windspeed':{'label':'Wind Speed', 'type':'select', 'options':{
+            'settings.windspeed_units':{'label':'Wind Speed', 'type':'select', 'options':{
                 'kph':'Kilometers/Hour',
 //                'mps':'Meters/Second',
                 'mph':'Miles/Hour',
@@ -130,6 +130,17 @@ function ciniki_users_main() {
     }
     this.prefs.save = function() {
         var c = this.serializeForm('no');
+        if( this.formValue('settings.temperature_units') != this.fieldValue('settings.temperature_units') ) {
+            M.userSettings['ui-temperature-units'] = this.formValue('settings.temperature_units');
+            if( M.userSettings['ui-temperature-units'] == 'fahrenheit' ) {
+                M.userSettings['ui-temperature-unit'] = 'F';
+            } else {
+                M.userSettings['ui-temperature-unit'] = 'C';
+            }
+        }
+        if( this.formValue('settings.windspeed_units') != this.fieldValue('settings.windspeed_units') ) {
+            M.userSettings['ui-windspeed-units'] = this.formValue('settings.windspeed_units');
+        }
         if( c != '' ) {
             M.api.postJSONCb('ciniki.users.updateDetails', {'user_id':M.userID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {

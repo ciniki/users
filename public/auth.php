@@ -95,6 +95,30 @@ function ciniki_users_auth(&$ciniki) {
     }
 
     //
+    // Check for other settings
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
+    $rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 'user_id', $ciniki['session']['user']['id'], 'ciniki.users', 'settings', 'settings');
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    if( isset($rc['settings']) ) {
+        foreach($rc['settings'] as $k => $v) {
+            if( $k == 'settings.temperature_units' ) {
+                $auth['settings']['ui-temperature-units'] = $v;
+                if( $v == 'celsius' ) {
+                    $auth['settings']['ui-temperature-unit'] = 'C';
+                } elseif( $v == 'fahrenheit' ) {
+                    $auth['settings']['ui-temperature-unit'] = 'F';
+                }
+            } elseif( $k == 'settings.windspeed_units' ) {
+                $auth['settings']['ui-windspeed-units'] = $v;
+            }
+        }
+    }
+
+
+    //
     // Check if a user token should be setup
     //
     if( isset($ciniki['request']['args']['rm']) && $ciniki['request']['args']['rm'] == 'yes' ) {
