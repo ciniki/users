@@ -183,7 +183,7 @@ function ciniki_users_auth(&$ciniki) {
             return $rc;
         }
         if( isset($rc['tenant']) ) {
-            return array('stat'=>'ok', 'auth'=>$auth, 'tenant'=>$rc['tenant']['id']);
+            return array('stat'=>'ok', 'version'=>$version, 'auth'=>$auth, 'tenant'=>$rc['tenant']['id']);
         }
     }   
 
