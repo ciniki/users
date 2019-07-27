@@ -68,11 +68,10 @@ function ciniki_users_getDetails($ciniki) {
             $rsp['details']['user.lastname'] = $rc['user']['lastname'];
             $rsp['details']['user.display_name'] = $rc['user']['display_name'];
         } elseif( in_array($detail_key, array('ui','settings')) ) {
-            $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_user_details', 'user_id', $args['user_id'], 'ciniki.users', 'details', $detail_key);
+            $rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_user_details', 'user_id', $args['user_id'], 'ciniki.users', 'details', $detail_key);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-
             if( $rc['details'] != null ) {
                 $rsp['details'] += $rc['details'];
             }

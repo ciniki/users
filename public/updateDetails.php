@@ -95,6 +95,8 @@ function ciniki_users_updateDetails(&$ciniki) {
         'settings.time_format',
         'settings.date_format',
         'settings.datetime_format',
+        'settings.temperature',
+        'settings.windspeed',
         'ui-history-date-display',
         'ui-mode-guided',
         'ui-mode-xhelp',

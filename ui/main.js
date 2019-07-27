@@ -75,9 +75,11 @@ function ciniki_users_main() {
                 }},
             'ui-mode-guided':{'label':'Guided Mode', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
             }},
-        '_calendar':{'label':'Calendar Options', 'fields':{
-            'ui-calendar-view':{'label':'Default View', 'type':'toggle', 'default':'mw', 'toggles':{'day':'Day', 'mw':'Month'}},
-            'ui-calendar-remember-date':{'label':'Remember Date', 'type':'toggle', 'default':'yes', 'toggles':{'no':'No', 'yes':'Yes'}},
+        '_calendar':{'label':'Calendar Options', 
+            'visible':function() { return M.modOn('ciniki.calendars') ? 'yes' : 'no'; },
+            'fields':{
+                'ui-calendar-view':{'label':'Default View', 'type':'toggle', 'default':'mw', 'toggles':{'day':'Day', 'mw':'Month'}},
+                'ui-calendar-remember-date':{'label':'Remember Date', 'type':'toggle', 'default':'yes', 'toggles':{'no':'No', 'yes':'Yes'}},
             }},
         '_prefs':{'label':'Preferences', 'fields':{
             'settings.time_format':{'label':'Time', 'type':'select', 'options':{
@@ -93,6 +95,15 @@ function ciniki_users_main() {
                 '%b %e, %Y %l:%i %p':'Jan 1, 2011 1:00 pm',
                 '%a %b %e, %Y %l:%i %p':'Mon Jan 1, 2011 1:00 pm',
                 '%Y-%m-%d %H:%i':'2010-12-31 00:01',
+                }},
+            'settings.temperature':{'label':'Temperature', 'type':'select', 'options':{
+                'celsius':'Celsius',
+                'fahrenheit':'Fahrenheit',
+                }},
+            'settings.windspeed':{'label':'Wind Speed', 'type':'select', 'options':{
+                'kph':'Kilometers/Hour',
+//                'mps':'Meters/Second',
+                'mph':'Miles/Hour',
                 }},
             }},
         '_buttons':{'label':'', 'buttons':{
