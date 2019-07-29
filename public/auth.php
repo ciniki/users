@@ -167,7 +167,9 @@ function ciniki_users_auth(&$ciniki) {
     //
     // In single tenant mode, or ff the user is not a sysadmin, check if they only have access to one tenant
     //
-    if( $ciniki['config']['ciniki.core']['single_tenant_mode'] == 'yes' || ($ciniki['session']['user']['perms'] & 0x01) == 0 ) {
+    if( isset($ciniki['config']['ciniki.core']['single_tenant_mode']) 
+        && ($ciniki['config']['ciniki.core']['single_tenant_mode'] == 'yes' || ($ciniki['session']['user']['perms'] & 0x01) == 0) 
+        ) {
         $strsql = "SELECT DISTINCT ciniki_tenants.id, name "
             . "FROM ciniki_tenant_users, ciniki_tenants "
             . "WHERE ciniki_tenant_users.user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
