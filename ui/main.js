@@ -274,6 +274,10 @@ function ciniki_users_main() {
             return false;
         } 
 
-        this.menu.show(cb);
+        if( args.panel != null && args.panel == 'prefs' ) {
+            this.prefs.open(cb);
+        } else {
+            this.menu.show(cb);
+        }
     }
 }
