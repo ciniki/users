@@ -237,11 +237,11 @@ function ciniki_users_main() {
         var newpassword2 = encodeURIComponent(document.getElementById(this.panelUID + '_newpassword2').value);
 
         if( newpassword1 != newpassword2 ) {
-            alert("The password's do not match.  Please enter them again");
+            M.alert("The password's do not match.  Please enter them again");
             return false;
         }
         if( newpassword1.length < 8 ) {
-            alert("Passwords must be at least 8 characters long");
+            M.alert("Passwords must be at least 8 characters long");
             return false;
         }
         // Make sure the password is not included in the URL, where it will be saved in log files
@@ -251,7 +251,7 @@ function ciniki_users_main() {
                 M.api.err(rsp);
                 return false;
             }
-            alert("Your password was changed, you must now re-login.");
+            M.alert("Your password was changed, you must now re-login.");
             M.logout();
         });
     }
@@ -270,7 +270,7 @@ function ciniki_users_main() {
         //
         var appContainer = M.createContainer('mc', 'ciniki_users_main', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 

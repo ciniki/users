@@ -61,7 +61,7 @@ function ciniki_users_add() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_users_add', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -79,11 +79,11 @@ function ciniki_users_add() {
     //
     this.save = function() {
         if( this.add.formValue('email.address') == '' ) {
-            alert("You must specify a email address.");
+            M.alert("You must specify a email address.");
             return false;
         }
         if( this.add.formValue('user.firstname') == '' ) {
-            alert("You must specify a first name.");
+            M.alert("You must specify a first name.");
             return false;
         }
 
