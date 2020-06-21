@@ -180,7 +180,9 @@ function ciniki_users_main() {
         return true;
     };
     this.avatar.open = function(cb) {
-        M.curTenantID = 0;
+    // Why was this line here? Removed Jun 20, 2020.
+    // Causes major bug when they try to do anything after
+//        M.curTenantID = 0;
         M.api.getJSONCb('ciniki.users.get', {'user_id':M.userID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
