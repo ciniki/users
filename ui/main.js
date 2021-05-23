@@ -169,6 +169,9 @@ function ciniki_users_main() {
             'save':{'label':'Save', 'fn':'M.ciniki_users_main.avatar.save();'},
             }},
     };
+    this.avatar.imageURL = function(s, i, field, img_id, nM) {
+        return M.api.getBinaryURL('ciniki.images.get', {'tnid':0, 'image_id':img_id, 'version':'original', 'maxwidth':'0', 'maxheight':'600'});
+    }
     this.avatar.fieldValue = function(s, i, d) { return this.data[i]; }
     this.avatar.addDropImageAPI = 'ciniki.images.addUserImage';
     this.avatar.addDropImage = function(iid) {
