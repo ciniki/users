@@ -70,7 +70,7 @@ function ciniki_users_auth(&$ciniki) {
         }
         $version = $rc['version'];
         $auth = $rc['auth'];
-    } else {
+    } elseif( isset($ciniki['request']['args']['username']) && isset($ciniki['request']['args']['password']) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sessionStart');
         $rc = ciniki_core_sessionStart($ciniki, $ciniki['request']['args']['username'], $ciniki['request']['args']['password']);
         if( $rc['stat'] != 'ok' ) {
