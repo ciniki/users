@@ -165,16 +165,19 @@ function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
                 }
                 $use_config = 'no';
 
-                if( isset($rc['settings']['smtp-from-address']) && $rc['settings']['smtp-from-address'] != ''
-                    && isset($rc['settings']['smtp-from-name']) && $rc['settings']['smtp-from-name'] != '' ) {
-                    $mail->From = $rc['settings']['smtp-from-address'];
-                    $mail->FromName = $rc['settings']['smtp-from-name'];
-                } else {
-                    $mail->From = $ciniki['config']['ciniki.core']['system.email'];
-                    $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
-                }
+            } 
+            if( isset($rc['settings']['smtp-from-address']) && $rc['settings']['smtp-from-address'] != ''
+                && isset($rc['settings']['smtp-from-name']) && $rc['settings']['smtp-from-name'] != '' ) {
+                $mail->From = $rc['settings']['smtp-from-address'];
+                $mail->FromName = $rc['settings']['smtp-from-name'];
+            } else {
+                $mail->From = $ciniki['config']['ciniki.core']['system.email'];
+                $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
             }
-        } 
+        } else {
+            $mail->From = $ciniki['config']['ciniki.core']['system.email'];
+            $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
+        }
         
         //
         // If not enough informatio, or none provided, default back to system email
@@ -198,9 +201,6 @@ function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
                 ) {
                 $mail->Port = $ciniki['config']['ciniki.core']['system.smtp.port'];
             }
-
-            $mail->From = $ciniki['config']['ciniki.core']['system.email'];
-            $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
         }
 
         if( isset($ciniki['config']['ciniki.mail']['force.mailto']) ) {
