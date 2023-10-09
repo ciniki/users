@@ -73,7 +73,6 @@ function ciniki_users_main() {
                 'datetime':'Sep 9, 2012 8:40am',
                 'datetimeage':'Sep 9, 2012 8:40am (10 days ago)',
                 }},
-            'ui-mode-guided':{'label':'Guided Mode', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
             }},
         '_calendar':{'label':'Calendar Options', 
             'visible':function() { return M.modOn('ciniki.calendars') ? 'yes' : 'no'; },

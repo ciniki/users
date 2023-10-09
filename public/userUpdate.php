@@ -27,8 +27,6 @@ function ciniki_users_userUpdate(&$ciniki) {
         'username'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Username'), 
         'email'=>array('required'=>'no', 'blank'=>'no', 'name'=>'email'), 
         'timeout'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Timeout'), 
-        'ui-mode-guided'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Guided Mode'), 
-        'ui-mode-xhelp'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Extra Help'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -127,8 +125,6 @@ function ciniki_users_userUpdate(&$ciniki) {
         'settings.date_format',
         'settings.datetime_format',
         'ui-history-date-display',
-        'ui-mode-guided',
-        'ui-mode-xhelp',
         );
     foreach($ciniki['request']['args'] as $arg_name => $arg_value) {
         if( in_array($arg_name, $allowed_keys) ) {

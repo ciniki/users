@@ -98,8 +98,6 @@ function ciniki_users_updateDetails(&$ciniki) {
         'settings.temperature_units',
         'settings.windspeed_units',
         'ui-history-date-display',
-        'ui-mode-guided',
-        'ui-mode-xhelp',
         'ui-calendar-view',
         'ui-calendar-remember-date',
         );
