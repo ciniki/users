@@ -174,6 +174,13 @@ function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
                 $mail->From = $ciniki['config']['ciniki.core']['system.email'];
                 $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
             }
+            if( isset($rc['settings']['smtp-reply-address']) && $rc['settings']['smtp-reply-address'] != '' ) {
+                if( isset($rc['settings']['smtp-from-name']) && $rc['settings']['smtp-from-name'] != '' ) {
+                    $mail->addReplyTo($rc['settings']['smtp-reply-address'], $rc['settings']['smtp-from-name']);
+                } else {
+                    $mail->addReplyTo($rc['settings']['smtp-reply-address']);
+                }
+            }
         } else {
             $mail->From = $ciniki['config']['ciniki.core']['system.email'];
             $mail->FromName = $ciniki['config']['ciniki.core']['system.email.name'];
