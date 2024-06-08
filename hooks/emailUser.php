@@ -229,12 +229,15 @@ function ciniki_users_hooks_emailUser($ciniki, $tnid, $args) {
         if( isset($args['htmlmsg']) && $args['htmlmsg'] != '' ) {
             $mail->IsHTML(true);
             $mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['subject']);
-            $mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['htmlmsg']);
-            $mail->AltBody = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
+            $mail->Body = $args['htmlmsg'];
+            $mail->AltBody = $args['textmsg'];
+//            $mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['htmlmsg']);
+//            $mail->AltBody = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
         } else {
             $mail->IsHTML(false);
             $mail->Subject = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['subject']);
-            $mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
+//            $mail->Body = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $args['textmsg']);
+            $mail->Body = $args['textmsg'];
         }
 
         if( !$mail->Send() ) {
