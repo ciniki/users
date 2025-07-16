@@ -118,7 +118,7 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
             . "<br/>"
             . "If that doesn't work, click this link: <br/>"
             . $ciniki['config']['ciniki.users']['password.forgot.url'] . "?passwordreset=$password<br/>"
-            . "<br/";
+            . "<br/>";
         $msg = "Hi " . $user['firstname'] . ", \n\n"
             . "You have requested a new password.  "
             . "Please click the following link to reset your password.  This link will only be valid for 30 minutes.\n"
