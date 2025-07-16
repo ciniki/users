@@ -108,7 +108,7 @@ function ciniki_users_resetPassword(&$ciniki) {
     if( $user['email'] != '' 
         && isset($ciniki['config']['core']['system.email']) && $ciniki['config']['core']['system.email'] != '' ) {
         $subject = "Ciniki - Password reset";
-        $msg = "The password for you account has been reset, please login and change your password.\n"
+        $msg = "The password for your account has been reset, please login and change your password.\n"
             . "\n"
             . "https://" . $_SERVER['SERVER_NAME'] . "/\n"
             . "Username: " . $user['username'] . "\n"

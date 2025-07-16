@@ -110,6 +110,15 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
     if( $user['email'] != '' 
         && isset($ciniki['config']['ciniki.core']['system.email']) && $ciniki['config']['ciniki.core']['system.email'] != '' ) {
         $subject = "Password reset";
+        $htmlmsg = "Hi " . $user['firstname'] . ", <br/><br/>"
+            . "You have requested a new password.  "
+            . "Please click the following link to reset your password.  This link will only be valid for 30 minutes.<br/>"
+            . "<br/>"
+            . "<a href='" . $ciniki['config']['ciniki.users']['password.forgot.url'] . "?passwordreset=$password'>Reset Password</a><br/>"
+            . "<br/>"
+            . "If that doesn't work, click this link: <br/>"
+            . $ciniki['config']['ciniki.users']['password.forgot.url'] . "?passwordreset=$password<br/>"
+            . "<br/";
         $msg = "Hi " . $user['firstname'] . ", \n\n"
             . "You have requested a new password.  "
             . "Please click the following link to reset your password.  This link will only be valid for 30 minutes.\n"
@@ -123,6 +132,7 @@ function ciniki_users_passwordRequestReset(&$ciniki) {
         $ciniki['emailqueue'][] = array('user_id'=>$user['id'],
             'subject'=>$subject,
             'textmsg'=>$msg,
+            'htmlmsg'=>$htmlmsg,
             );
     }
 
